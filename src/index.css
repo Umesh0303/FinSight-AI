@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* FinSight AI Reference Design Tokens */
+    --primary: #0d5941;
+    --secondary: #083829;
+    --accent: #e5b842;
+    --accent-hover: #f3da87;
+    --background: #021811;
+    --background-alt: #04261b;
+    --surface: #052b1e;
+    --surface-glass: rgba(5, 43, 30, 0.88);
+    --text-primary: #ffffff;
+    --text-secondary: #8cb8a7;
+    --text-muted: #528371;
+    --border: #0d4f38;
+    --border-subtle: #093828;
+    --border-gold: rgba(229, 184, 66, 0.35);
+    --success: #10b981;
+    --error: #ef4444;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: #14221d;
+    background-color: #fcfaf6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Custom scrollbars for clean dashboards */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(18, 93, 71, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(18, 93, 71, 0.4);
+}
+
+/* Gold shimmer and glow animations */
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+
+.animate-subtle-glow {
+  animation: pulseSubtle 3s ease-in-out infinite;
+}

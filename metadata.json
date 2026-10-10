@@ -1,0 +1,8 @@
+{
+  "name": "FinSight AI",
+  "description": "AI-Powered Financial Customer Insights & Recommendation Platform",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

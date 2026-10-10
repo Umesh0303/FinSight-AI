@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 68" width="120" height="68">
+  <defs>
+    <linearGradient id="fsFavEmeraldDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08382a" />
+      <stop offset="40%" stop-color="#0a4c37" />
+      <stop offset="80%" stop-color="#062e21" />
+      <stop offset="100%" stop-color="#021811" />
+    </linearGradient>
+    <linearGradient id="fsFavEmeraldBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="50%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="fsFavGoldArch" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="25%" stop-color="#d97706" />
+      <stop offset="60%" stop-color="#f59e0b" />
+      <stop offset="85%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#fffbeb" />
+    </linearGradient>
+    <linearGradient id="fsFavGoldRingBezel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="35%" stop-color="#f59e0b" />
+      <stop offset="70%" stop-color="#b45309" />
+      <stop offset="100%" stop-color="#fde68a" />
+    </linearGradient>
+    <radialGradient id="fsFavPupilBg" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#0d523d" />
+      <stop offset="60%" stop-color="#06281e" />
+      <stop offset="100%" stop-color="#02140e" />
+    </radialGradient>
+    <linearGradient id="fsFavBarEmerald" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="fsFavGoldTrend" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#fffbeb" />
+    </linearGradient>
+    <radialGradient id="fsFavGoldNode" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="40%" stop-color="#fbbf24" />
+      <stop offset="80%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#78350f" />
+    </radialGradient>
+  </defs>
+
+  <!-- Lower Eyelid -->
+  <path d="M 6,34 C 22,54 42,61 60,61 C 78,61 98,54 114,34 C 98,47 78,52 60,52 C 42,52 22,47 6,34 Z" fill="url(#fsFavEmeraldDark)" stroke="url(#fsFavEmeraldBevel)" stroke-width="0.8" />
+
+  <!-- Upper Left Segment -->
+  <path d="M 6,34 C 20,15 38,7 60,7 C 60,16 44,18 24,25 C 14,29 6,34 6,34 Z" fill="url(#fsFavEmeraldDark)" stroke="url(#fsFavEmeraldBevel)" stroke-width="0.8" />
+
+  <!-- Upper Right Gold Segment -->
+  <path d="M 60,7 C 78,7 98,15 114,34 C 114,34 104,28 92,23 C 78,17 60,16 60,7 Z" fill="url(#fsFavGoldArch)" />
+  <path d="M 60,7 C 76,7 96,15 114,34" stroke="#fffbeb" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+
+  <!-- Iris Golden Ring -->
+  <circle cx="60" cy="34" r="18.5" fill="none" stroke="url(#fsFavGoldRingBezel)" stroke-width="2.8" />
+  <circle cx="60" cy="34" r="15.8" fill="none" stroke="#fef08a" stroke-width="0.75" opacity="0.9" />
+
+  <!-- Pupil Base -->
+  <circle cx="60" cy="34" r="15.2" fill="url(#fsFavPupilBg)" />
+
+  <!-- Four Financial Bars -->
+  <rect x="50" y="37" width="3.2" height="7.5" rx="1.2" fill="url(#fsFavBarEmerald)" />
+  <rect x="54.6" y="32.5" width="3.2" height="12" rx="1.2" fill="url(#fsFavBarEmerald)" />
+  <rect x="59.2" y="27.5" width="3.2" height="17" rx="1.2" fill="url(#fsFavBarEmerald)" />
+  <rect x="63.8" y="22.5" width="3.2" height="22" rx="1.2" fill="url(#fsFavBarEmerald)" />
+
+  <!-- Gold Trendline -->
+  <polyline points="46.5,40.5 51.6,34.5 56.2,35.5 65.6,20" fill="none" stroke="url(#fsFavGoldTrend)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  <polyline points="46.5,40.5 51.6,34.5 56.2,35.5 65.6,20" fill="none" stroke="#ffffff" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.75" />
+
+  <!-- Gold Data Nodes -->
+  <circle cx="46.5" cy="40.5" r="2.2" fill="url(#fsFavGoldNode)" />
+  <circle cx="51.6" cy="34.5" r="2.2" fill="url(#fsFavGoldNode)" />
+  <circle cx="56.2" cy="35.5" r="2.2" fill="url(#fsFavGoldNode)" />
+  <circle cx="65.6" cy="20" r="2.5" fill="url(#fsFavGoldNode)" />
+</svg>
