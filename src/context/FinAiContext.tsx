@@ -239,9 +239,13 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       };
 
       try {
+        const token = localStorage.getItem('finsight_token');
+        const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
         const res = await fetch('/api/speak', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers,
           body: JSON.stringify({ text, voice: 'Kore' }),
           signal: controller.signal
         });
@@ -333,9 +337,13 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsTyping(true);
 
     try {
+      const token = localStorage.getItem('finsight_token');
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           messages: newHistory.map((m) => ({ role: m.role, content: m.content })),
           model: selectedModel,
@@ -344,7 +352,8 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       });
 
       if (!res.ok) {
-        throw new Error(`Server returned ${res.status}`);
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData?.error || `Server returned ${res.status}`);
       }
 
       const data = await res.json();
@@ -357,28 +366,16 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
-    } catch {
-      // Local fallback response with Fin AI persona
-      let fallbackText = '';
-      const q = content.toLowerCase();
-      if (q.includes('surplus') || q.includes('savings')) {
-        fallbackText =
-          'Based on current transactions, your monthly surplus is currently ₹52,600 (+14% month-over-month). Discretionary dining and travel are your primary variable expenses.';
-      } else if (q.includes('fraud') || q.includes('risk') || q.includes('anomal')) {
-        fallbackText =
-          'Fin AI telemetry flagged 238 transactions. Key anomaly drivers include an overseas London POS charge (₹1,28,900) and an off-hours Dubai transfer (₹1,84,500).';
-      } else {
-        fallbackText = `Fin AI analyzed your query regarding "${content}". Platform operations are 99.98% healthy across 30,000 transactions with active risk mitigation.`;
-      }
-
+    } catch (err: any) {
+      const errorMsg = err?.message || 'Unable to connect to Fin AI / Gemini API service.';
       setMessages((prev) => [
         ...prev,
         {
           id: `msg-${Date.now()}-err`,
           role: 'assistant',
-          content: fallbackText,
+          content: `⚠️ **Connection Notice:** ${errorMsg}`,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          modelUsed: `${selectedModel} (offline demo)`
+          modelUsed: `${selectedModel} (connection notice)`
         }
       ]);
     } finally {
@@ -579,9 +576,13 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Direct audio transcription using gemini-3.5-transcribe model
   const transcribeAudio = useCallback(async (base64Audio: string, mimeType: string = 'audio/wav'): Promise<string> => {
     try {
+      const token = localStorage.getItem('finsight_token');
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const res = await fetch('/api/transcribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ audio: base64Audio, mimeType })
       });
       if (!res.ok) {

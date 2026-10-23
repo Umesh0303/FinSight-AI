@@ -250,52 +250,52 @@ export const Topbar: React.FC<TopbarProps> = ({
                       </p>
                       <button
                         onClick={() => {
-                          devSwitchRole('ADMIN');
+                          devSwitchRole?.('ADMIN');
                           setProfileMenuOpen(false);
                         }}
                         className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
                       >
-                        <span>Admin (Elena)</span>
-                        <span className="text-slate-400 font-mono">admin@</span>
+                        <span>Admin Persona</span>
+                        <span className="text-slate-400 font-mono">admin</span>
                       </button>
                       <button
                         onClick={() => {
-                          devSwitchRole('BUSINESS_ANALYST');
+                          devSwitchRole?.('BUSINESS_ANALYST');
                           setProfileMenuOpen(false);
                         }}
                         className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
                       >
-                        <span>Analyst (Gopi)</span>
-                        <span className="text-slate-400 font-mono">analyst@</span>
+                        <span>Business Analyst</span>
+                        <span className="text-slate-400 font-mono">analyst</span>
                       </button>
                       <button
                         onClick={() => {
-                          devSwitchRole('CUSTOMER');
+                          devSwitchRole?.('CUSTOMER');
                           setProfileMenuOpen(false);
                         }}
                         className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
                       >
-                        <span>Customer (Arjun)</span>
-                        <span className="text-slate-400 font-mono">customer@</span>
+                        <span>Personal Customer</span>
+                        <span className="text-slate-400 font-mono">customer</span>
                       </button>
                       <button
                         onClick={() => {
-                          devSwitchRole('RISK_FRAUD_ANALYST');
+                          devSwitchRole?.('RISK_FRAUD_ANALYST');
                           setProfileMenuOpen(false);
                         }}
                         className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
                       >
-                        <span>Risk Officer (Devraj)</span>
-                        <span className="text-slate-400 font-mono">risk@</span>
+                        <span>Risk & Fraud Analyst</span>
+                        <span className="text-slate-400 font-mono">risk</span>
                       </button>
                       <button
                         onClick={() => {
-                          devSwitchRole('UNASSIGNED');
+                          devSwitchRole?.('UNASSIGNED');
                           setProfileMenuOpen(false);
                         }}
                         className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-amber-700 flex justify-between"
                       >
-                        <span>Pending User (Kavita)</span>
+                        <span>Pending Role User</span>
                         <span className="text-slate-400 font-mono">unassigned</span>
                       </button>
                     </div>

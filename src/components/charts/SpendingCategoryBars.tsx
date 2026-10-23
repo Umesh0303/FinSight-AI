@@ -1,9 +1,21 @@
 import React from 'react';
 import { ShoppingBag, Utensils, Plane, Lightbulb, Film, MoreHorizontal } from 'lucide-react';
-import { SPENDING_CATEGORIES, formatINR } from '../../data/sampleData';
+import { formatINR } from '../../data/sampleData';
 
-export const SpendingCategoryBars: React.FC = () => {
-  const getIcon = (iconName: string) => {
+interface SpendingCategoryBarsProps {
+  categories?: { category: string; amount: number; percentage: number; iconName?: string }[];
+  title?: string;
+  className?: string;
+}
+
+export const SpendingCategoryBars: React.FC<SpendingCategoryBarsProps> = ({
+  categories,
+  title = 'Top Spending Categories',
+  className = ''
+}) => {
+  const displayCategories = categories || [];
+
+  const getIcon = (iconName?: string) => {
     switch (iconName) {
       case 'ShoppingBag':
         return <ShoppingBag className="w-3.5 h-3.5 text-[#b0882e]" />;
@@ -21,10 +33,10 @@ export const SpendingCategoryBars: React.FC = () => {
   };
 
   return (
-    <div className="bg-white border border-[#ece7dc] rounded-2xl p-5 shadow-[0_2px_8px_rgba(18,48,36,0.04)] flex flex-col justify-between">
+    <div className={`bg-white border border-[#ece7dc] rounded-2xl p-5 shadow-[0_2px_8px_rgba(18,48,36,0.04)] flex flex-col justify-between ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-heading font-semibold text-base text-[#0a261c]">Top Spending Categories</h3>
+        <h3 className="font-heading font-semibold text-base text-[#0a261c]">{title}</h3>
         <button aria-label="Options" className="text-slate-400 hover:text-slate-600">
           <MoreHorizontal className="w-4 h-4" />
         </button>
@@ -32,7 +44,12 @@ export const SpendingCategoryBars: React.FC = () => {
 
       {/* Category Bars List */}
       <div className="space-y-3.5">
-        {SPENDING_CATEGORIES.map((cat, idx) => (
+        {displayCategories.length === 0 ? (
+          <div className="py-8 text-center text-xs text-slate-400">
+            No categorized debit expenditures recorded for this period.
+          </div>
+        ) : (
+          displayCategories.map((cat, idx) => (
           <div key={idx} className="flex items-center justify-between text-xs gap-3">
             {/* Category Icon & Name */}
             <div className="flex items-center gap-2.5 w-28 sm:w-32 flex-shrink-0">
@@ -60,7 +77,7 @@ export const SpendingCategoryBars: React.FC = () => {
               ₹ {formatINR(cat.amount)}
             </span>
           </div>
-        ))}
+        )))}
       </div>
     </div>
   );

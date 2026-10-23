@@ -1,33 +1,75 @@
-import React, { useState } from 'react';
-import { Search, UserCheck, Shield, Award, Phone, Mail, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Briefcase, TrendingUp, MapPin, ChevronLeft, ChevronRight, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { Button } from '../../components/ui/Button';
 import { StatusBadge } from '../../components/ui/StatusBadge';
-import { SAMPLE_CUSTOMERS, formatINR } from '../../data/sampleData';
-import { Customer } from '../../types';
+import { formatINR } from '../../data/sampleData';
+import { useApp } from '../../context/AppContext';
+import { DbCustomer } from '../../types/database';
 
 export const CustomersPage: React.FC = () => {
+  const {
+    dbCustomers,
+    dbCustomersTotal,
+    dbCustomersPage,
+    dbCustomersPages,
+    isLoadingCustomers,
+    customersError,
+    fetchCustomers
+  } = useApp();
+
   const [selectedSegment, setSelectedSegment] = useState<string>('ALL');
   const [search, setSearch] = useState<string>('');
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(SAMPLE_CUSTOMERS[0]);
+  const [selectedCustomer, setSelectedCustomer] = useState<DbCustomer | null>(null);
 
-  const filtered = SAMPLE_CUSTOMERS.filter((c) => {
-    const matchesSegment = selectedSegment === 'ALL' || c.customer_segment === selectedSegment;
-    const matchesSearch =
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.location.toLowerCase().includes(search.toLowerCase()) ||
-      c.customer_id.toLowerCase().includes(search.toLowerCase());
-    return matchesSegment && matchesSearch;
-  });
+  // Load live customers on mount or filter changes
+  useEffect(() => {
+    fetchCustomers({
+      page: 1,
+      limit: 15,
+      segment: selectedSegment !== 'ALL' ? selectedSegment : undefined,
+      search: search.trim() || undefined
+    });
+  }, [selectedSegment, fetchCustomers]);
+
+  // Handle live search submission
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetchCustomers({
+      page: 1,
+      limit: 15,
+      segment: selectedSegment !== 'ALL' ? selectedSegment : undefined,
+      search: search.trim() || undefined
+    });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > dbCustomersPages) return;
+    fetchCustomers({
+      page: newPage,
+      limit: 15,
+      segment: selectedSegment !== 'ALL' ? selectedSegment : undefined,
+      search: search.trim() || undefined
+    });
+  };
+
+  // Set default selection when customers change
+  useEffect(() => {
+    if (dbCustomers.length > 0 && !selectedCustomer) {
+      setSelectedCustomer(dbCustomers[0]);
+    } else if (dbCustomers.length === 0) {
+      setSelectedCustomer(null);
+    }
+  }, [dbCustomers, selectedCustomer]);
 
   return (
     <AppLayout
       title="Customer Intelligence"
-      subtitle="Deep customer behavioral analytics, segment clustering, and creditworthiness profiles."
+      subtitle="Deep customer behavioral analytics, segment clustering, and creditworthiness profiles from live Supabase ledger."
     >
       {/* Top Filter Bar */}
       <div className="bg-white border border-[#ece7dc] rounded-2xl p-4 shadow-xs mb-6">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
@@ -41,11 +83,12 @@ export const CustomersPage: React.FC = () => {
 
           {/* Segment Filter Buttons */}
           <div className="flex items-center gap-1 p-1 bg-[#faf7f0] border border-[#e5dfd2] rounded-xl text-xs flex-wrap">
-            {(['ALL', 'High Value', 'Potential', 'Regular', 'At Risk', 'New'] as const).map((seg) => (
+            {(['ALL', 'Mass', 'Affluent', 'Premium'] as const).map((seg) => (
               <button
                 key={seg}
+                type="button"
                 onClick={() => setSelectedSegment(seg)}
-                className={`px-3 py-1 rounded-lg font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg font-medium transition-colors cursor-pointer ${
                   selectedSegment === seg
                     ? 'bg-[#0b3829] text-white shadow-2xs font-semibold'
                     : 'text-slate-600 hover:text-black'
@@ -55,54 +98,118 @@ export const CustomersPage: React.FC = () => {
               </button>
             ))}
           </div>
-        </div>
+        </form>
       </div>
+
+      {customersError && (
+        <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+            <span>{customersError}</span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fetchCustomers({ page: dbCustomersPage, limit: 15, segment: selectedSegment !== 'ALL' ? selectedSegment : undefined, search: search.trim() || undefined })}
+          >
+            Retry
+          </Button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Customer List Table */}
-        <div className="lg:col-span-8 bg-white border border-[#ece7dc] rounded-2xl p-5 shadow-xs">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading font-semibold text-base text-[#0a261c]">
-              Directory ({filtered.length} Customers)
-            </h3>
-            <span className="text-xs text-slate-500">Click a customer to view profile</span>
+        <div className="lg:col-span-8 bg-white border border-[#ece7dc] rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-heading font-semibold text-base text-[#0a261c]">
+                Directory ({dbCustomersTotal.toLocaleString()} Live Customers)
+              </h3>
+              <span className="text-xs text-slate-500">Page {dbCustomersPage} of {Math.max(1, dbCustomersPages)}</span>
+            </div>
+
+            {isLoadingCustomers ? (
+              <div className="py-20 text-center text-xs text-slate-400">
+                <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-[#0d5941]" />
+                Querying live Supabase customers table...
+              </div>
+            ) : dbCustomers.length === 0 ? (
+              <div className="py-20 text-center text-xs text-slate-500">
+                No customer records match the current filter criteria.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-[#ece7dc] text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+                      <th className="pb-3">Customer ID</th>
+                      <th className="pb-3">Full Name</th>
+                      <th className="pb-3">Segment</th>
+                      <th className="pb-3">City</th>
+                      <th className="pb-3">KYC Status</th>
+                      <th className="pb-3 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#f5f2ea]">
+                    {dbCustomers.map((c) => (
+                      <tr
+                        key={c.customer_id}
+                        onClick={() => setSelectedCustomer(c)}
+                        className={`cursor-pointer transition-colors ${
+                          selectedCustomer?.customer_id === c.customer_id
+                            ? 'bg-[#f0f7f3]'
+                            : 'hover:bg-[#faf8f3]'
+                        }`}
+                      >
+                        <td className="py-3 font-semibold text-[#093425] font-mono">{c.customer_id}</td>
+                        <td className="py-3 font-semibold text-slate-900">{c.full_name}</td>
+                        <td className="py-3"><StatusBadge status={c.segment} /></td>
+                        <td className="py-3 text-slate-600">{c.city || '—'}</td>
+                        <td className="py-3">
+                          <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+                            {c.kyc_status}
+                          </span>
+                        </td>
+                        <td className="py-3 text-right">
+                          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${
+                            c.is_active === 1 ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 bg-slate-100'
+                          }`}>
+                            {c.is_active === 1 ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr className="border-b border-[#ece7dc] text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
-                  <th className="pb-3">Customer ID</th>
-                  <th className="pb-3">Name</th>
-                  <th className="pb-3">Segment</th>
-                  <th className="pb-3">Credit Score</th>
-                  <th className="pb-3">Account Balance</th>
-                  <th className="pb-3">Location</th>
-                  <th className="pb-3 text-right">Age</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#f5f2ea]">
-                {filtered.map((c) => (
-                  <tr
-                    key={c.customer_id}
-                    onClick={() => setSelectedCustomer(c)}
-                    className={`cursor-pointer transition-colors ${
-                      selectedCustomer?.customer_id === c.customer_id
-                        ? 'bg-[#f0f7f3]'
-                        : 'hover:bg-[#faf8f3]'
-                    }`}
-                  >
-                    <td className="py-3 font-semibold text-[#093425] font-mono">{c.customer_id}</td>
-                    <td className="py-3 font-semibold text-slate-900">{c.name}</td>
-                    <td className="py-3"><StatusBadge status={c.customer_segment} /></td>
-                    <td className="py-3 font-mono font-semibold text-slate-700">{c.credit_score}</td>
-                    <td className="py-3 font-semibold text-[#0a2b1f] font-mono">₹ {formatINR(c.account_balance)}</td>
-                    <td className="py-3 text-slate-600">{c.location}</td>
-                    <td className="py-3 text-right text-slate-500">{c.account_age_months} mo</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* Pagination Controls */}
+          <div className="flex items-center justify-between pt-4 mt-4 border-t border-[#f5f2ea] text-xs">
+            <span className="text-slate-500">
+              Showing {dbCustomers.length > 0 ? (dbCustomersPage - 1) * 15 + 1 : 0} to {Math.min(dbCustomersPage * 15, dbCustomersTotal)} of {dbCustomersTotal.toLocaleString()} records
+            </span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(dbCustomersPage - 1)}
+                disabled={dbCustomersPage <= 1 || isLoadingCustomers}
+                leftIcon={<ChevronLeft className="w-3.5 h-3.5" />}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(dbCustomersPage + 1)}
+                disabled={dbCustomersPage >= dbCustomersPages || isLoadingCustomers}
+                rightIcon={<ChevronRight className="w-3.5 h-3.5" />}
+              >
+                Next
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -116,45 +223,51 @@ export const CustomersPage: React.FC = () => {
                     {selectedCustomer.customer_id}
                   </span>
                   <h3 className="font-heading font-bold text-lg text-[#092b1e]">
-                    {selectedCustomer.name}
+                    {selectedCustomer.full_name}
                   </h3>
                 </div>
-                <StatusBadge status={selectedCustomer.customer_segment} />
+                <StatusBadge status={selectedCustomer.segment} />
               </div>
 
               <div className="space-y-2.5 text-xs text-slate-600">
                 <div className="flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-[#0d5941]" />
-                  <span>{selectedCustomer.email}</span>
+                  <Briefcase className="w-3.5 h-3.5 text-[#0d5941]" />
+                  <span>{selectedCustomer.occupation || 'Professional'} (Age {selectedCustomer.age_band})</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-[#0d5941]" />
-                  <span>{selectedCustomer.phone}</span>
+                  <TrendingUp className="w-3.5 h-3.5 text-[#0d5941]" />
+                  <span>Income Band: {selectedCustomer.income_band || 'Standard'}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-[#0d5941]" />
-                  <span>{selectedCustomer.location}</span>
+                  <span>{selectedCustomer.city}, {selectedCustomer.state} ({selectedCustomer.pincode})</span>
                 </div>
               </div>
 
               {/* Financial Profile Card */}
               <div className="p-4 rounded-xl bg-[#faf7f0] border border-[#eee9dc] space-y-3">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-500">Account Balance</span>
-                  <span className="font-bold text-[#0a2f21] text-sm font-mono">
-                    ₹ {formatINR(selectedCustomer.account_balance)}
+                  <span className="text-slate-500">Tier Classification</span>
+                  <span className="font-bold text-[#0a2f21] text-sm">
+                    {selectedCustomer.segment}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-500">Credit Score</span>
-                  <span className="font-bold text-slate-800">
-                    {selectedCustomer.credit_score} / 850
+                  <span className="text-slate-500">KYC Status</span>
+                  <span className="font-bold text-emerald-800">
+                    {selectedCustomer.kyc_status}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-500">Tenure</span>
+                  <span className="text-slate-500">Ledger Status</span>
                   <span className="font-medium text-slate-700">
-                    {selectedCustomer.account_age_months} months
+                    {selectedCustomer.is_active === 1 ? 'Active Account' : 'Dormant Account'}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-500">Member Since</span>
+                  <span className="font-medium text-slate-700">
+                    {selectedCustomer.customer_since || 'N/A'}
                   </span>
                 </div>
               </div>
@@ -162,27 +275,27 @@ export const CustomersPage: React.FC = () => {
               {/* AI Recommendations for this customer */}
               <div className="pt-2">
                 <h4 className="text-xs font-semibold text-[#092b1e] uppercase tracking-wider mb-2">
-                  Recommended Action
+                  Account Insights
                 </h4>
                 <div className="p-3 rounded-xl bg-[#ebf7f1] border border-[#aee3cb] text-xs">
                   <p className="font-semibold text-[#0a4834]">
-                    {selectedCustomer.customer_segment === 'High Value'
-                      ? 'Proactive Wealth Advisory Call'
-                      : selectedCustomer.customer_segment === 'At Risk'
-                      ? 'Retention Outreach & Credit Counseling'
-                      : 'Cross-Sell Premium Cash-Back Card'}
+                    {selectedCustomer.segment === 'Premium'
+                      ? 'Private Wealth & Concierge Service'
+                      : selectedCustomer.segment === 'Affluent'
+                      ? 'Portfolio Yield Optimization & Auto-Sweep'
+                      : 'Digital Financial Wellness & Core Savings'}
                   </p>
                   <p className="text-[11px] text-slate-600 mt-1">
-                    Automated recommendation ready based on deposit consistency.
+                    Grounded in live ledger record {selectedCustomer.customer_id}.
                   </p>
                 </div>
               </div>
-
-              <Button variant="emerald" size="sm" className="w-full">
-                Trigger Customer Engagement
-              </Button>
             </div>
-          ) : null}
+          ) : (
+            <div className="bg-white border border-[#ece7dc] rounded-2xl p-8 text-center text-xs text-slate-400">
+              Select a customer from the directory to inspect their verified profile.
+            </div>
+          )}
         </div>
       </div>
     </AppLayout>

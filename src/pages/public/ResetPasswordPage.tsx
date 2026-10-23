@@ -21,7 +21,7 @@ export const ResetPasswordPage: React.FC = () => {
   const strengthLabels = ['Too Weak', 'Fair', 'Good', 'Strong'];
   const strengthColors = ['bg-red-500', 'bg-amber-500', 'bg-blue-500', 'bg-emerald-500'];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
 
@@ -41,13 +41,26 @@ export const ResetPasswordPage: React.FC = () => {
     }
 
     setIsLoading(true);
-    setTimeout(() => {
+
+    try {
+      const { supabase, recordAuditEvent } = await import('../../lib/supabase');
+      if (supabase) {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) {
+          setErrorMsg(error.message);
+          setIsLoading(false);
+          return;
+        }
+      }
       setIsLoading(false);
       setIsSuccess(true);
       setTimeout(() => {
         navigate('/login');
       }, 2000);
-    }, 500);
+    } catch (err: any) {
+      setIsLoading(false);
+      setErrorMsg(err?.message || 'Password update failed.');
+    }
   };
 
   return (

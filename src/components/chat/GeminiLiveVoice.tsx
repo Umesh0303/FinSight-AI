@@ -125,9 +125,10 @@ export const GeminiLiveVoice: React.FC<GeminiLiveVoiceProps> = ({
         nextPlaybackTimeRef.current = outputAudioCtxRef.current.currentTime;
       }
 
-      // 2. Open WebSocket to server proxy endpoint with role
+      // 2. Open WebSocket to server proxy endpoint with verified token
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const wsUrl = `${protocol}//${window.location.host}/api/live-ws?role=${encodeURIComponent(userRole)}`;
+      const token = localStorage.getItem('finsight_token');
+      const wsUrl = `${protocol}//${window.location.host}/api/live-ws${token ? `?token=${encodeURIComponent(token)}` : ''}`;
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
 

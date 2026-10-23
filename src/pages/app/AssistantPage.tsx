@@ -85,8 +85,37 @@ export const AssistantPage: React.FC = () => {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Record audio snippet and transcribe using gemini-3.5-transcribe model
-  const recordAndTranscribeWithGemini = async () => {
+  // Toggle microphone dictation with gemini-3.5-transcribe
+  const handleToggleDictate = async () => {
+    stopVoicePlayback();
+
+    if (isListening && micRecorderRef.current) {
+      if (dictateTimeoutRef.current) {
+        clearTimeout(dictateTimeoutRef.current);
+        dictateTimeoutRef.current = null;
+      }
+      setIsListening(false);
+      setMicNotice('Transcribing audio with gemini-3.5-transcribe...');
+
+      try {
+        const result = await micRecorderRef.current.stop();
+        micRecorderRef.current = null;
+        const transcript = await transcribeAudio(result.base64Audio, result.mimeType);
+        if (transcript) {
+          setInput((prev) => (prev ? `${prev} ${transcript}` : transcript));
+          setMicNotice(null);
+        } else {
+          setMicNotice('No speech detected in audio.');
+          setTimeout(() => setMicNotice(null), 3500);
+        }
+      } catch (err: any) {
+        console.error('Transcription error:', err);
+        setMicNotice('Transcription failed. Please try again.');
+        setTimeout(() => setMicNotice(null), 4000);
+      }
+      return;
+    }
+
     if (!navigator.mediaDevices?.getUserMedia) {
       setMicNotice('Microphone hardware is unavailable.');
       setTimeout(() => setMicNotice(null), 4000);
@@ -94,116 +123,42 @@ export const AssistantPage: React.FC = () => {
     }
 
     try {
+      const recorder = new MicrophoneAudioRecorder();
+      micRecorderRef.current = recorder;
+      await recorder.start();
       setIsListening(true);
-      setMicNotice('Recording audio for gemini-3.5-transcribe (speak now)...');
+      setMicNotice('Recording microphone... Speak your question, then click Mic again or wait.');
 
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      const audioChunks: Blob[] = [];
-
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) audioChunks.push(e.data);
-      };
-
-      mediaRecorder.onstop = async () => {
-        stream.getTracks().forEach((t) => t.stop());
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        const reader = new FileReader();
-        reader.readAsDataURL(audioBlob);
-        reader.onloadend = async () => {
-          const base64Data = (reader.result as string)?.split(',')[1];
-          if (!base64Data) {
-            setIsListening(false);
-            return;
-          }
+      // Auto-stop after 7 seconds
+      dictateTimeoutRef.current = setTimeout(async () => {
+        if (micRecorderRef.current) {
+          setIsListening(false);
+          setMicNotice('Transcribing audio with gemini-3.5-transcribe...');
           try {
-            setMicNotice('Transcribing audio via gemini-3.5-transcribe...');
-            const transcript = await transcribeAudio(base64Data, 'audio/wav');
+            const result = await micRecorderRef.current.stop();
+            micRecorderRef.current = null;
+            const transcript = await transcribeAudio(result.base64Audio, result.mimeType);
             if (transcript) {
               setInput((prev) => (prev ? `${prev} ${transcript}` : transcript));
               setMicNotice(null);
             } else {
-              setMicNotice('No speech detected in audio.');
+              setMicNotice('No speech detected.');
+              setTimeout(() => setMicNotice(null), 3000);
             }
           } catch {
-            setMicNotice('Audio transcription failed.');
-          } finally {
-            setIsListening(false);
+            setMicNotice('Transcription failed.');
+            setTimeout(() => setMicNotice(null), 3000);
           }
-        };
-      };
-
-      mediaRecorder.start();
-      setTimeout(() => {
-        if (mediaRecorder.state === 'recording') {
-          mediaRecorder.stop();
         }
-      }, 3500);
-    } catch {
+      }, 7000);
+    } catch (err: any) {
+      console.error('Mic start error:', err);
       setIsListening(false);
-      setMicNotice('Could not access microphone.');
-      setTimeout(() => setMicNotice(null), 4000);
-    }
-  };
-
-  const handleToggleDictate = () => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      recordAndTranscribeWithGemini();
-      return;
-    }
-
-    if (isListening) {
-      try {
-        speechRecognitionRef.current?.stop();
-      } catch {}
-      setIsListening(false);
-      return;
-    }
-
-    try {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-
-      recognition.onstart = () => {
-        setIsListening(true);
-        setMicNotice('Listening to your microphone... Speak your query.');
-      };
-
-      recognition.onresult = (event: any) => {
-        const transcript = Array.from(event.results)
-          .map((r: any) => r[0]?.transcript)
-          .join('');
-        if (transcript) {
-          setInput(transcript);
-        }
-      };
-
-      recognition.onerror = (e: any) => {
-        setIsListening(false);
-        const errType = e?.error;
-        if (errType === 'not-allowed' || errType === 'service-not-allowed') {
-          setMicNotice('Microphone permission blocked. Allow mic in browser address bar or click Live Voice above.');
-        } else {
-          setMicNotice('Microphone paused. You can continue typing your question.');
-        }
-        setTimeout(() => setMicNotice(null), 4000);
-      };
-
-      recognition.onend = () => {
-        setIsListening(false);
-        setTimeout(() => setMicNotice(null), 2500);
-      };
-
-      speechRecognitionRef.current = recognition;
-      recognition.start();
-    } catch {
-      setIsListening(false);
-      setMicNotice('Click "Start Live Voice" above to speak with Fin AI.');
+      if (err?.name === 'NotAllowedError') {
+        setMicNotice('Microphone blocked. Allow permission in your browser address bar.');
+      } else {
+        setMicNotice('Could not access microphone.');
+      }
       setTimeout(() => setMicNotice(null), 4000);
     }
   };
@@ -286,6 +241,19 @@ export const AssistantPage: React.FC = () => {
               <span>Live Voice</span>
               <span className="text-[9px] font-mono font-normal bg-black/25 px-1.5 py-0.5 rounded text-[#93c7b2]">
                 gemini-3.8-live
+              </span>
+            </button>
+
+            {/* Dedicated Transcribe Audio Button */}
+            <button
+              onClick={() => openTranscribeModal()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#ebf5f0] hover:bg-[#d8ece2] text-[#0d5941] text-xs font-semibold shadow-xs border border-[#0d5941]/30 transition-all cursor-pointer group"
+              title="Open Audio Transcriber Studio (gemini-3.5-transcribe)"
+            >
+              <Mic className="w-3.5 h-3.5 text-[#0d5941] group-hover:scale-110 transition-transform" />
+              <span>Transcribe</span>
+              <span className="text-[9px] font-mono bg-[#0d5941] text-white px-1.5 py-0.5 rounded">
+                3.5
               </span>
             </button>
 
@@ -499,6 +467,14 @@ export const AssistantPage: React.FC = () => {
               ) : (
                 <Mic className="w-4 h-4" />
               )}
+            </button>
+            <button
+              type="button"
+              onClick={openTranscribeModal}
+              className="p-2.5 rounded-xl border border-[#ece7dc] bg-[#ebf5f0] text-[#0d5941] hover:bg-[#d9ece3] transition-colors cursor-pointer flex items-center justify-center"
+              title="Open Audio Transcriber Studio (gemini-3.5-transcribe)"
+            >
+              <Sparkles className="w-4 h-4" />
             </button>
             <Button
               type="submit"

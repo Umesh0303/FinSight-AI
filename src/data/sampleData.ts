@@ -11,69 +11,61 @@ import {
 
 export const INITIAL_SYSTEM_USERS: UserProfile[] = [
   {
-    id: 'user-admin-1',
+    id: 'demo-user-admin',
     name: 'Elena Rostova',
+    display_name: 'Elena Rostova',
     email: 'admin@finsight.ai',
     role: 'ADMIN',
     roleTitle: 'Platform Administrator',
-    avatarInitials: 'E',
+    avatarInitials: 'ER',
     accountStatus: 'ACTIVE',
-    createdDate: '2024-01-01',
+    createdDate: '2026-10-10',
     lastLogin: 'Just now'
   },
   {
-    id: 'user-analyst-1',
+    id: 'demo-user-analyst',
     name: 'T. Gopi Chand',
+    display_name: 'T. Gopi Chand',
     email: 'analyst@finsight.ai',
     role: 'BUSINESS_ANALYST',
     roleTitle: 'Senior Financial Analyst',
-    avatarInitials: 'T',
+    avatarInitials: 'TG',
     accountStatus: 'ACTIVE',
-    createdDate: '2024-02-15',
-    lastLogin: '10 mins ago'
+    createdDate: '2026-10-10',
+    lastLogin: 'Just now'
   },
   {
-    id: 'user-cust-1',
-    name: 'Arjun Verma',
-    email: 'customer@finsight.ai',
-    role: 'CUSTOMER',
-    roleTitle: 'Private Wealth Client',
-    avatarInitials: 'A',
-    accountStatus: 'ACTIVE',
-    createdDate: '2024-03-10',
-    lastLogin: '2 hours ago',
-    customerId: 'CUST-1001'
-  },
-  {
-    id: 'user-risk-1',
+    id: 'demo-user-risk',
     name: 'Devraj Sen',
+    display_name: 'Devraj Sen',
     email: 'risk@finsight.ai',
     role: 'RISK_FRAUD_ANALYST',
     roleTitle: 'Risk & Fraud Specialist',
-    avatarInitials: 'D',
+    avatarInitials: 'DS',
     accountStatus: 'ACTIVE',
-    createdDate: '2024-03-20',
-    lastLogin: '1 hour ago'
+    createdDate: '2026-10-10',
+    lastLogin: 'Just now'
   },
   {
-    id: 'user-pending-1',
-    name: 'Kavita Nair',
-    email: 'kavita.nair@example.com',
-    role: 'UNASSIGNED',
-    roleTitle: 'Pending Role Assignment',
-    avatarInitials: 'K',
-    accountStatus: 'PENDING_APPROVAL',
-    createdDate: '2024-10-31',
-    lastLogin: 'Never'
+    id: 'demo-user-customer',
+    name: 'Arjun Verma',
+    display_name: 'Arjun Verma',
+    email: 'customer@finsight.ai',
+    role: 'CUSTOMER',
+    roleTitle: 'Personal Wealth Client',
+    avatarInitials: 'AV',
+    accountStatus: 'ACTIVE',
+    customerId: 'CUST-1001',
+    createdDate: '2026-10-10',
+    lastLogin: 'Just now'
   }
 ];
 
 export const USER_PROFILES: Record<string, UserProfile> = {
   ADMIN: INITIAL_SYSTEM_USERS[0],
   BUSINESS_ANALYST: INITIAL_SYSTEM_USERS[1],
-  CUSTOMER: INITIAL_SYSTEM_USERS[2],
-  RISK_FRAUD_ANALYST: INITIAL_SYSTEM_USERS[3],
-  UNASSIGNED: INITIAL_SYSTEM_USERS[4]
+  RISK_FRAUD_ANALYST: INITIAL_SYSTEM_USERS[2],
+  CUSTOMER: INITIAL_SYSTEM_USERS[3]
 };
 
 export const SAMPLE_CUSTOMERS: Customer[] = [

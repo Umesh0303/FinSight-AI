@@ -5,14 +5,33 @@ export type AccountStatus = 'ACTIVE' | 'PENDING_APPROVAL' | 'SUSPENDED';
 export interface UserProfile {
   id: string;
   name: string;
+  display_name?: string;
   email: string;
   role: UserRole;
   roleTitle: string;
   avatarInitials: string;
   accountStatus: AccountStatus;
   createdDate: string;
+  created_at?: string;
   lastLogin?: string;
+  last_login_at?: string;
   customerId?: string;
+  authProviders?: Array<'email' | 'google'>;
+  auth_provider?: string;
+  emailVerified?: boolean;
+}
+
+export interface LoginEventRecord {
+  id: string;
+  userId: string;
+  email: string;
+  displayName: string;
+  role: string;
+  provider: 'email' | 'google';
+  ipAddress: string;
+  userAgent: string;
+  status: 'SUCCESS' | 'FAILED';
+  createdAt: string;
 }
 
 export interface Customer {

@@ -7,6 +7,7 @@ import { FloatingFinAiPanel } from '../chat/FloatingFinAiPanel';
 import { GeminiLiveVoice } from '../chat/GeminiLiveVoice';
 import { AudioTranscribeModal } from '../chat/AudioTranscribeModal';
 import { useFinAi } from '../../context/FinAiContext';
+import { useApp } from '../../context/AppContext';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   actions
 }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { sidebarCollapsed } = useApp();
   const {
     isVoiceModalOpen,
     closeVoiceModal,
@@ -37,14 +39,18 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
 
   return (
     <div className="min-h-screen flex bg-[#faf7f0] text-[#14251e] overflow-x-hidden relative">
-      {/* Sidebar */}
+      {/* Permanently Fixed Left Navigation Sidebar */}
       <Sidebar
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}
       />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 relative">
+      {/* Main Content Area: Offset by sidebar width with independent vertical scrolling */}
+      <div
+        className={`flex-1 flex flex-col min-w-0 w-full relative transition-[margin] duration-300 ${
+          sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
+        }`}
+      >
         {/* Subtle Financial Ivory Canvas with Faint Grid, Candlesticks & Data Lines */}
         <DashboardBackground />
 

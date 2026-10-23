@@ -24,12 +24,34 @@ import { useFinAi } from '../../context/FinAiContext';
 interface SidebarProps {
   isMobileOpen: boolean;
   setIsMobileOpen: (open: boolean) => void;
+  collapsed?: boolean;
+  setCollapsed?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen }) => {
-  const { currentPath, navigate, currentRole } = useApp();
+export const Sidebar: React.FC<SidebarProps> = ({
+  isMobileOpen,
+  setIsMobileOpen,
+  collapsed: propCollapsed,
+  setCollapsed: propSetCollapsed
+}) => {
+  const {
+    currentPath,
+    navigate,
+    currentRole,
+    sidebarCollapsed,
+    toggleSidebarCollapse
+  } = useApp();
   const { openTranscribeModal } = useFinAi();
-  const [collapsed, setCollapsed] = useState(false);
+
+  const isCollapsed = propCollapsed !== undefined ? propCollapsed : (sidebarCollapsed ?? false);
+
+  const handleToggleCollapse = () => {
+    if (propSetCollapsed) {
+      propSetCollapsed(!isCollapsed);
+    } else if (toggleSidebarCollapse) {
+      toggleSidebarCollapse();
+    }
+  };
 
   // Determine dashboard route based on current role
   const getDashboardRoute = () => {
@@ -158,17 +180,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
         />
       )}
 
-      {/* Sidebar Container */}
+      {/* Sidebar Container: Permanently fixed to left edge of viewport */}
       <aside
-        className={`fixed lg:static top-0 bottom-0 left-0 z-50 flex flex-col justify-between bg-[#061d16] border-r border-[#0e3a2d] text-[#c3dad0] transition-all duration-300 ${
-          collapsed ? 'w-20' : 'w-64'
-        } ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        className={`fixed top-0 bottom-0 left-0 h-screen h-[100vh] z-40 flex flex-col justify-between bg-[#061d16] border-r border-[#0e3a2d] text-[#c3dad0] transition-all duration-300 overflow-y-auto overflow-x-hidden select-none [scrollbar-width:thin] [scrollbar-color:#124234_transparent] ${
+          isCollapsed ? 'w-20' : 'w-64'
+        } ${isMobileOpen ? 'translate-x-0 z-50 shadow-2xl' : '-translate-x-full lg:translate-x-0'}`}
       >
-        {/* Top Header with Logo: Clicking returns to Home / */}
+        {/* Top Header with Logo: Clicking returns to Home / Dashboard */}
         <div>
           <div className="flex items-center justify-between h-20 px-4 border-b border-[#0f3d2f]">
-            <div className="cursor-pointer">
-              {collapsed ? (
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                navigate(dashboardRoute);
+                setIsMobileOpen(false);
+              }}
+              title="FinSight AI Dashboard"
+            >
+              {isCollapsed ? (
                 <Logo size="sm" variant="dark" showText={false} />
               ) : (
                 <Logo size="md" variant="dark" showText={true} />
@@ -176,16 +205,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
             </div>
             {/* Desktop collapse toggle */}
             <button
-              onClick={() => setCollapsed(!collapsed)}
+              onClick={handleToggleCollapse}
               className="hidden lg:flex p-1.5 rounded-lg text-[#779c8e] hover:text-white hover:bg-[#0d3b2c] transition-colors cursor-pointer"
-              aria-label="Toggle sidebar collapse"
+              aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-              {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+              {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
             </button>
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-280px)]">
+          <nav className="p-3 space-y-1">
             {visibleNavItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -200,14 +230,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
                       ? 'bg-gradient-to-r from-[#144737] to-[#0f3d2f] text-white shadow-sm border border-[#206650]/40 font-semibold'
                       : 'text-[#8eb1a3] hover:text-white hover:bg-[#0b3326]'
                   }`}
-                  title={collapsed ? item.label : undefined}
+                  title={isCollapsed ? item.label : undefined}
                 >
                   <Icon
                     className={`w-4 h-4 flex-shrink-0 ${
                       item.isActive ? 'text-[#f1ce72]' : 'text-[#7da595]'
                     }`}
                   />
-                  {!collapsed && <span className="truncate">{item.label}</span>}
+                  {!isCollapsed && <span className="truncate">{item.label}</span>}
                 </button>
               );
             })}
@@ -221,12 +251,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
                 setIsMobileOpen(false);
               }}
               className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold bg-[#0d4a36]/60 hover:bg-[#0d4a36] text-[#6ee7b7] border border-[#16654e] shadow-xs transition-all cursor-pointer ${
-                collapsed ? 'justify-center px-0' : ''
+                isCollapsed ? 'justify-center px-0' : ''
               }`}
               title="Transcribe Audio with gemini-3.5-transcribe"
             >
               <Mic className="w-4 h-4 text-[#10b981] flex-shrink-0 animate-pulse" />
-              {!collapsed && (
+              {!isCollapsed && (
                 <div className="flex items-center justify-between flex-1">
                   <span>Transcribe Audio</span>
                   <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-sm bg-[#10b981]/20 text-[#10b981]">
@@ -239,7 +269,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, setIsMobileOpen 
         </div>
 
         {/* Bottom Role-Specific Status Card matching Reference Image */}
-        {!collapsed && (
+        {!isCollapsed && (
           <div className="p-3.5 m-3 rounded-2xl bg-[#031d14] border border-[#0e4433] shadow-md">
             {currentRole === 'ADMIN' && (
               <div className="flex items-center justify-between">

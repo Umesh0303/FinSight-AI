@@ -5,12 +5,22 @@ import { Button } from '../../components/ui/Button';
 import { useApp } from '../../context/AppContext';
 
 export const SettingsPage: React.FC = () => {
-  const { currentUser, currentRole } = useApp();
+  const { currentUser, currentRole, updateUserDisplayName } = useApp();
+  const [displayName, setDisplayName] = useState(currentUser.display_name || currentUser.name || '');
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [fraudThreshold, setFraudThreshold] = useState(75);
   const [emailAlerts, setEmailAlerts] = useState(true);
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaveError(null);
+    if (displayName.trim() && displayName.trim() !== (currentUser.display_name || currentUser.name)) {
+      const res = await updateUserDisplayName(displayName.trim());
+      if (!res.success) {
+        setSaveError(res.error || 'Failed to update display name.');
+        return;
+      }
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -33,8 +43,9 @@ export const SettingsPage: React.FC = () => {
               <label className="text-slate-500 font-medium block mb-1">Full Name</label>
               <input
                 type="text"
-                defaultValue={currentUser.name}
-                className="w-full px-3 py-2 bg-[#faf7f0] border border-[#e5dfd2] rounded-xl text-slate-800"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="w-full px-3 py-2 bg-[#faf7f0] border border-[#e5dfd2] rounded-xl text-slate-800 focus:outline-none focus:border-[#0d5941]"
               />
             </div>
             <div>
@@ -104,7 +115,7 @@ export const SettingsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Save button */}
+        {/* Save button & status */}
         <div className="flex items-center gap-3">
           <Button
             variant="emerald"
@@ -113,6 +124,9 @@ export const SettingsPage: React.FC = () => {
           >
             {saved ? 'Preferences Saved' : 'Save Configuration'}
           </Button>
+          {saveError && (
+            <span className="text-xs text-rose-600 font-medium">{saveError}</span>
+          )}
         </div>
       </div>
     </AppLayout>

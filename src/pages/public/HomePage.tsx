@@ -33,7 +33,7 @@ import { DonutChart } from '../../components/charts/DonutChart';
 import { CUSTOMER_SEGMENTS } from '../../data/sampleData';
 
 export const HomePage: React.FC = () => {
-  const { navigate } = useApp();
+  const { navigate, customerSegments, platformMetrics } = useApp();
   const [heroSearch, setHeroSearch] = useState('');
   const [activeInspectorTopic, setActiveInspectorTopic] = useState<string | null>('High value customers');
 
@@ -554,9 +554,18 @@ export const HomePage: React.FC = () => {
             <div className="lg:col-span-6">
               <DonutChart
                 title="Customer Segmentation Cohorts"
-                centerCount="8,452"
+                centerCount={platformMetrics?.totalCustomers ? Number(platformMetrics.totalCustomers).toLocaleString() : "25,000"}
                 centerLabel="Active Customers"
-                segments={CUSTOMER_SEGMENTS}
+                segments={
+                  customerSegments.length > 0
+                    ? customerSegments.map((s, idx) => ({
+                        name: s.name,
+                        count: s.count,
+                        percentage: s.percentage,
+                        color: ['#093628', '#16795f', '#dfa634', '#9dcaa8', '#b5c0b9'][idx % 5]
+                      }))
+                    : CUSTOMER_SEGMENTS
+                }
                 theme="dark"
               />
             </div>

@@ -13,6 +13,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, type = 'transa
       case 'Resolved':
       case 'Cleared':
       case 'Normal':
+      case 'False Positive':
       case 'High Value':
         return 'text-[#065f46] bg-[#ecfdf5] border-[#a7f3d0]';
 

@@ -26,23 +26,49 @@ interface IndicatorItem {
 
 interface FinancialHealthScoreProps {
   score?: number;
+  creditScore?: number;
+  creditBand?: string;
+  creditDate?: string;
+  customerName?: string;
+  customerId?: string;
+  portfolioBalanceInr?: number;
+  monthlyInflowInr?: number;
+  monthlyOutflowInr?: number;
+  monthlySavingsInr?: number;
   className?: string;
 }
 
 export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
-  score = 86,
+  score: propScore,
+  creditScore,
+  creditBand,
+  creditDate,
+  customerName,
+  customerId,
+  portfolioBalanceInr = 0,
+  monthlyInflowInr = 0,
+  monthlyOutflowInr = 0,
+  monthlySavingsInr = 0,
   className = ''
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Indicators based on Arjun Verma's profile (₹85k inflow, ₹32.4k outflow, ₹52.6k savings, ₹5L reserve)
+  // Compute effective 0-100 score from credit score if not explicitly passed
+  const effectiveScore = propScore ?? (creditScore ? Math.min(100, Math.round((creditScore / 900) * 100)) : 80);
+  const effectiveBand = creditBand || (effectiveScore >= 85 ? 'Excellent' : effectiveScore >= 70 ? 'Good' : 'Fair');
+
+  const savingsRate = monthlyInflowInr > 0 ? Math.round((monthlySavingsInr / monthlyInflowInr) * 100) : 0;
+  const outflowRatio = monthlyInflowInr > 0 ? Math.round((monthlyOutflowInr / monthlyInflowInr) * 100) : 0;
+  const reserveMonths = monthlyOutflowInr > 0 ? (portfolioBalanceInr / monthlyOutflowInr).toFixed(1) : (portfolioBalanceInr > 0 ? '12+' : '0');
+
+  // Indicators dynamically computed from customer's verified portfolio and cashflow data
   const indicators: IndicatorItem[] = [
     {
       id: 'savings',
       label: 'Savings Health',
-      score: 88,
-      status: 'High Surplus (+₹52,600/mo)',
-      benchmark: '61.8% savings rate vs 35% benchmark',
+      score: Math.min(100, Math.max(30, savingsRate + 25)),
+      status: monthlySavingsInr > 0 ? `Net Surplus (+₹${Math.round(monthlySavingsInr).toLocaleString()}/mo)` : 'Balanced Cashflow',
+      benchmark: `${savingsRate}% savings rate vs 35% target`,
       icon: <TrendingUp className="w-3.5 h-3.5 text-[#059669]" />,
       color: 'text-[#059669]',
       barColor: 'bg-[#10b981]'
@@ -50,9 +76,9 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
     {
       id: 'spending',
       label: 'Spending Control',
-      score: 82,
-      status: '4.1% Under Budget Target',
-      benchmark: 'Outflow ratio 38.1% of monthly income',
+      score: Math.min(100, Math.max(40, 100 - outflowRatio + 15)),
+      status: `${outflowRatio}% Outflow of Inflow`,
+      benchmark: `Outflow ratio ${outflowRatio}% of monthly cashflow`,
       icon: <Sliders className="w-3.5 h-3.5 text-[#b45309]" />,
       color: 'text-[#b45309]',
       barColor: 'bg-[#deb03e]'
@@ -60,19 +86,19 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
     {
       id: 'cashflow',
       label: 'Cash Flow',
-      score: 85,
-      status: 'Stable Monthly Inflow',
-      benchmark: 'Recurring monthly salary & dividends',
+      score: effectiveScore >= 75 ? 85 : 70,
+      status: monthlyInflowInr > 0 ? `Monthly Inflow ₹${Math.round(monthlyInflowInr).toLocaleString()}` : 'Stable Recurring Inflow',
+      benchmark: 'Institutional account credits',
       icon: <ArrowDownRight className="w-3.5 h-3.5 text-[#0d5941]" />,
       color: 'text-[#0d5941]',
       barColor: 'bg-[#0d5941]'
     },
     {
       id: 'emergency',
-      label: 'Emergency Fund',
-      score: 83,
-      status: '6.2 Months Reserve',
-      benchmark: '₹5,00,000 liquid capital vs 6mo minimum',
+      label: 'Emergency Reserve',
+      score: Number(reserveMonths) >= 6 ? 85 : Number(reserveMonths) >= 3 ? 75 : 55,
+      status: `${reserveMonths} Months Liquidity`,
+      benchmark: `₹${Math.round(portfolioBalanceInr).toLocaleString()} total closing liquidity`,
       icon: <ShieldCheck className="w-3.5 h-3.5 text-[#059669]" />,
       color: 'text-[#059669]',
       barColor: 'bg-[#059669]'
@@ -82,7 +108,7 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
   // Circular gauge math for score out of 100
   const radius = 48;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (score / 100) * circumference;
+  const strokeDashoffset = circumference - (effectiveScore / 100) * circumference;
 
   return (
     <>
@@ -107,7 +133,7 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
             </div>
 
             <span className="text-[10px] font-semibold text-[#0d5941] bg-[#ebf7f1] border border-[#a7f3d0] px-2.5 py-0.5 rounded-full">
-              Optimal Tier
+              {effectiveBand} Tier
             </span>
           </div>
 
@@ -150,7 +176,7 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
               {/* Centered Score Value */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                 <span className="text-2xl font-bold font-heading text-[#0a261c] leading-none">
-                  {score}
+                  {effectiveScore}
                 </span>
                 <span className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">
                   / 100
@@ -162,11 +188,17 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5 mb-1">
                 <span className="text-xs font-bold text-[#0d5941] bg-[#dcfce7] px-2 py-0.5 rounded-md">
-                  Excellent
+                  {effectiveBand}
                 </span>
-                <span className="text-[11px] text-slate-500 font-medium">
-                  Top 8% of Peer Cohort
-                </span>
+                {creditScore ? (
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    Credit Bureau Score: {creditScore} {creditDate ? `(${creditDate.slice(0, 10)})` : ''}
+                  </span>
+                ) : (
+                  <span className="text-[11px] text-slate-500 font-medium">
+                    Top 8% of Peer Cohort
+                  </span>
+                )}
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Your profile indicates exceptional surplus generation, disciplined outflows, and strong liquid reserves.
@@ -241,7 +273,7 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
                     Comprehensive Financial Health Breakdown
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Calculated for Arjun Verma (CUST-1001) · Overall Score: <strong>86 / 100</strong>
+                    Calculated for {customerName || 'Verified Client'} ({customerId || 'Account Portfolio'}) · Overall Score: <strong>{effectiveScore} / 100</strong>
                   </p>
                 </div>
               </div>

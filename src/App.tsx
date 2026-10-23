@@ -25,18 +25,63 @@ import { SettingsPage } from './pages/app/SettingsPage';
 import { Button } from './components/ui/Button';
 
 const Router: React.FC = () => {
-  const { currentPath, currentRole, navigate } = useApp();
+  const { currentPath, currentRole, currentUser, isAuthenticated, isLoadingAuth, navigate } = useApp();
+
+  // Show clean luxury loader while restoring authenticated session
+  if (isLoadingAuth) {
+    return (
+      <div className="min-h-screen bg-[#041610] text-white flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-12 h-12 rounded-2xl bg-[#0d4a36] border border-[#1b6b51] flex items-center justify-center shadow-lg animate-pulse mb-4">
+          <span className="font-heading font-extrabold text-lg text-[#deb03e]">Fin</span>
+        </div>
+        <p className="text-xs text-[#8cb2a1] tracking-wider uppercase font-semibold font-mono">
+          Verifying Secure Session...
+        </p>
+      </div>
+    );
+  }
+
+  // Redirect unauthenticated requests to protected /app/* routes
+  if (!isAuthenticated && currentPath.startsWith('/app')) {
+    return <LoginPage />;
+  }
 
   // Public Routes
   if (currentPath === '/' || currentPath === '') {
     return <HomePage />;
   }
 
+  // Gate pending or non-active accounts from accessing protected application feature routes
+  const isAccountActive = currentUser.accountStatus === 'ACTIVE';
+  if (isAuthenticated && currentPath.startsWith('/app') && (!isAccountActive || currentRole === 'UNASSIGNED')) {
+    if (currentPath !== '/app/pending') {
+      return <PendingPage />;
+    }
+    return <PendingPage />;
+  }
+
   if (currentPath === '/login') {
+    // If already authenticated, redirect to appropriate role dashboard
+    if (isAuthenticated) {
+      if (!isAccountActive || currentRole === 'UNASSIGNED') return <PendingPage />;
+      if (currentRole === 'ADMIN') return <AdminDashboard />;
+      if (currentRole === 'CUSTOMER') return <CustomerDashboard />;
+      if (currentRole === 'RISK_FRAUD_ANALYST') return <RiskDashboard />;
+      if (currentRole === 'BUSINESS_ANALYST') return <AnalystDashboard />;
+      return <PendingPage />;
+    }
     return <LoginPage />;
   }
 
   if (currentPath === '/signup') {
+    if (isAuthenticated) {
+      if (!isAccountActive || currentRole === 'UNASSIGNED') return <PendingPage />;
+      if (currentRole === 'ADMIN') return <AdminDashboard />;
+      if (currentRole === 'CUSTOMER') return <CustomerDashboard />;
+      if (currentRole === 'RISK_FRAUD_ANALYST') return <RiskDashboard />;
+      if (currentRole === 'BUSINESS_ANALYST') return <AnalystDashboard />;
+      return <PendingPage />;
+    }
     return <SignupPage />;
   }
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Mail, ArrowRight, ArrowLeft, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Mail, CheckCircle2, AlertCircle } from 'lucide-react';
 import { Logo } from '../../components/brand/Logo';
 import { AuthLayout } from '../../components/layout/AuthLayout';
 import { useApp } from '../../context/AppContext';
+import { supabase, recordAuditEvent } from '../../lib/supabase';
 
 export const ForgotPasswordPage: React.FC = () => {
   const { navigate } = useApp();
@@ -11,7 +12,7 @@ export const ForgotPasswordPage: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) {
       setErrorMsg('Please enter your registered email address.');
@@ -21,10 +22,39 @@ export const ForgotPasswordPage: React.FC = () => {
     setIsLoading(true);
     setErrorMsg('');
 
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSubmitted(true);
-    }, 450);
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (supabase) {
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
+          redirectTo: `${window.location.origin}/reset-password`
+        });
+        if (error) {
+          setErrorMsg(error.message);
+          setIsLoading(false);
+          return;
+        }
+
+        recordAuditEvent({
+          email: cleanEmail,
+          eventType: 'password_reset_requested',
+          success: true
+        });
+      } catch (err: any) {
+        console.warn('Supabase resetPasswordForEmail warning:', err);
+      }
+    } else {
+      try {
+        await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail })
+        });
+      } catch {}
+    }
+
+    setIsLoading(false);
+    setIsSubmitted(true);
   };
 
   return (
@@ -59,7 +89,7 @@ export const ForgotPasswordPage: React.FC = () => {
               </div>
               <h3 className="text-sm font-bold text-white">Reset Link Dispatched</h3>
               <p className="text-xs text-[#8cb8a7] mt-1 leading-relaxed">
-                We've sent a secure recovery link to <strong className="font-semibold text-white">{email}</strong>.
+                If an account exists with <strong className="font-semibold text-white">{email}</strong>, a secure recovery link has been dispatched to your inbox.
               </p>
             </div>
 
@@ -93,7 +123,7 @@ export const ForgotPasswordPage: React.FC = () => {
                 <input
                   id="forgot-email"
                   type="email"
-                  placeholder="analyst@finsight.ai"
+                  placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
