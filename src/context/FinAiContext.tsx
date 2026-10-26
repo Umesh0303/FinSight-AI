@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
 import { useApp } from './AppContext';
+import type { RagCitation } from '../types/rag';
 
 export interface FinAiMessage {
   id: string;
@@ -8,7 +9,10 @@ export interface FinAiMessage {
   time: string;
   modelUsed?: string;
   chips?: string[];
+  citations?: RagCitation[];
+  grounded?: boolean;
 }
+
 
 export type WakeWordStatus = 'off' | 'listening' | 'in_conversation' | 'denied' | 'unsupported';
 
@@ -362,10 +366,13 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         role: 'assistant',
         content: data.text || 'No response generated.',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        modelUsed: data.modelUsed || selectedModel
+        modelUsed: data.modelUsed || selectedModel,
+        citations: Array.isArray(data.citations) && data.citations.length > 0 ? data.citations : undefined,
+        grounded: Boolean(data.grounded || (Array.isArray(data.citations) && data.citations.length > 0))
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
+
     } catch (err: any) {
       const errorMsg = err?.message || 'Unable to connect to Fin AI / Gemini API service.';
       setMessages((prev) => [

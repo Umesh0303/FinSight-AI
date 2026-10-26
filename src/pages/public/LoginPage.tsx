@@ -166,16 +166,82 @@ export const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        {/* Footer Link to Signup */}
-        <div className="text-center mt-6 text-xs text-[#8cb8a7]">
-          <span>Don't have an account? </span>
-          <button
-            onClick={() => navigate('/signup')}
-            className="font-bold text-[#e5b842] hover:text-[#f3da87] hover:underline cursor-pointer ml-1"
-          >
-            Create account
-          </button>
-        </div>
+          {/* Quick Demo Sign-In (Acceptance Testing & Verification) */}
+          <div className="mt-5 pt-4 border-t border-[#0d4f38]/60 text-center">
+            <p className="text-[10px] font-bold text-[#8cb8a7] uppercase tracking-wider mb-2">
+              Quick Demo Credentials (One-Click)
+            </p>
+            <div className="grid grid-cols-2 gap-2 text-left">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('risk@finsight.ai');
+                  setPassword('FinSight@Demo123');
+                }}
+                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981] flex items-center justify-between">
+                  <span>Risk Analyst</span>
+                  <span className="text-[9px] text-[#10b981] font-mono font-bold bg-[#10b981]/15 px-1 rounded">AT-06</span>
+                </div>
+                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">risk@finsight.ai</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('analyst@finsight.ai');
+                  setPassword('FinSight@Demo123');
+                }}
+                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981]">
+                  Business Analyst
+                </div>
+                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">analyst@finsight.ai</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('admin@finsight.ai');
+                  setPassword('FinSight@Demo123');
+                }}
+                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981]">
+                  Platform Admin
+                </div>
+                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">admin@finsight.ai</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail('customer@finsight.ai');
+                  setPassword('FinSight@Demo123');
+                }}
+                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
+              >
+                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981]">
+                  Customer Client
+                </div>
+                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">customer@finsight.ai</div>
+              </button>
+            </div>
+          </div>
+
+          {/* Footer Link to Signup */}
+          <div className="text-center mt-5 text-xs text-[#8cb8a7]">
+            <span>Don't have an account? </span>
+            <button
+              type="button"
+              onClick={() => navigate('/signup')}
+              className="font-bold text-[#e5b842] hover:text-[#f3da87] hover:underline cursor-pointer ml-1"
+            >
+              Create account
+            </button>
+          </div>
 
       </div>
     </AuthLayout>

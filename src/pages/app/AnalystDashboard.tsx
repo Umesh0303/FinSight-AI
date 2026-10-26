@@ -190,9 +190,9 @@ export const AnalystDashboard: React.FC = () => {
 
       {/* Row 1: 4 KPI Cards (Connected to Verified Database Aggregates) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {/* KPI 1: Total Transactions */}
+        {/* KPI 1: Total Ledger Transactions */}
         <KpiCard
-          title="Total Transactions"
+          title="Total Ledger Transactions"
           value={isLoadingAnalystMetrics ? '...' : totalTxnCount.toLocaleString()}
           change={`${settledCount.toLocaleString()} Settled (96.5%)`}
           changeType="positive"
@@ -204,13 +204,13 @@ export const AnalystDashboard: React.FC = () => {
           sparklineData={[18, 19, 21, 20, 22, 23, 24, 25, 26]}
         />
 
-        {/* KPI 2: Total Amount */}
+        {/* KPI 2: Settled Volume */}
         <KpiCard
-          title="Platform Volume"
+          title="Settled Volume"
           value={isLoadingAnalystMetrics ? '...' : `₹ ${(totalVolumeInr / 10000000).toFixed(2)} Cr`}
-          change={`₹ ${formatINR(Math.round(avgAmountInr))} avg/txn`}
+          change={`₹ ${formatINR(Math.round(avgAmountInr))} avg/settled txn`}
           changeType="positive"
-          comparisonPeriod="settled transaction volume"
+          comparisonPeriod="₹112.34 Cr gross ledger volume"
           icon={<Wallet className="w-5 h-5 text-[#b0882e]" />}
           iconBg="bg-[#fcf4e4]"
           sparklineColor="#10b981"

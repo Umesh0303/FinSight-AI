@@ -15,8 +15,12 @@ import {
   User,
   AlertCircle,
   HelpCircle,
-  RotateCcw
+  RotateCcw,
+  BookOpen,
+  FileText
 } from 'lucide-react';
+
+
 import { useFinAi } from '../../context/FinAiContext';
 import { useApp } from '../../context/AppContext';
 import { MicrophoneAudioRecorder } from '../../utils/audioRecorder';
@@ -398,7 +402,38 @@ export const FloatingFinAiPanel: React.FC = () => {
               >
                 <div className="whitespace-pre-wrap">{m.content}</div>
 
+                {/* Real RAG Source Citations */}
+                {m.role === 'assistant' && m.citations && m.citations.length > 0 && (
+                  <div className="mt-2.5 pt-2 border-t border-[#e5dfd2] space-y-1.5">
+                    <div className="flex items-center gap-1.5 text-[10px] font-semibold text-[#0d5941]">
+                      <BookOpen className="w-3 h-3 text-[#0d5941]" />
+                      <span>Verified Policy Sources ({m.citations.length})</span>
+                    </div>
+                    <div className="space-y-1">
+                      {m.citations.map((c, cIdx) => (
+                        <div
+                          key={cIdx}
+                          className="bg-[#f7f5ef] border border-[#e5dfd2] rounded-lg p-1.5 text-[10px]"
+                        >
+                          <div className="flex items-center justify-between text-slate-800 font-medium">
+                            <span className="truncate max-w-[210px]">{c.title}</span>
+                            <span className="text-[9px] text-[#0d5941] font-mono font-semibold ml-1 shrink-0">
+                              {c.pageNumber ? `p. ${c.pageNumber}` : `v${c.version}`}
+                            </span>
+                          </div>
+                          {c.snippet && (
+                            <p className="text-[9.5px] text-slate-600 line-clamp-2 mt-0.5 italic">
+                              "{c.snippet}"
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Assistant Controls: TTS Speak & Copy */}
+
                 {m.role === 'assistant' && (
                   <div className="mt-2 pt-1.5 border-t border-[#f0ece1] flex items-center justify-between text-[10px] text-slate-400">
                     <span className="font-mono">{m.modelUsed || selectedModel}</span>

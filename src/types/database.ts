@@ -146,6 +146,7 @@ export interface PlatformMetricsSummary {
   totalAccounts: number;
   totalTransactions: number;
   totalVolumeInr: number;
+  grossVolumeInr?: number;
   totalFraudAlerts: number;
   fraudAlertsByStatus?: {
     underReview: number;
@@ -159,6 +160,15 @@ export interface PlatformMetricsSummary {
   activeInvestigationsCount: number;
   preventedFraudLossInr: number;
   avgCreditScore: number;
+  isLive?: boolean;
+  lastUpdated?: string;
+  countsFreshAsOf?: string;
+  lastConnectivityCheck?: string;
+  ledgerAggregatedAt?: string;
+  dataFreshness?: string;
+  financialsSource?: string;
+  countsSource?: string;
+  snapshotPolicy?: string;
 }
 
 export interface CategorySpendingSummary {
@@ -195,14 +205,17 @@ export interface CustomerFinancialDossier {
 
 export interface TransactionTrendBucket {
   date: string;
-  count: number;
-  amountLakh: number;
-  volumeInr: number;
+  count: number; // Total ledger transactions
+  settledCount?: number; // Successful settled transactions
+  amountLakh: number; // Settled volume in Lakhs
+  volumeInr: number; // Settled volume in INR
+  grossVolumeInr?: number; // Gross volume in INR
 }
 
 export interface AnalystMetricsSummary {
   totalTransactions: number;
   totalVolumeInr: number;
+  grossVolumeInr?: number;
   avgTransactionInr: number;
   settledTransactions: number;
   failedTransactions: number;
@@ -219,6 +232,15 @@ export interface AnalystMetricsSummary {
   txnTypeBreakdown: { type: string; count: number; percentage: number }[];
   creditScoreBreakdown: { band: string; count: number; percentage: number; color: string }[];
   fraudRiskDistribution: { name: string; count: number; percentage: number; color: string }[];
+  isLive?: boolean;
+  lastUpdated?: string;
+  countsFreshAsOf?: string;
+  lastConnectivityCheck?: string;
+  ledgerAggregatedAt?: string;
+  dataFreshness?: string;
+  financialsSource?: string;
+  countsSource?: string;
+  snapshotPolicy?: string;
 }
 
 export interface RiskMetricsSummary {

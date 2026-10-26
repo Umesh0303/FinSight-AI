@@ -1484,7 +1484,44 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return [];
   }, []);
 
-  const devSwitchRole = useCallback((role: UserRole) => {
+  const devSwitchRole = useCallback(async (role: UserRole) => {
+    const DEMO_CREDENTIALS: Record<UserRole, { email: string; pass: string }> = {
+      ADMIN: { email: 'admin@finsight.ai', pass: 'FinSight@Demo123' },
+      BUSINESS_ANALYST: { email: 'analyst@finsight.ai', pass: 'FinSight@Demo123' },
+      RISK_FRAUD_ANALYST: { email: 'risk@finsight.ai', pass: 'FinSight@Demo123' },
+      CUSTOMER: { email: 'customer@finsight.ai', pass: 'FinSight@Demo123' },
+      UNASSIGNED: { email: 'customer@finsight.ai', pass: 'FinSight@Demo123' }
+    };
+
+    const creds = DEMO_CREDENTIALS[role];
+    if (creds) {
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: creds.email, password: creds.pass })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.token && data.user) {
+            const profile = formatUserProfile(data.user);
+            localStorage.setItem('finsight_token', data.token);
+            setAuthToken(data.token);
+            setIsAuthenticated(true);
+            setCurrentUser(profile);
+            if (profile.role === 'ADMIN') {
+              refreshAdminUsers();
+            }
+            fetchAuthorizedTransactions(data.token, profile.role);
+            redirectByRole(role);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('[devSwitchRole] Server-side demo authentication switch notice:', err);
+      }
+    }
+
     setCurrentUser((prev) => ({
       ...prev,
       role,
@@ -1500,7 +1537,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           : 'Pending Role Assignment'
     }));
     redirectByRole(role);
-  }, [redirectByRole]);
+  }, [redirectByRole, fetchAuthorizedTransactions, refreshAdminUsers]);
 
   const activeNotificationCount = riskAlerts.filter((a) => a.status === 'New').length + 2;
 

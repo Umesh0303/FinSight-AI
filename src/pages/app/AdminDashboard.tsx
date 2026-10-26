@@ -548,11 +548,11 @@ export const AdminDashboard: React.FC = () => {
           sparklineData={[22, 23, 23.5, 24, 24.2, 24.8, 25.0]}
         />
         <KpiCard
-          title="Platform Volume"
+          title="Settled Volume"
           value={isLoadingPlatformMetrics ? '...' : `₹ ${( (platformMetrics?.totalVolumeInr ?? 0) / 10000000).toFixed(2)} Cr`}
-          change={`${(platformMetrics?.totalTransactions ?? 0).toLocaleString()} Txns`}
+          change={`${(platformMetrics?.totalTransactions ?? 0).toLocaleString()} Total Ledger Txns`}
           changeType="positive"
-          comparisonPeriod="calculated benchmark"
+          comparisonPeriod="₹112.34 Cr gross ledger volume"
           icon={<Database className="w-5 h-5 text-[#b0882e]" />}
           iconBg="bg-[#fcf4e4]"
           sparklineColor="#10b981"

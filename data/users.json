@@ -17,8 +17,8 @@
     "display_name": "Admin Dashboard",
     "auth_provider": "google",
     "created_at": "2026-10-10T00:00:00.000Z",
-    "last_login_at": "2026-10-23T09:13:06.392Z",
-    "updated_at": "2026-10-23T09:13:06.392Z"
+    "last_login_at": "2026-10-26T09:58:48.520Z",
+    "updated_at": "2026-10-26T09:58:48.520Z"
   },
   {
     "id": "user-1791629385904-7fc8b031",
@@ -1588,8 +1588,8 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-10-23T08:30:59.880Z",
-    "updated_at": "2026-10-23T08:30:59.880Z",
+    "last_login_at": "2026-10-26T11:31:25.193Z",
+    "updated_at": "2026-10-26T11:31:25.193Z",
     "customerId": "CUST-6352"
   },
   {
@@ -1609,8 +1609,8 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-10-22T10:58:07.221Z",
-    "updated_at": "2026-10-22T10:58:07.221Z"
+    "last_login_at": "2026-10-26T11:31:26.791Z",
+    "updated_at": "2026-10-26T11:31:26.791Z"
   },
   {
     "id": "demo-user-risk",
@@ -1629,8 +1629,8 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-10-23T08:20:54.340Z",
-    "updated_at": "2026-10-23T08:20:54.340Z"
+    "last_login_at": "2026-10-26T11:31:25.753Z",
+    "updated_at": "2026-10-26T11:31:25.753Z"
   },
   {
     "id": "demo-user-customer",
@@ -1649,9 +1649,9 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-10-23T09:20:59.742Z",
+    "last_login_at": "2026-10-26T11:31:27.550Z",
     "customerId": "CUST-1001",
-    "updated_at": "2026-10-23T09:20:59.742Z"
+    "updated_at": "2026-10-26T11:31:27.550Z"
   },
   {
     "id": "e809238a-4c89-470d-aa12-8621b6c59095",
@@ -15413,5 +15413,3615 @@
     "lastLogin": "Just now",
     "last_login_at": "2026-10-23T09:31:45.765Z",
     "customerId": "CUST-4958"
+  },
+  {
+    "id": "3ce4e151-72d3-4418-9cc4-15ab467c2ad0",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:01.503Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:01.643Z",
+    "customerId": "CUST-6216",
+    "updated_at": "2026-10-24T05:07:01.643Z"
+  },
+  {
+    "id": "487d7e77-a989-4292-b0a7-934a7f1d15b3",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:01.571Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:01.571Z",
+    "customerId": "CUST-9830"
+  },
+  {
+    "id": "3c1ee61f-22e6-4498-856e-ea81d121223f",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:01.579Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:01.579Z",
+    "customerId": "CUST-2674"
+  },
+  {
+    "id": "2ef33a24-0105-46a0-a824-5bcb31717372",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:01.646Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:01.646Z",
+    "customerId": "CUST-9732"
+  },
+  {
+    "id": "1b063f10-9714-47b0-b74e-7c571c00692a",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1792818422109@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.109Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.109Z",
+    "customerId": "CUST-7288"
+  },
+  {
+    "id": "072b598d-ff83-463f-a0f4-574f79044099",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.166Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.166Z",
+    "customerId": "CUST-8252"
+  },
+  {
+    "id": "c7053b6e-ac45-49a9-9f45-9be71d721879",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1792818422419@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.419Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.419Z",
+    "customerId": "CUST-6525"
+  },
+  {
+    "id": "985a406c-c2d4-476a-a6c3-9c07108cbb2d",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.480Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.480Z",
+    "customerId": "CUST-3293"
+  },
+  {
+    "id": "1671e80d-27c2-4475-8981-06aabff56d33",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1792818422538@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.538Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.538Z",
+    "customerId": "CUST-2045"
+  },
+  {
+    "id": "ca232651-14bc-45b9-baf8-ee292a0ef255",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1792818422588@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.588Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.588Z",
+    "customerId": "CUST-7955"
+  },
+  {
+    "id": "b990b26c-5fe4-4175-9324-055e251b785e",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.643Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.643Z",
+    "customerId": "CUST-7713"
+  },
+  {
+    "id": "94563571-61a7-4624-b498-ad110c6a25ae",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.695Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.695Z",
+    "customerId": "CUST-3454"
+  },
+  {
+    "id": "c1e63efe-e04d-489b-ad4f-549a9d965cac",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.743Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.743Z",
+    "customerId": "CUST-9403"
+  },
+  {
+    "id": "4b61ad8c-7b1a-48a2-8755-4e601f474d40",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.794Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.794Z",
+    "customerId": "CUST-9952"
+  },
+  {
+    "id": "2f1f2957-5929-40bf-b841-202dd54878f8",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.844Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.844Z",
+    "customerId": "CUST-2863"
+  },
+  {
+    "id": "aa099192-a387-4c05-a34c-6a6339a95c21",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.911Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.911Z",
+    "customerId": "CUST-2003"
+  },
+  {
+    "id": "69a5963a-d92f-4f77-bf3a-edb1807144f9",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:02.994Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:02.994Z",
+    "customerId": "CUST-7207"
+  },
+  {
+    "id": "f876fd43-2b43-4543-9929-c2d85798c84d",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-24",
+    "created_at": "2026-10-24T05:07:03.080Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-24T05:07:03.080Z",
+    "customerId": "CUST-9072"
+  },
+  {
+    "id": "1f55e54b-feac-4121-a5df-7de7558268c7",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:06.746Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:06.964Z",
+    "customerId": "CUST-9300",
+    "updated_at": "2026-10-25T13:25:06.964Z"
+  },
+  {
+    "id": "4713ae32-ed06-4230-ad2f-9b53114a1e01",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:06.829Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:06.829Z",
+    "customerId": "CUST-5095"
+  },
+  {
+    "id": "88554b75-8175-48d0-b16e-7084352b0410",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:06.846Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:06.846Z",
+    "customerId": "CUST-6918"
+  },
+  {
+    "id": "2c7bd1d7-3fbc-4919-b4b3-ebb2c0f266bd",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:06.973Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:06.973Z",
+    "customerId": "CUST-9725"
+  },
+  {
+    "id": "eed62d36-8e05-470d-86be-9f96994b3646",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1792934707752@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:07.752Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:07.752Z",
+    "customerId": "CUST-7975"
+  },
+  {
+    "id": "f8542465-3cf1-466e-9a7d-d548e603195b",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:07.845Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:07.845Z",
+    "customerId": "CUST-7530"
+  },
+  {
+    "id": "9abeb4af-0ea1-4f66-a55f-4911d5d9241d",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1792934708325@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.325Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.325Z",
+    "customerId": "CUST-8980"
+  },
+  {
+    "id": "43705a93-8875-481e-ab4e-1e0ed683a958",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.422Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.422Z",
+    "customerId": "CUST-6564"
+  },
+  {
+    "id": "1bc8db07-aa85-4df8-a336-322136e9b122",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1792934708539@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.539Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.539Z",
+    "customerId": "CUST-2858"
+  },
+  {
+    "id": "22b90d64-eb4f-47f4-95f0-eae226043d40",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1792934708628@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.628Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.628Z",
+    "customerId": "CUST-5908"
+  },
+  {
+    "id": "ab934004-9e72-4e1d-896e-78da48479672",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.722Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.722Z",
+    "customerId": "CUST-3401"
+  },
+  {
+    "id": "64b7a364-1000-4096-9cb7-63d3c2565663",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.813Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.813Z",
+    "customerId": "CUST-6705"
+  },
+  {
+    "id": "669989e1-f1d0-459a-afb7-137fd2410e9f",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.909Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.909Z",
+    "customerId": "CUST-3320"
+  },
+  {
+    "id": "e909cb97-4418-4893-ad7a-831268d1d389",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:08.989Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:08.989Z",
+    "customerId": "CUST-9744"
+  },
+  {
+    "id": "e0bc8a65-50e5-4089-b844-e40e1dcc304e",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:09.089Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:09.089Z",
+    "customerId": "CUST-7017"
+  },
+  {
+    "id": "99ce738e-b388-4ae1-9d28-8486bf436528",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:09.193Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:09.193Z",
+    "customerId": "CUST-4273"
+  },
+  {
+    "id": "752a1457-e8e2-46bb-81ac-ff9639d408e9",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:09.293Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:09.293Z",
+    "customerId": "CUST-8447"
+  },
+  {
+    "id": "81b1d99f-525f-4652-a840-b4e9b583adeb",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:25:09.368Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:25:09.368Z",
+    "customerId": "CUST-4845"
+  },
+  {
+    "id": "a913c694-744f-4da5-b4c2-3c10f69e5455",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:49.581Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:49.761Z",
+    "customerId": "CUST-3687",
+    "updated_at": "2026-10-25T13:35:49.761Z"
+  },
+  {
+    "id": "b7da55c4-f8ef-4226-b9fe-f42d0183f108",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:49.656Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:49.656Z",
+    "customerId": "CUST-4038"
+  },
+  {
+    "id": "3fea9b63-19b8-4141-81c2-fa777a77ca4d",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:49.667Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:49.667Z",
+    "customerId": "CUST-6249"
+  },
+  {
+    "id": "8d4e2420-7fdb-461d-abe5-50c000b12543",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:49.765Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:49.765Z",
+    "customerId": "CUST-1006"
+  },
+  {
+    "id": "042d2833-20b4-456a-b6af-8ac5c755bf2a",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1792935350398@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:50.398Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:50.398Z",
+    "customerId": "CUST-6039"
+  },
+  {
+    "id": "9a4ffd2d-5fc7-4262-a85f-fc912a1dd039",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:50.479Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:50.479Z",
+    "customerId": "CUST-7848"
+  },
+  {
+    "id": "f83aea69-3f36-4c75-8531-b069846cbc25",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1792935350875@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:50.875Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:50.875Z",
+    "customerId": "CUST-2611"
+  },
+  {
+    "id": "4db7733d-b0d0-4846-9da7-2314df2bda8e",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:50.969Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:50.969Z",
+    "customerId": "CUST-2190"
+  },
+  {
+    "id": "e06140db-a575-4736-a0e9-c6c03c8b3c44",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1792935351076@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.076Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.076Z",
+    "customerId": "CUST-6238"
+  },
+  {
+    "id": "08fcaba6-ca56-485b-afe4-ab9a36eb373c",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1792935351155@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.155Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.155Z",
+    "customerId": "CUST-3249"
+  },
+  {
+    "id": "1c561e58-1750-4097-a3c3-80426034b9df",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.249Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.249Z",
+    "customerId": "CUST-5412"
+  },
+  {
+    "id": "40c5e07b-3024-4bd3-ba12-fb0b5e36cb33",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.325Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.325Z",
+    "customerId": "CUST-3801"
+  },
+  {
+    "id": "970c9b46-e427-4a9d-afc5-bb6be68cb5b7",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.391Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.391Z",
+    "customerId": "CUST-5556"
+  },
+  {
+    "id": "132d8576-b944-46e5-bf5d-5ce6fbe0883e",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.466Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.466Z",
+    "customerId": "CUST-3989"
+  },
+  {
+    "id": "b4877948-dff9-46ac-83d4-de7b2f5c9b3d",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.540Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.540Z",
+    "customerId": "CUST-2880"
+  },
+  {
+    "id": "d936334a-1c2e-4a29-89b8-e9f139d45406",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.616Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.616Z",
+    "customerId": "CUST-5634"
+  },
+  {
+    "id": "7b897fbd-1168-447d-80af-a5848641e9d1",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.706Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.706Z",
+    "customerId": "CUST-8151"
+  },
+  {
+    "id": "fd77dc9e-f2f5-4600-b78f-61ebccb2399d",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:35:51.771Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:35:51.771Z",
+    "customerId": "CUST-3541"
+  },
+  {
+    "id": "5122a9b3-3ac9-4cff-b3d7-3b1b10070fd7",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:57.118Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:57.336Z",
+    "customerId": "CUST-7678",
+    "updated_at": "2026-10-25T13:40:57.336Z"
+  },
+  {
+    "id": "1a419c9a-3081-43c6-afa9-a1952b7f4a0c",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:57.200Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:57.200Z",
+    "customerId": "CUST-3671"
+  },
+  {
+    "id": "1a2b2646-6b7a-41f6-83ba-95669353e09a",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:57.230Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:57.230Z",
+    "customerId": "CUST-3380"
+  },
+  {
+    "id": "e105d03d-73e3-4314-b4a9-ed87a66d026c",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:57.341Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:57.341Z",
+    "customerId": "CUST-2725"
+  },
+  {
+    "id": "ad82a655-c1ed-4259-a73c-cb08ea881b55",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1792935658171@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:58.171Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:58.171Z",
+    "customerId": "CUST-8005"
+  },
+  {
+    "id": "f3246a92-755d-4f7c-a292-e82ab58ffc4f",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:58.263Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:58.263Z",
+    "customerId": "CUST-5986"
+  },
+  {
+    "id": "a7e326f4-4d02-4015-b04d-c75ff6a1d635",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1792935658650@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:58.650Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:58.650Z",
+    "customerId": "CUST-7989"
+  },
+  {
+    "id": "515e9067-8eed-48aa-8f0a-90ab88f9049d",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:58.746Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:58.746Z",
+    "customerId": "CUST-6946"
+  },
+  {
+    "id": "d23d96e5-84bd-4659-bde7-225070f99a55",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1792935658843@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:58.843Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:58.843Z",
+    "customerId": "CUST-7640"
+  },
+  {
+    "id": "199a55b8-01f9-4251-b3ed-dff999293e87",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1792935658926@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:58.926Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:58.926Z",
+    "customerId": "CUST-6671"
+  },
+  {
+    "id": "675c92fe-a938-4018-bb3c-b79fc72c2d1d",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.020Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.020Z",
+    "customerId": "CUST-7946"
+  },
+  {
+    "id": "117703ea-db0a-494a-941c-645f3aace187",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.101Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.101Z",
+    "customerId": "CUST-9685"
+  },
+  {
+    "id": "3429bcdd-48e6-4eb6-a1cb-4dae45dec82f",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.197Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.197Z",
+    "customerId": "CUST-3068"
+  },
+  {
+    "id": "fddfcd17-4bc2-44e7-847d-60328eda59fd",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.295Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.295Z",
+    "customerId": "CUST-7891"
+  },
+  {
+    "id": "4b79fc10-9f1a-4fa9-8b5c-20d60758b7b4",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.382Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.382Z",
+    "customerId": "CUST-4925"
+  },
+  {
+    "id": "d514352c-0ec0-4709-a7df-3f749fb55f11",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.487Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.487Z",
+    "customerId": "CUST-3359"
+  },
+  {
+    "id": "c09c137d-07ee-4dc2-87c9-6a7cef63f423",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.606Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.606Z",
+    "customerId": "CUST-6749"
+  },
+  {
+    "id": "cf3c42a2-6881-412c-9376-5142a181591f",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T13:40:59.696Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T13:40:59.696Z",
+    "customerId": "CUST-2741"
+  },
+  {
+    "id": "e5052e1f-41ea-44ad-86ea-d5b797a2c498",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:47.690Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:47.859Z",
+    "customerId": "CUST-8394",
+    "updated_at": "2026-10-25T14:13:47.859Z"
+  },
+  {
+    "id": "254122c1-02ae-4a1c-9a80-fa5a250ae3ba",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:47.763Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:47.763Z",
+    "customerId": "CUST-5360"
+  },
+  {
+    "id": "b7bccf7a-63ae-4d1a-8c95-0b76ca5ffcff",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:47.771Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:47.771Z",
+    "customerId": "CUST-4200"
+  },
+  {
+    "id": "a7a3df2e-a6fe-4177-b937-c5db4b16c0dc",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:47.864Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:47.864Z",
+    "customerId": "CUST-3723"
+  },
+  {
+    "id": "32f57f29-3984-4971-b090-37560c87d402",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1792937628505@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:48.505Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:48.505Z",
+    "customerId": "CUST-2842"
+  },
+  {
+    "id": "7c286da8-fb15-4f77-8bd5-5d2e97a9b8e0",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:48.589Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:48.589Z",
+    "customerId": "CUST-9096"
+  },
+  {
+    "id": "b5ce21ae-4cb8-4fe3-83bc-9435f0fa8342",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1792937628948@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:48.948Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:48.948Z",
+    "customerId": "CUST-9430"
+  },
+  {
+    "id": "19d07bc5-6f9e-433c-aacf-3c14dce31b45",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.012Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.012Z",
+    "customerId": "CUST-3698"
+  },
+  {
+    "id": "f5e5efbe-e72b-4d00-8fd7-cd3c42f8f7ce",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1792937629087@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.087Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.087Z",
+    "customerId": "CUST-4988"
+  },
+  {
+    "id": "2bda419a-7154-4516-9b40-92c647b7ab65",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1792937629171@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.171Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.171Z",
+    "customerId": "CUST-9340"
+  },
+  {
+    "id": "18505cde-fec2-4ea9-94df-190dec2fa6c9",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.255Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.255Z",
+    "customerId": "CUST-8993"
+  },
+  {
+    "id": "726b51c2-3625-49d1-9fb8-1473bad13776",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.330Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.330Z",
+    "customerId": "CUST-6883"
+  },
+  {
+    "id": "b0eea12c-3096-4871-806f-87bc1dbb3c3c",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.412Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.412Z",
+    "customerId": "CUST-1917"
+  },
+  {
+    "id": "527fd368-1d33-488c-8de3-f9352ca5fea6",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.488Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.488Z",
+    "customerId": "CUST-8822"
+  },
+  {
+    "id": "34410595-ab86-42e8-a284-fb8c100a3a81",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.571Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.571Z",
+    "customerId": "CUST-7274"
+  },
+  {
+    "id": "cf751e2e-c92d-44ff-a7b1-928e6c37e6b7",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.659Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.659Z",
+    "customerId": "CUST-5090"
+  },
+  {
+    "id": "fe99f47d-781f-4097-a552-1fbbf541fc27",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.758Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.758Z",
+    "customerId": "CUST-1162"
+  },
+  {
+    "id": "b1c2e485-20b7-4cac-8896-a98406a95e1c",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-25",
+    "created_at": "2026-10-25T14:13:49.831Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-25T14:13:49.831Z",
+    "customerId": "CUST-1205"
+  },
+  {
+    "id": "acfd4d2f-d597-4c29-97ac-48e6ceca5915",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:03.931Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:04.146Z",
+    "customerId": "CUST-6697",
+    "updated_at": "2026-10-26T08:16:04.146Z"
+  },
+  {
+    "id": "50474afd-c9d7-49a1-adf0-c385aab2bfaf",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:04.009Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:04.009Z",
+    "customerId": "CUST-9630"
+  },
+  {
+    "id": "65b05716-bfe8-4422-8197-9c5e61edd16c",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:04.026Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:04.026Z",
+    "customerId": "CUST-4583"
+  },
+  {
+    "id": "bd9fa341-c7e0-408f-99be-7f0abf8fb42b",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:04.150Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:04.150Z",
+    "customerId": "CUST-1344"
+  },
+  {
+    "id": "8baf5702-287d-4388-bac9-01321b577efb",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1793002564837@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:04.837Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:04.837Z",
+    "customerId": "CUST-5975"
+  },
+  {
+    "id": "6e605c3c-4073-4829-98ac-d3f73e270989",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:04.908Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:04.908Z",
+    "customerId": "CUST-2406"
+  },
+  {
+    "id": "1aeca573-aa73-436d-9a5d-7552ae551c94",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1793002565299@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.300Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.300Z",
+    "customerId": "CUST-3249"
+  },
+  {
+    "id": "26276d11-66b3-4bb1-b6ca-8d3337ecc54c",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.378Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.378Z",
+    "customerId": "CUST-7659"
+  },
+  {
+    "id": "5a206aef-ce8f-41c9-8fe1-d5ebc1bc6e14",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1793002565477@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.477Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.477Z",
+    "customerId": "CUST-6592"
+  },
+  {
+    "id": "a4894f78-9395-4cf3-9747-93ccc5ad621e",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1793002565556@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.556Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.556Z",
+    "customerId": "CUST-7892"
+  },
+  {
+    "id": "dedfe4ce-0bf5-4031-9df3-1546ac4a6bb3",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.641Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.641Z",
+    "customerId": "CUST-9498"
+  },
+  {
+    "id": "5759412a-034d-458f-b396-684cf19f0e33",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.713Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.713Z",
+    "customerId": "CUST-3874"
+  },
+  {
+    "id": "dbe5cd4a-a68c-4212-96a1-627724fd7059",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.790Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.790Z",
+    "customerId": "CUST-4470"
+  },
+  {
+    "id": "0ed022c5-b1a6-46e6-8ef8-a70a4621236a",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.867Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.867Z",
+    "customerId": "CUST-2531"
+  },
+  {
+    "id": "4628b9cf-dae5-444f-aeb8-3c6c9edbea6d",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:05.941Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:05.941Z",
+    "customerId": "CUST-3751"
+  },
+  {
+    "id": "e7b070f5-18c1-4e23-8d43-1e9e04f32a4f",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:06.026Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:06.026Z",
+    "customerId": "CUST-4772"
+  },
+  {
+    "id": "c4a280b9-d64d-43be-a2e5-bdf32841282e",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:06.148Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:06.148Z",
+    "customerId": "CUST-7257"
+  },
+  {
+    "id": "37010a9f-6967-49c3-b706-d792e9c0888d",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:16:06.222Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:16:06.222Z",
+    "customerId": "CUST-8620"
+  },
+  {
+    "id": "4298768a-66ae-4792-b7d8-2641881be174",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:29.655Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:29.854Z",
+    "customerId": "CUST-7029",
+    "updated_at": "2026-10-26T08:22:29.854Z"
+  },
+  {
+    "id": "5697a6f7-f56f-4ed9-aebe-e2750f6cbc26",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:29.743Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:29.743Z",
+    "customerId": "CUST-2903"
+  },
+  {
+    "id": "117faf94-b721-4861-9eed-c23d28082fc0",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:29.752Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:29.752Z",
+    "customerId": "CUST-2916"
+  },
+  {
+    "id": "220de864-154d-4391-aa8a-2e4809118b1e",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:29.859Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:29.859Z",
+    "customerId": "CUST-9471"
+  },
+  {
+    "id": "6c87221f-169d-4134-8d29-a744ee283b1d",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1793002950624@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:30.624Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:30.624Z",
+    "customerId": "CUST-2820"
+  },
+  {
+    "id": "b8d22d42-5d9d-48a6-b196-eddf19ab4dbf",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:30.719Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:30.719Z",
+    "customerId": "CUST-6858"
+  },
+  {
+    "id": "e827b0f6-25c5-4b49-b8b4-679805145e42",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1793002951106@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.106Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.106Z",
+    "customerId": "CUST-1762"
+  },
+  {
+    "id": "02e01a26-01d1-486b-895b-4d7a7ce5010f",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.193Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.193Z",
+    "customerId": "CUST-5065"
+  },
+  {
+    "id": "b8f84951-ad82-4e0b-b05d-9bb7166b6453",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1793002951285@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.285Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.285Z",
+    "customerId": "CUST-3119"
+  },
+  {
+    "id": "81aeee7f-e146-4cfd-92a4-950763149c68",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1793002951365@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.365Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.365Z",
+    "customerId": "CUST-1620"
+  },
+  {
+    "id": "0325d209-c1b8-43c1-a0a2-52c66006fbb7",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.470Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.470Z",
+    "customerId": "CUST-2590"
+  },
+  {
+    "id": "e31b0aff-528c-441b-8a10-bd126fc6b46c",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.556Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.556Z",
+    "customerId": "CUST-3466"
+  },
+  {
+    "id": "2e1a8f60-1b43-4c6f-b38d-fbc0c9530a73",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.649Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.649Z",
+    "customerId": "CUST-2265"
+  },
+  {
+    "id": "5b6fc3d6-5026-455d-93ba-7cb6e7e4bf74",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.744Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.744Z",
+    "customerId": "CUST-5287"
+  },
+  {
+    "id": "9ee437d1-3ad8-400e-91e5-a440f71cab27",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.836Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.836Z",
+    "customerId": "CUST-4665"
+  },
+  {
+    "id": "46534a5a-d12e-40d0-a324-6505e03ae425",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:31.930Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:31.930Z",
+    "customerId": "CUST-5386"
+  },
+  {
+    "id": "d73ced8a-7320-4268-acf2-ae16429bc341",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:32.069Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:32.069Z",
+    "customerId": "CUST-5975"
+  },
+  {
+    "id": "a6edd4d7-21ca-4f45-86ff-86fcd58a47e2",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T08:22:32.166Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T08:22:32.166Z",
+    "customerId": "CUST-4663"
+  },
+  {
+    "id": "0adcbe83-6fd3-4fc2-b9ea-4f72f311ed7a",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:55.994Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:56.182Z",
+    "customerId": "CUST-6525",
+    "updated_at": "2026-10-26T09:01:56.182Z"
+  },
+  {
+    "id": "87001b07-e0a7-47db-bd16-57bfb9a81116",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:56.074Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:56.074Z",
+    "customerId": "CUST-7465"
+  },
+  {
+    "id": "ab3a1c75-9351-4569-8334-6bd8cb9799e6",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:56.085Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:56.085Z",
+    "customerId": "CUST-4569"
+  },
+  {
+    "id": "bf2cddd5-e5bd-4eb4-a772-7ca14bf6b6a5",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:56.188Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:56.188Z",
+    "customerId": "CUST-5599"
+  },
+  {
+    "id": "53e04f8d-ac4b-4ee2-9fae-b2b09d99bb7d",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1793005316865@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:56.865Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:56.865Z",
+    "customerId": "CUST-6694"
+  },
+  {
+    "id": "71fa4bf9-9ed7-4a1f-862d-2b682a4f26ed",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:56.950Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:56.950Z",
+    "customerId": "CUST-1732"
+  },
+  {
+    "id": "e575927a-6f80-48de-9133-f53671e55a08",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1793005317334@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.334Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.334Z",
+    "customerId": "CUST-9739"
+  },
+  {
+    "id": "66e69505-ab2a-46ff-8380-a7a70d5a28e5",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.428Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.428Z",
+    "customerId": "CUST-3613"
+  },
+  {
+    "id": "6c724f75-ff8f-4a0e-a376-3d1865b6a08c",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1793005317514@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.514Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.514Z",
+    "customerId": "CUST-2438"
+  },
+  {
+    "id": "05f55c3b-7236-4db7-b9fc-9c77697197d6",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1793005317589@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.589Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.589Z",
+    "customerId": "CUST-1772"
+  },
+  {
+    "id": "6c297fc4-d84f-4818-a0ef-b6d48b5a897c",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.725Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.725Z",
+    "customerId": "CUST-3008"
+  },
+  {
+    "id": "08d3791c-a820-4ad1-8655-9b0582f01b0a",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.808Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.808Z",
+    "customerId": "CUST-8362"
+  },
+  {
+    "id": "ae8da727-f5e0-4d6b-8100-3bf28c32502f",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.877Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.877Z",
+    "customerId": "CUST-2638"
+  },
+  {
+    "id": "5f406e7b-8244-4fde-9893-c41d159b6998",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:57.947Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:57.947Z",
+    "customerId": "CUST-2244"
+  },
+  {
+    "id": "e63a29b5-c674-44ab-a139-1ba4e32744e5",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:58.021Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:58.021Z",
+    "customerId": "CUST-4037"
+  },
+  {
+    "id": "94a691b1-3f45-42b4-9d95-a411fc05ee4c",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:58.105Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:58.105Z",
+    "customerId": "CUST-7655"
+  },
+  {
+    "id": "c6292aa0-28b9-4764-ba37-bb2055e79500",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:58.209Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:58.209Z",
+    "customerId": "CUST-7744"
+  },
+  {
+    "id": "986b5203-b79e-40e7-85a4-c688023e9bc3",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:01:58.284Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:01:58.284Z",
+    "customerId": "CUST-2560"
+  },
+  {
+    "id": "fbf4d7a2-ee3d-4c80-ac16-ea7df0b54f59",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:52.763Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:52.927Z",
+    "customerId": "CUST-1993",
+    "updated_at": "2026-10-26T09:44:52.927Z"
+  },
+  {
+    "id": "5f5ed786-44d7-48be-897d-7ed38651571d",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:52.837Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:52.837Z",
+    "customerId": "CUST-4299"
+  },
+  {
+    "id": "4b2c3d58-df53-42e8-93c2-3c62d8f69e0d",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:52.846Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:52.846Z",
+    "customerId": "CUST-4339"
+  },
+  {
+    "id": "ada772be-db4b-4af2-9f1f-ce7e9bcb44e1",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:52.933Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:52.933Z",
+    "customerId": "CUST-7371"
+  },
+  {
+    "id": "c3acaa7f-63e0-4991-8930-89385b8e832f",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1793007893577@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:53.577Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:53.577Z",
+    "customerId": "CUST-7096"
+  },
+  {
+    "id": "12a015df-2d1e-48cb-9194-0ae7e5c938bd",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:53.656Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:53.656Z",
+    "customerId": "CUST-6210"
+  },
+  {
+    "id": "4f6d08ab-11ef-4a6d-bbc3-9116c9ee1e27",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1793007893951@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:53.951Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:53.951Z",
+    "customerId": "CUST-3045"
+  },
+  {
+    "id": "35beef7f-ce12-4e1b-85ca-acb9ff54ab98",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.018Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.018Z",
+    "customerId": "CUST-4236"
+  },
+  {
+    "id": "18abcf33-4e28-4cc5-84e1-e0a3e82bd5fc",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1793007894106@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.106Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.106Z",
+    "customerId": "CUST-4186"
+  },
+  {
+    "id": "cde62b1d-85ac-4463-b0c5-fe81d89d864c",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1793007894175@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.175Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.175Z",
+    "customerId": "CUST-2016"
+  },
+  {
+    "id": "0eef5208-fb03-4eeb-9f7d-6b4f97572ea8",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.253Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.253Z",
+    "customerId": "CUST-3077"
+  },
+  {
+    "id": "607dadf4-fecd-4903-a95f-39cba152d301",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.319Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.319Z",
+    "customerId": "CUST-9836"
+  },
+  {
+    "id": "64953865-31ed-49a2-8866-dff07c26851a",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.395Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.395Z",
+    "customerId": "CUST-1085"
+  },
+  {
+    "id": "c2d6b3ac-8d07-4cb2-bef4-fee08dc6d3cb",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.463Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.463Z",
+    "customerId": "CUST-6726"
+  },
+  {
+    "id": "2dafb21a-923f-4046-97f8-a51ba9c1cf83",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.538Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.538Z",
+    "customerId": "CUST-7969"
+  },
+  {
+    "id": "b91c17b9-1e8a-4be9-8d2b-af60d14dfde2",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.617Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.617Z",
+    "customerId": "CUST-7778"
+  },
+  {
+    "id": "d08b5000-1fb6-465b-b0e2-cf26befd718b",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.710Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.710Z",
+    "customerId": "CUST-3749"
+  },
+  {
+    "id": "0e0dd59d-92e2-48be-9c51-f589b4e485fc",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T09:44:54.789Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T09:44:54.789Z",
+    "customerId": "CUST-4586"
+  },
+  {
+    "id": "0da3521f-a47c-41e2-ac34-f4ee9298476e",
+    "name": "Analyst Prospect",
+    "display_name": "Analyst Prospect",
+    "email": "prospect.analyst@example.com",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "A",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:12.023Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:12.238Z",
+    "customerId": "CUST-9043",
+    "updated_at": "2026-10-26T11:04:12.238Z"
+  },
+  {
+    "id": "ce92da2d-976f-4276-9206-5a4ef5a3fb7f",
+    "name": "Google Signer",
+    "display_name": "Google Signer",
+    "email": "google.prospect@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "google"
+    ],
+    "auth_provider": "google",
+    "emailVerified": true,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:12.114Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:12.114Z",
+    "customerId": "CUST-9209"
+  },
+  {
+    "id": "d2daec44-da65-4040-b04a-f0db698cf903",
+    "name": "Wealth Client",
+    "display_name": "Wealth Client",
+    "email": "client@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "W",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:12.124Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:12.124Z",
+    "customerId": "CUST-6969"
+  },
+  {
+    "id": "05a3c49a-9c03-4457-8c3e-b22065b171f7",
+    "name": "Pending Applicant",
+    "display_name": "Pending Applicant",
+    "email": "applicant.pending@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:12.244Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:12.244Z",
+    "customerId": "CUST-4529"
+  },
+  {
+    "id": "7f3e0dc5-99e5-48a0-8900-585062c951e6",
+    "name": "First Registrant",
+    "display_name": "First Registrant",
+    "email": "test.unique.1793012652943@financial.org",
+    "role": "business_analyst",
+    "roleTitle": "Senior Financial Analyst",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:12.943Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:12.943Z",
+    "customerId": "CUST-2442"
+  },
+  {
+    "id": "13d5ae7f-1cfe-4c50-bd70-3d5a3830d958",
+    "name": "Private Client",
+    "display_name": "Private Client",
+    "email": "client.vip@financial.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.021Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.021Z",
+    "customerId": "CUST-1374"
+  },
+  {
+    "id": "854613ee-b587-4c51-8d13-1bf562aa6524",
+    "name": "New Institutional User",
+    "display_name": "New Institutional User",
+    "email": "new.user.1793012653374@institutional.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "N",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.374Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.374Z",
+    "customerId": "CUST-3872"
+  },
+  {
+    "id": "5f37ba92-d3d0-43e2-97df-e7051380a795",
+    "name": "Suspended Candidate",
+    "display_name": "Suspended Candidate",
+    "email": "suspended.test@finsight.ai",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.449Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.449Z",
+    "customerId": "CUST-9589"
+  },
+  {
+    "id": "1878abad-a819-4899-ad34-8c74ae2b3599",
+    "name": "Self Registering User",
+    "display_name": "Self Registering User",
+    "email": "selfreg.1793012653546@financial.org",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.546Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.546Z",
+    "customerId": "CUST-9216"
+  },
+  {
+    "id": "20796637-a682-45e7-a721-b62a5d101c51",
+    "name": "Sneaky Attacker",
+    "display_name": "Sneaky Attacker",
+    "email": "sneaky.1793012653617@attacker.org",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.617Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.617Z",
+    "customerId": "CUST-5512"
+  },
+  {
+    "id": "c4de54b5-afe2-40ad-93de-8e729c68033b",
+    "name": "Standard Customer",
+    "display_name": "Standard Customer",
+    "email": "client.norole@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "S",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.707Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.707Z",
+    "customerId": "CUST-7274"
+  },
+  {
+    "id": "e1c5cfca-483b-4e65-bd30-7b255c27b21c",
+    "name": "Privilege Attacker 1",
+    "display_name": "Privilege Attacker 1",
+    "email": "attacker.admin@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.808Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.808Z",
+    "customerId": "CUST-8938"
+  },
+  {
+    "id": "9af67eee-275e-47c7-b47a-c8c14b3afe00",
+    "name": "Privilege Attacker 2",
+    "display_name": "Privilege Attacker 2",
+    "email": "attacker.analyst@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.887Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.887Z",
+    "customerId": "CUST-2416"
+  },
+  {
+    "id": "123a7082-e352-46ef-9f6b-018990bc9c9c",
+    "name": "Privilege Attacker 3",
+    "display_name": "Privilege Attacker 3",
+    "email": "attacker.risk@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "P",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:13.958Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:13.958Z",
+    "customerId": "CUST-4217"
+  },
+  {
+    "id": "e80c1f0f-02a3-4f53-984e-236c995a624f",
+    "name": "Target For Role Change",
+    "display_name": "Target For Role Change",
+    "email": "target.change@example.com",
+    "role": "risk_analyst",
+    "roleTitle": "Risk & Fraud Specialist",
+    "avatarInitials": "T",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:14.031Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:14.031Z",
+    "customerId": "CUST-2096"
+  },
+  {
+    "id": "1a557ee9-376e-4abb-810e-566e77229d2b",
+    "name": "Governance Test User",
+    "display_name": "Governance Test User",
+    "email": "governance.test@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "G",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:14.137Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:14.137Z",
+    "customerId": "CUST-8997"
+  },
+  {
+    "id": "848b9622-2885-4354-a166-52a3783b88b8",
+    "name": "Malicious Attacker",
+    "display_name": "Malicious Attacker",
+    "email": "attacker@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "M",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:14.244Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:14.244Z",
+    "customerId": "CUST-6682"
+  },
+  {
+    "id": "a48d7d80-903c-40f6-8966-8f1c088dafd2",
+    "name": "New Integration Customer",
+    "display_name": "New Integration Customer",
+    "email": "integration.customer@finsight.ai",
+    "role": "unassigned",
+    "roleTitle": "Pending Role Assignment",
+    "avatarInitials": "N",
+    "accountStatus": "SUSPENDED",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-10-26",
+    "created_at": "2026-10-26T11:04:14.314Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-10-26T11:04:14.314Z",
+    "customerId": "CUST-3327"
   }
 ]

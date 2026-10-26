@@ -13,10 +13,14 @@ import {
   Mic,
   MicOff,
   User,
-  HelpCircle
+  HelpCircle,
+  BookOpen,
+  FileText
 } from 'lucide-react';
+
 import { AppLayout } from '../../components/layout/AppLayout';
 import { Button } from '../../components/ui/Button';
+import { useApp } from '../../context/AppContext';
 import { useFinAi } from '../../context/FinAiContext';
 import { MicrophoneAudioRecorder } from '../../utils/audioRecorder';
 
@@ -42,6 +46,8 @@ export const AssistantPage: React.FC = () => {
     stopVoicePlayback,
     transcribeAudio
   } = useFinAi();
+
+  const { currentUser, devSwitchRole } = useApp();
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [input, setInput] = useState('');
@@ -187,7 +193,7 @@ export const AssistantPage: React.FC = () => {
                 </span>
               </div>
               <p className="text-[11px] text-slate-500">
-                Grounding: Real-time Platform Telemetry · Active Persona: <span className="font-semibold text-slate-700">{selectedPersona}</span>
+                Grounding: Supabase pgvector RAG · Session Clearance: <span className="font-semibold text-slate-700">{currentUser?.roleTitle || selectedPersona} ({currentUser?.role || 'CUSTOMER'})</span>
               </p>
             </div>
           </div>
@@ -277,14 +283,20 @@ export const AssistantPage: React.FC = () => {
               <Sliders className="w-3.5 h-3.5 text-[#b0882e]" />
               <select
                 value={selectedPersona}
-                onChange={(e) => setSelectedPersona(e.target.value)}
+                onChange={async (e) => {
+                  const newRole = e.target.value;
+                  setSelectedPersona(newRole);
+                  if (devSwitchRole && newRole !== currentUser?.role) {
+                    await devSwitchRole(newRole as any);
+                  }
+                }}
                 className="bg-transparent text-xs font-medium text-slate-700 focus:outline-none cursor-pointer"
-                title="Select Assistant Persona"
+                title="Select Assistant Persona & Demo Session"
               >
-                <option value="BUSINESS_ANALYST">Analyst Persona</option>
-                <option value="CUSTOMER">Private Wealth Advisor</option>
-                <option value="RISK_FRAUD_ANALYST">Fraud Investigator</option>
-                <option value="ADMIN">Platform Administrator</option>
+                <option value="BUSINESS_ANALYST">Analyst Persona (analyst@finsight.ai)</option>
+                <option value="CUSTOMER">Private Wealth Advisor (customer@finsight.ai)</option>
+                <option value="RISK_FRAUD_ANALYST">Fraud Investigator (risk@finsight.ai)</option>
+                <option value="ADMIN">Platform Administrator (admin@finsight.ai)</option>
               </select>
             </div>
 
@@ -342,7 +354,44 @@ export const AssistantPage: React.FC = () => {
               >
                 <div className="whitespace-pre-wrap">{m.content}</div>
 
+                {/* Real RAG Source Citations */}
+                {m.role === 'assistant' && m.citations && m.citations.length > 0 && (
+                  <div className="mt-3 pt-2.5 border-t border-[#ece7dc] space-y-2">
+                    <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#0d5941]">
+                      <BookOpen className="w-3.5 h-3.5 text-[#0d5941]" />
+                      <span>Verified Institutional Policy Sources ({m.citations.length})</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {m.citations.map((c, cIdx) => (
+                        <div
+                          key={cIdx}
+                          className="bg-white border border-[#ded8cb] rounded-xl p-2.5 shadow-2xs hover:border-[#0d5941]/40 transition-colors"
+                        >
+                          <div className="flex items-center justify-between text-slate-800 font-medium text-[11px]">
+                            <span className="truncate max-w-[200px]" title={c.title}>
+                              {c.title}
+                            </span>
+                            <span className="text-[10px] text-[#0d5941] font-mono font-semibold ml-1 shrink-0 bg-[#ebf7f1] px-1.5 py-0.5 rounded">
+                              {c.pageNumber ? `Page ${c.pageNumber}` : `v${c.version}`}
+                            </span>
+                          </div>
+                          {c.snippet && (
+                            <p className="text-[10px] text-slate-600 line-clamp-3 mt-1.5 italic bg-[#faf7f0] p-1.5 rounded border border-[#ece7dc]">
+                              "{c.snippet}"
+                            </p>
+                          )}
+                          <div className="mt-1 flex items-center justify-between text-[9px] text-slate-400">
+                            <span>Relevance: {Math.round(c.similarity * 100)}%</span>
+                            <span className="font-mono">v{c.version}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {m.role === 'assistant' && (
+
                   <div className="mt-3 pt-2 border-t border-[#ece7dc] flex items-center justify-between text-[11px] text-slate-400">
                     <span className="font-mono text-[10px]">
                       Model: {m.modelUsed || selectedModel}

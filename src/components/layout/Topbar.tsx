@@ -249,54 +249,54 @@ export const Topbar: React.FC<TopbarProps> = ({
                         Switch accounts instantly to verify acceptance criteria:
                       </p>
                       <button
-                        onClick={() => {
-                          devSwitchRole?.('ADMIN');
+                        onClick={async () => {
+                          await devSwitchRole?.('ADMIN');
                           setProfileMenuOpen(false);
                         }}
-                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
+                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between cursor-pointer"
                       >
-                        <span>Admin Persona</span>
-                        <span className="text-slate-400 font-mono">admin</span>
+                        <span>Platform Administrator</span>
+                        <span className="text-slate-400 font-mono text-[10px]">admin@finsight.ai</span>
                       </button>
                       <button
-                        onClick={() => {
-                          devSwitchRole?.('BUSINESS_ANALYST');
+                        onClick={async () => {
+                          await devSwitchRole?.('BUSINESS_ANALYST');
                           setProfileMenuOpen(false);
                         }}
-                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
+                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between cursor-pointer"
                       >
                         <span>Business Analyst</span>
-                        <span className="text-slate-400 font-mono">analyst</span>
+                        <span className="text-slate-400 font-mono text-[10px]">analyst@finsight.ai</span>
                       </button>
                       <button
-                        onClick={() => {
-                          devSwitchRole?.('CUSTOMER');
+                        onClick={async () => {
+                          await devSwitchRole?.('CUSTOMER');
                           setProfileMenuOpen(false);
                         }}
-                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
+                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between cursor-pointer"
                       >
                         <span>Personal Customer</span>
-                        <span className="text-slate-400 font-mono">customer</span>
+                        <span className="text-slate-400 font-mono text-[10px]">customer@finsight.ai</span>
                       </button>
                       <button
-                        onClick={() => {
-                          devSwitchRole?.('RISK_FRAUD_ANALYST');
+                        onClick={async () => {
+                          await devSwitchRole?.('RISK_FRAUD_ANALYST');
                           setProfileMenuOpen(false);
                         }}
-                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between"
+                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-slate-700 flex justify-between cursor-pointer"
                       >
                         <span>Risk & Fraud Analyst</span>
-                        <span className="text-slate-400 font-mono">risk</span>
+                        <span className="text-[#0d5941] font-mono text-[10px] font-semibold">risk@finsight.ai</span>
                       </button>
                       <button
-                        onClick={() => {
-                          devSwitchRole?.('UNASSIGNED');
+                        onClick={async () => {
+                          await devSwitchRole?.('UNASSIGNED');
                           setProfileMenuOpen(false);
                         }}
-                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-amber-700 flex justify-between"
+                        className="w-full text-left px-2 py-1.5 rounded-lg hover:bg-white text-[11px] font-medium text-amber-700 flex justify-between cursor-pointer"
                       >
                         <span>Pending Role User</span>
-                        <span className="text-slate-400 font-mono">unassigned</span>
+                        <span className="text-slate-400 font-mono text-[10px]">unassigned</span>
                       </button>
                     </div>
                   )}
