@@ -284,7 +284,11 @@ $$;
 
 COMMENT ON FUNCTION public.match_rag_chunks IS 'Secure cosine vector similarity search across indexed document chunks with role-based access filtering.';
 
--- Grant execute to authenticated and service_role
-GRANT EXECUTE ON FUNCTION public.match_rag_chunks TO authenticated, service_role;
+-- Least-privilege RPC execution: Deny direct execution over PostgREST from untrusted clients
+REVOKE EXECUTE ON FUNCTION public.match_rag_chunks FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.match_rag_chunks FROM PUBLIC, anon, authenticated;
+
+-- Grant execute exclusively to service_role (server-side administrative caller)
+GRANT EXECUTE ON FUNCTION public.match_rag_chunks TO service_role;
 
 COMMIT;

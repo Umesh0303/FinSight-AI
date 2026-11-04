@@ -4,7 +4,7 @@
  * and client-side queries with pagination, filtering, and customer scoping.
  */
 
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, fetchWithAuth } from '../lib/supabase';
 import {
   DbCustomer,
   DbAccount,
@@ -42,7 +42,7 @@ export const databaseService = {
    * Fetch aggregated platform-wide KPIs
    */
   async getPlatformMetrics(): Promise<PlatformMetricsSummary> {
-    const res = await fetch('/api/data/platform-metrics', {
+    const res = await fetchWithAuth('/api/data/platform-metrics', {
       headers: getAuthHeader()
     });
     if (res.ok) {
@@ -74,7 +74,7 @@ export const databaseService = {
     if (params.isFlagged !== undefined) query.set('isFlagged', String(params.isFlagged));
 
     try {
-      const res = await fetch(`/api/data/transactions?${query.toString()}`, {
+      const res = await fetchWithAuth(`/api/data/transactions?${query.toString()}`, {
         headers: getAuthHeader()
       });
       if (res.ok) {
@@ -113,7 +113,7 @@ export const databaseService = {
     if (params.city && params.city !== 'ALL') query.set('city', params.city);
 
     try {
-      const res = await fetch(`/api/data/customers?${query.toString()}`, {
+      const res = await fetchWithAuth(`/api/data/customers?${query.toString()}`, {
         headers: getAuthHeader()
       });
       if (res.ok) {
@@ -148,7 +148,7 @@ export const databaseService = {
     if (params.customerId) query.set('customerId', params.customerId);
 
     try {
-      const res = await fetch(`/api/data/accounts?${query.toString()}`, {
+      const res = await fetchWithAuth(`/api/data/accounts?${query.toString()}`, {
         headers: getAuthHeader()
       });
       if (res.ok) {
@@ -182,7 +182,7 @@ export const databaseService = {
     if (params.search) query.set('search', params.search);
 
     try {
-      const res = await fetch(`/api/data/merchants?${query.toString()}`, {
+      const res = await fetchWithAuth(`/api/data/merchants?${query.toString()}`, {
         headers: getAuthHeader()
       });
       if (res.ok) {
@@ -223,7 +223,7 @@ export const databaseService = {
     if (params.fraudType && params.fraudType !== 'ALL') query.set('fraudType', params.fraudType);
 
     try {
-      const res = await fetch(`/api/data/fraud-alerts?${query.toString()}`, {
+      const res = await fetchWithAuth(`/api/data/fraud-alerts?${query.toString()}`, {
         headers: getAuthHeader()
       });
       if (res.ok) {
@@ -264,7 +264,7 @@ export const databaseService = {
     if (params.customerId) query.set('customerId', params.customerId);
 
     try {
-      const res = await fetch(`/api/data/support-cases?${query.toString()}`, {
+      const res = await fetchWithAuth(`/api/data/support-cases?${query.toString()}`, {
         headers: getAuthHeader()
       });
       if (res.ok) {
@@ -289,7 +289,7 @@ export const databaseService = {
    * Fetch spending category aggregation
    */
   async getCategorySpending(): Promise<CategorySpendingSummary[]> {
-    const res = await fetch('/api/data/category-spending', {
+    const res = await fetchWithAuth('/api/data/category-spending', {
       headers: getAuthHeader()
     });
     if (res.ok) {
@@ -303,7 +303,7 @@ export const databaseService = {
    * Fetch customer segment distribution
    */
   async getCustomerSegments(): Promise<SegmentDistributionSummary[]> {
-    const res = await fetch('/api/data/customer-segments', {
+    const res = await fetchWithAuth('/api/data/customer-segments', {
       headers: getAuthHeader()
     });
     if (res.ok) {
@@ -318,7 +318,7 @@ export const databaseService = {
    * Used for the Customer Dashboard and Customer Profile modals
    */
   async getCustomerDossier(customerId: string): Promise<CustomerFinancialDossier> {
-    const res = await fetch(`/api/data/customer-dossier?customerId=${encodeURIComponent(customerId)}`, {
+    const res = await fetchWithAuth(`/api/data/customer-dossier?customerId=${encodeURIComponent(customerId)}`, {
       headers: getAuthHeader()
     });
     if (res.ok) {
@@ -333,7 +333,7 @@ export const databaseService = {
    */
   async updateFraudAlertStatus(alertId: string, alertStatus: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const res = await fetch(`/api/data/fraud-alerts/${alertId}/status`, {
+      const res = await fetchWithAuth(`/api/data/fraud-alerts/${alertId}/status`, {
         method: 'PATCH',
         headers: getAuthHeader(),
         body: JSON.stringify({ alertStatus })
@@ -353,7 +353,7 @@ export const databaseService = {
    */
   async createSupportCase(caseData: Partial<DbSupportCase>): Promise<{ success: boolean; caseId?: string; error?: string }> {
     try {
-      const res = await fetch('/api/data/support-cases', {
+      const res = await fetchWithAuth('/api/data/support-cases', {
         method: 'POST',
         headers: getAuthHeader(),
         body: JSON.stringify(caseData)
@@ -373,7 +373,7 @@ export const databaseService = {
    */
   async resolveSupportCase(caseId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const res = await fetch(`/api/data/support-cases/${caseId}/resolve`, {
+      const res = await fetchWithAuth(`/api/data/support-cases/${caseId}/resolve`, {
         method: 'PATCH',
         headers: getAuthHeader()
       });
@@ -391,7 +391,7 @@ export const databaseService = {
    * Fetch time-series transaction trends
    */
   async getTransactionTrends(range: string = 'all'): Promise<TransactionTrendBucket[]> {
-    const res = await fetch(`/api/data/transaction-trends?range=${encodeURIComponent(range)}`, {
+    const res = await fetchWithAuth(`/api/data/transaction-trends?range=${encodeURIComponent(range)}`, {
       headers: getAuthHeader()
     });
     if (res.ok) {
@@ -405,7 +405,7 @@ export const databaseService = {
    * Fetch analyst comprehensive metrics
    */
   async getAnalystMetrics(): Promise<AnalystMetricsSummary> {
-    const res = await fetch('/api/data/analyst-metrics', {
+    const res = await fetchWithAuth('/api/data/analyst-metrics', {
       headers: getAuthHeader()
     });
     if (res.ok) {
@@ -419,7 +419,7 @@ export const databaseService = {
    * Fetch live Risk & Fraud intelligence metrics
    */
   async getRiskMetrics(): Promise<RiskMetricsSummary> {
-    const res = await fetch('/api/data/risk-metrics', {
+    const res = await fetchWithAuth('/api/data/risk-metrics', {
       headers: getAuthHeader()
     });
     if (res.ok) {
@@ -427,6 +427,20 @@ export const databaseService = {
     }
     const errBody = await res.json().catch(() => ({}));
     throw new Error(errBody?.error || `Failed to fetch risk metrics (${res.status})`);
+  },
+
+  /**
+   * Fetch authoritative shared financial summary
+   */
+  async getFinancialSummary() {
+    const res = await fetchWithAuth('/api/data/financial-summary', {
+      headers: getAuthHeader()
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(errBody?.error || `Failed to fetch financial summary (${res.status})`);
   }
 };
 

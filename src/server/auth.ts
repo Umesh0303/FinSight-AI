@@ -219,11 +219,9 @@ class AuthStore {
       this.loginHistory = [];
     }
 
-    // Ensure the four predefined demo accounts exist with scrypt hashed password
-    this.ensureDemoAccounts();
-
     // Ensure the initial administrator account strictly exists as required
     this.ensureInitialAdmin();
+    this.ensureDemoAccounts();
     this.persist();
     this.persistLoginHistory();
   }
@@ -282,6 +280,7 @@ class AuthStore {
     const verifiedSupabaseAuthId = '2a303ad4-1352-423a-b8d8-eccdde87de77';
     let admin = this.users.find((u) => u.email.toLowerCase() === adminEmail);
     const nowIso = new Date().toISOString();
+    const { salt, hash } = hashPassword('Admin@123');
 
     if (!admin) {
       admin = {
@@ -294,12 +293,14 @@ class AuthStore {
         avatarInitials: 'A',
         accountStatus: 'ACTIVE',
         authProviders: ['google', 'email'],
-        auth_provider: 'google',
+        auth_provider: 'email',
         emailVerified: true,
         createdDate: nowIso.split('T')[0],
         created_at: nowIso,
         lastLogin: 'Just now',
-        last_login_at: nowIso
+        last_login_at: nowIso,
+        passwordSalt: salt,
+        passwordHash: hash
       };
       this.users.unshift(admin);
       this.persist();
@@ -321,6 +322,10 @@ class AuthStore {
       admin.display_name = admin.display_name || admin.name;
       admin.created_at = admin.created_at || nowIso;
       admin.last_login_at = admin.last_login_at || nowIso;
+      if (!admin.passwordSalt || !admin.passwordHash) {
+        admin.passwordSalt = salt;
+        admin.passwordHash = hash;
+      }
       this.persist();
     }
 
@@ -636,6 +641,38 @@ class AuthStore {
 
   public revokeSession(token: string): void {
     activeSessions.delete(token);
+  }
+
+  public revokeSessionsForUser(userId: string): void {
+    for (const [token, session] of activeSessions.entries()) {
+      if (session.userId === userId) {
+        activeSessions.delete(token);
+      }
+    }
+  }
+
+  public deleteUser(userId: string): { success: boolean; error?: string } {
+    const user = this.findById(userId);
+    if (!user) return { success: false, error: 'User not found.' };
+
+    const protectedEmails = [
+      'customerdashboard8@gmail.com',
+      'admindashboard5@gmail.com',
+      'businessanalyticsdashboard@gmail.com',
+      'riskassessment398@gmail.com'
+    ];
+    if (protectedEmails.includes(user.email.toLowerCase())) {
+      return { success: false, error: 'Protected institutional account cannot be deleted.' };
+    }
+
+    if (user.role === 'admin' && this.countActiveAdmins() <= 1) {
+      return { success: false, error: 'Cannot delete the last remaining active administrator.' };
+    }
+
+    this.revokeSessionsForUser(user.id);
+    this.users = this.users.filter((u) => u.id !== user.id && u.email.toLowerCase() !== user.email.toLowerCase());
+    this.persist();
+    return { success: true };
   }
 }
 

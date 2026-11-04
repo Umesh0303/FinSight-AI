@@ -146,6 +146,7 @@ export interface PlatformMetricsSummary {
   totalAccounts: number;
   totalTransactions: number;
   totalVolumeInr: number;
+  settledVolumeInr?: number;
   grossVolumeInr?: number;
   totalFraudAlerts: number;
   fraudAlertsByStatus?: {
@@ -160,6 +161,12 @@ export interface PlatformMetricsSummary {
   activeInvestigationsCount: number;
   preventedFraudLossInr: number;
   avgCreditScore: number;
+  paymentMethodBreakdown?: { method: string; count: number; percentage: number; volumeInr: number }[];
+  merchantBreakdown?: { merchantId: string; merchantName: string; category: string; valueInr: number; count: number }[];
+  accountTypeBreakdown?: { type: string; count: number; percentage: number }[];
+  customerSegmentBreakdown?: { segment: string; count: number; percentage: number }[];
+  statusBreakdown?: { status: string; count: number; percentage: number; volumeInr: number }[];
+  txnTypeBreakdown?: { type: string; count: number; percentage: number; volumeInr: number }[];
   isLive?: boolean;
   lastUpdated?: string;
   countsFreshAsOf?: string;
@@ -215,6 +222,7 @@ export interface TransactionTrendBucket {
 export interface AnalystMetricsSummary {
   totalTransactions: number;
   totalVolumeInr: number;
+  settledVolumeInr?: number;
   grossVolumeInr?: number;
   avgTransactionInr: number;
   settledTransactions: number;
@@ -254,8 +262,22 @@ export interface RiskMetricsSummary {
   preventedFraudLossInr: number;
   falsePositiveRate: number;
   flaggedTransactionRate: number;
+  avgResolutionDays?: number;
+  resolvedAlertsCount?: number;
+  fraudTypeBreakdown?: { type: string; count: number; percentage: number; color?: string }[];
   riskDistribution: { name: string; count: number; percentage: number; color: string }[];
   topRulesTriggered: { rule: string; count: number; percentage: number }[];
   geographicAnomalies: { city: string; count: number; level: string; color: string }[];
+  allAlertsSummary?: {
+    id: string;
+    date: string;
+    type: string;
+    rule: string;
+    status: string;
+    loss: number;
+    resDate: string | null;
+    custId?: string;
+    txnId?: string;
+  }[];
 }
 

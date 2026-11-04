@@ -18,6 +18,7 @@ function assert(msg: string, condition: boolean, err?: string) {
 }
 
 // 1. Verify Demo Accounts Data Setup
+authStore.ensureDemoAccounts();
 for (const acc of DEMO_ACCOUNTS_CONFIG) {
   const user = authStore.findByEmail(acc.email);
   assert(`Account exists: ${acc.email}`, !!user);

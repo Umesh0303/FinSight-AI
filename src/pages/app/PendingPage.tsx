@@ -72,7 +72,7 @@ export const PendingPage: React.FC = () => {
             What happens next?
           </h4>
           <p>
-            1. The Platform Administrator (<span className="font-mono text-[#0a4834]">admin@finsight.ai</span>) reviews your identity credentials.
+            1. The Platform Administrator (<span className="font-mono text-[#0a4834]">admindashboard5@gmail.com</span>) reviews your identity credentials.
           </p>
           <p>
             2. You will be provisioned access to either the <strong>Business Analyst</strong>, <strong>Customer</strong>, or <strong>Risk & Fraud</strong> portal.

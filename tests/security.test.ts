@@ -8,6 +8,8 @@ console.log('===================================================================
 console.log('FinSight AI — Automated Security Regression & Authorization Test Suite');
 console.log('==============================================================================\n');
 
+authStore.ensureDemoAccounts();
+
 let passCount = 0;
 let failCount = 0;
 

@@ -5,7 +5,6 @@ import { DashboardBackground } from '../brand/DashboardBackground';
 import { FloatingFinAiBot } from '../chat/FloatingFinAiBot';
 import { FloatingFinAiPanel } from '../chat/FloatingFinAiPanel';
 import { GeminiLiveVoice } from '../chat/GeminiLiveVoice';
-import { AudioTranscribeModal } from '../chat/AudioTranscribeModal';
 import { useFinAi } from '../../context/FinAiContext';
 import { useApp } from '../../context/AppContext';
 
@@ -32,9 +31,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
     isVoiceModalOpen,
     closeVoiceModal,
     selectedPersona,
-    voiceInitialPrompt,
-    isTranscribeModalOpen,
-    closeTranscribeModal
+    voiceInitialPrompt
   } = useFinAi();
 
   return (
@@ -71,12 +68,6 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       {/* Persistent Floating Fin AI Assistant (Bot & Compact Chat Panel) */}
       <FloatingFinAiPanel />
       <FloatingFinAiBot />
-
-      {/* Dedicated Audio Transcription Modal (gemini-3.5-transcribe) */}
-      <AudioTranscribeModal
-        isOpen={isTranscribeModalOpen}
-        onClose={closeTranscribeModal}
-      />
 
       {/* Fullscreen Voice Experience (Gemini 3.8 Live API) */}
       <GeminiLiveVoice

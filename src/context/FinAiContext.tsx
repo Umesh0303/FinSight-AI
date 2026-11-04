@@ -38,15 +38,14 @@ interface FinAiContextType {
   selectedPersona: string;
   setSelectedPersona: (p: string) => void;
   clearHistory: () => void;
+  quotaNotice: string | null;
+  setQuotaNotice: (n: string | null) => void;
   micNotice: string | null;
   setMicNotice: (n: string | null) => void;
   playingAudioId: string | null;
   speakMessage: (msgId: string, text: string) => Promise<void>;
   stopVoicePlayback: () => void;
   transcribeAudio: (base64Audio: string, mimeType?: string) => Promise<string>;
-  isTranscribeModalOpen: boolean;
-  openTranscribeModal: () => void;
-  closeTranscribeModal: () => void;
 }
 
 const FinAiContext = createContext<FinAiContextType | undefined>(undefined);
@@ -90,7 +89,6 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
-  const [isTranscribeModalOpen, setIsTranscribeModalOpen] = useState(false);
   const [voiceInitialPrompt, setVoiceInitialPrompt] = useState<string | null>(null);
   const [isWakeWordEnabled, setIsWakeWordEnabled] = useState(false);
   const [wakeWordStatus, setWakeWordStatus] = useState<WakeWordStatus>('off');
@@ -99,6 +97,7 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [selectedPersona, setSelectedPersona] = useState<string>(currentRole);
   const [isTyping, setIsTyping] = useState(false);
   const [micNotice, setMicNotice] = useState<string | null>(null);
+  const [quotaNotice, setQuotaNotice] = useState<string | null>(null);
 
   // Sync persona with user's role
   useEffect(() => {
@@ -357,8 +356,26 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData?.error || `Server returned ${res.status}`);
+        const errType = errorData?.errorType || '';
+        const errMsg = errorData?.error || `Server returned ${res.status}`;
+        if (
+          res.status === 429 ||
+          res.status === 503 ||
+          errType === 'QUOTA_EXCEEDED' ||
+          errType === 'MODEL_UNAVAILABLE' ||
+          errMsg.toLowerCase().includes('quota') ||
+          errMsg.toLowerCase().includes('demand') ||
+          errMsg.toLowerCase().includes('resource_exhausted') ||
+          errMsg.toLowerCase().includes('rate limit')
+        ) {
+          setQuotaNotice(
+            'Upstream Google Gemini API daily rate limit reached on the active provider key. Core financial analytics, transactions, and risk dashboards remain 100% operational. Inference will resume automatically as provider quota resets.'
+          );
+        }
+        throw new Error(errMsg);
       }
+
+      setQuotaNotice(null);
 
       const data = await res.json();
       const assistantMsg: FinAiMessage = {
@@ -571,15 +588,6 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   }, [stopVoicePlayback, stopWakeWordListening, currentUser]);
 
-  const openTranscribeModal = useCallback(() => {
-    stopVoicePlayback();
-    setIsTranscribeModalOpen(true);
-  }, [stopVoicePlayback]);
-
-  const closeTranscribeModal = useCallback(() => {
-    setIsTranscribeModalOpen(false);
-  }, []);
-
   // Direct audio transcription using gemini-3.5-transcribe model
   const transcribeAudio = useCallback(async (base64Audio: string, mimeType: string = 'audio/wav'): Promise<string> => {
     try {
@@ -628,15 +636,14 @@ export const FinAiProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         selectedPersona,
         setSelectedPersona,
         clearHistory,
+        quotaNotice,
+        setQuotaNotice,
         micNotice,
         setMicNotice,
         playingAudioId,
         speakMessage,
         stopVoicePlayback,
-        transcribeAudio,
-        isTranscribeModalOpen,
-        openTranscribeModal,
-        closeTranscribeModal
+        transcribeAudio
       }}
     >
       {children}

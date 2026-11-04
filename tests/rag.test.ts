@@ -4,6 +4,31 @@
  * Gemini Embeddings, Storage & Role-Based Access Controls
  */
 
+// Polyfills for pdfjs-dist in headless Node environment
+if (typeof (globalThis as any).DOMMatrix === 'undefined') {
+  (globalThis as any).DOMMatrix = class DOMMatrix {
+    a = 1; b = 0; c = 0; d = 1; e = 0; f = 0;
+    m11 = 1; m12 = 0; m21 = 0; m22 = 1; m41 = 0; m42 = 0;
+    is2D = true; isIdentity = true;
+    transformPoint(p: any) { return p; }
+    translate() { return this; }
+    scale() { return this; }
+    multiply() { return this; }
+  };
+}
+if (typeof (globalThis as any).ImageData === 'undefined') {
+  (globalThis as any).ImageData = class ImageData {
+    width: number; height: number; data: Uint8ClampedArray;
+    constructor(w: number, h: number) { this.width = w; this.height = h; this.data = new Uint8ClampedArray(w * h * 4); }
+  };
+}
+if (typeof (globalThis as any).Path2D === 'undefined') {
+  (globalThis as any).Path2D = class Path2D {};
+}
+
+import dotenv from 'dotenv';
+dotenv.config();
+
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -1361,7 +1386,7 @@ async function runRagTests() {
   assert(nonExistentDoc === null, '13.6: Non-existent document ID returns null');
 
   // 13.7: Re-indexing re-extracts, re-embeds, and updates metadata
-  const reindexed = await reindexDocument(testMgmtDoc.document.id, group13MockClient);
+  const reindexed = await reindexDocument(testMgmtDoc.document.id, { embeddingClient: group13MockClient });
   assert(reindexed.id === testMgmtDoc.document.id, '13.7: Re-indexing preserves document ID');
   assert(reindexed.status === 'indexed', '13.7: Re-indexed document maintains indexed status');
   assert(reindexed.chunk_count > 0, '13.7: Re-indexed document regenerates chunks');

@@ -34,7 +34,6 @@ export const AssistantPage: React.FC = () => {
     selectedPersona,
     setSelectedPersona,
     openVoiceModal,
-    openTranscribeModal,
     clearHistory,
     isWakeWordEnabled,
     toggleWakeWord,
@@ -44,10 +43,12 @@ export const AssistantPage: React.FC = () => {
     playingAudioId,
     speakMessage,
     stopVoicePlayback,
-    transcribeAudio
+    transcribeAudio,
+    quotaNotice,
+    setQuotaNotice
   } = useFinAi();
 
-  const { currentUser, devSwitchRole } = useApp();
+  const { currentUser } = useApp();
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [input, setInput] = useState('');
@@ -250,19 +251,6 @@ export const AssistantPage: React.FC = () => {
               </span>
             </button>
 
-            {/* Dedicated Transcribe Audio Button */}
-            <button
-              onClick={() => openTranscribeModal()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#ebf5f0] hover:bg-[#d8ece2] text-[#0d5941] text-xs font-semibold shadow-xs border border-[#0d5941]/30 transition-all cursor-pointer group"
-              title="Open Audio Transcriber Studio (gemini-3.5-transcribe)"
-            >
-              <Mic className="w-3.5 h-3.5 text-[#0d5941] group-hover:scale-110 transition-transform" />
-              <span>Transcribe</span>
-              <span className="text-[9px] font-mono bg-[#0d5941] text-white px-1.5 py-0.5 rounded">
-                3.5
-              </span>
-            </button>
-
             {/* Model Selector Dropdown */}
             <div className="flex items-center gap-1 bg-white border border-[#ded8cb] rounded-xl px-2 py-1 text-xs">
               <Cpu className="w-3.5 h-3.5 text-[#0d5941]" />
@@ -278,26 +266,10 @@ export const AssistantPage: React.FC = () => {
               </select>
             </div>
 
-            {/* Role / Persona Selector */}
-            <div className="flex items-center gap-1 bg-white border border-[#ded8cb] rounded-xl px-2 py-1 text-xs">
-              <Sliders className="w-3.5 h-3.5 text-[#b0882e]" />
-              <select
-                value={selectedPersona}
-                onChange={async (e) => {
-                  const newRole = e.target.value;
-                  setSelectedPersona(newRole);
-                  if (devSwitchRole && newRole !== currentUser?.role) {
-                    await devSwitchRole(newRole as any);
-                  }
-                }}
-                className="bg-transparent text-xs font-medium text-slate-700 focus:outline-none cursor-pointer"
-                title="Select Assistant Persona & Demo Session"
-              >
-                <option value="BUSINESS_ANALYST">Analyst Persona (analyst@finsight.ai)</option>
-                <option value="CUSTOMER">Private Wealth Advisor (customer@finsight.ai)</option>
-                <option value="RISK_FRAUD_ANALYST">Fraud Investigator (risk@finsight.ai)</option>
-                <option value="ADMIN">Platform Administrator (admin@finsight.ai)</option>
-              </select>
+            {/* Authorized Role Clearance Indicator */}
+            <div className="flex items-center gap-1.5 bg-[#faf7f0] border border-[#ded8cb] rounded-xl px-2.5 py-1 text-xs text-slate-700">
+              <Sliders className="w-3.5 h-3.5 text-[#0d5941]" />
+              <span className="font-semibold text-[#0d5941]">{currentUser?.roleTitle || 'Authorized User'}</span>
             </div>
 
             {/* Reset Button */}
@@ -310,6 +282,26 @@ export const AssistantPage: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Upstream Gemini API Quota Advisory Banner */}
+        {quotaNotice && (
+          <div className="mx-4 mt-3 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 leading-relaxed flex items-start justify-between gap-3 animate-in fade-in">
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-amber-950">Upstream Provider Notice: Gemini Free Tier Quota Limit</p>
+                <p className="text-[11px] text-amber-800 mt-0.5">{quotaNotice}</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setQuotaNotice(null)}
+              className="text-amber-700 hover:text-amber-950 p-1 font-bold cursor-pointer text-xs"
+              title="Dismiss Notice"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Wake Word Info Banner */}
         {showWakeInfo && (
@@ -516,14 +508,6 @@ export const AssistantPage: React.FC = () => {
               ) : (
                 <Mic className="w-4 h-4" />
               )}
-            </button>
-            <button
-              type="button"
-              onClick={openTranscribeModal}
-              className="p-2.5 rounded-xl border border-[#ece7dc] bg-[#ebf5f0] text-[#0d5941] hover:bg-[#d9ece3] transition-colors cursor-pointer flex items-center justify-center"
-              title="Open Audio Transcriber Studio (gemini-3.5-transcribe)"
-            >
-              <Sparkles className="w-4 h-4" />
             </button>
             <Button
               type="submit"

@@ -14,12 +14,10 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
-  Bot,
-  Mic
+  Bot
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
 import { useApp } from '../../context/AppContext';
-import { useFinAi } from '../../context/FinAiContext';
 
 interface SidebarProps {
   isMobileOpen: boolean;
@@ -41,7 +39,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     sidebarCollapsed,
     toggleSidebarCollapse
   } = useApp();
-  const { openTranscribeModal } = useFinAi();
 
   const isCollapsed = propCollapsed !== undefined ? propCollapsed : (sidebarCollapsed ?? false);
 
@@ -242,30 +239,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
               );
             })}
           </nav>
-
-          {/* Quick Audio Transcription Tool Button */}
-          <div className="px-3 pt-3">
-            <button
-              onClick={() => {
-                openTranscribeModal();
-                setIsMobileOpen(false);
-              }}
-              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold bg-[#0d4a36]/60 hover:bg-[#0d4a36] text-[#6ee7b7] border border-[#16654e] shadow-xs transition-all cursor-pointer ${
-                isCollapsed ? 'justify-center px-0' : ''
-              }`}
-              title="Transcribe Audio with gemini-3.5-transcribe"
-            >
-              <Mic className="w-4 h-4 text-[#10b981] flex-shrink-0 animate-pulse" />
-              {!isCollapsed && (
-                <div className="flex items-center justify-between flex-1">
-                  <span>Transcribe Audio</span>
-                  <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-sm bg-[#10b981]/20 text-[#10b981]">
-                    3.5
-                  </span>
-                </div>
-              )}
-            </button>
-          </div>
         </div>
 
         {/* Bottom Role-Specific Status Card matching Reference Image */}

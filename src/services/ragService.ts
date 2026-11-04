@@ -11,6 +11,7 @@
  */
 
 import { RagDocument } from '../types/rag';
+import { fetchWithAuth } from '../lib/supabase';
 
 export interface ChunkInspectionSummary {
   id: string;
@@ -26,26 +27,14 @@ export interface DocumentInspectionDetails {
   chunks: ChunkInspectionSummary[];
 }
 
-function getAuthHeaders(isJson = true): Record<string, string> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('finsight_token') : null;
-  const headers: Record<string, string> = {};
-  if (isJson) {
-    headers['Content-Type'] = 'application/json';
-  }
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-  return headers;
-}
-
 export const ragService = {
   /**
    * Fetches all documents authorized for the current user session.
    */
   async listDocuments(): Promise<RagDocument[]> {
-    const res = await fetch('/api/rag/documents', {
-      headers: getAuthHeaders(true),
-    });
+    const res = await fetchWithAuth('/api/rag/documents', {
+      method: 'GET',
+    }, true);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
@@ -60,9 +49,9 @@ export const ragService = {
    * Retrieves single document inspection details, including chunk distribution.
    */
   async getDocumentDetails(id: string): Promise<DocumentInspectionDetails> {
-    const res = await fetch(`/api/rag/documents/${encodeURIComponent(id)}`, {
-      headers: getAuthHeaders(true),
-    });
+    const res = await fetchWithAuth(`/api/rag/documents/${encodeURIComponent(id)}`, {
+      method: 'GET',
+    }, true);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
@@ -76,13 +65,11 @@ export const ragService = {
    * Uploads a financial institutional document with metadata.
    */
   async uploadDocument(formData: FormData): Promise<{ message: string; document: RagDocument }> {
-    const headers = getAuthHeaders(false); // multipart/form-data boundary set by browser
-
-    const res = await fetch('/api/rag/documents/upload', {
+    // isJson = false so browser automatically constructs multipart/form-data with proper boundary
+    const res = await fetchWithAuth('/api/rag/documents/upload', {
       method: 'POST',
-      headers,
       body: formData,
-    });
+    }, false);
 
     const data = await res.json().catch(() => ({}));
 
@@ -97,10 +84,9 @@ export const ragService = {
    * Triggers server-side re-indexing for an existing document.
    */
   async reindexDocument(id: string): Promise<{ message: string; document: RagDocument }> {
-    const res = await fetch(`/api/rag/documents/${encodeURIComponent(id)}/reindex`, {
+    const res = await fetchWithAuth(`/api/rag/documents/${encodeURIComponent(id)}/reindex`, {
       method: 'POST',
-      headers: getAuthHeaders(true),
-    });
+    }, true);
 
     const data = await res.json().catch(() => ({}));
 
@@ -115,10 +101,9 @@ export const ragService = {
    * Deletes an authorized document, associated vector chunks, and binary storage.
    */
   async deleteDocument(id: string): Promise<{ message: string; id: string }> {
-    const res = await fetch(`/api/rag/documents/${encodeURIComponent(id)}`, {
+    const res = await fetchWithAuth(`/api/rag/documents/${encodeURIComponent(id)}`, {
       method: 'DELETE',
-      headers: getAuthHeaders(true),
-    });
+    }, true);
 
     const data = await res.json().catch(() => ({}));
 

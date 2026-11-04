@@ -54,8 +54,9 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
   const [modalOpen, setModalOpen] = useState(false);
 
   // Compute effective 0-100 score from credit score if not explicitly passed
+  const isFallbackScore = propScore == null && creditScore == null;
   const effectiveScore = propScore ?? (creditScore ? Math.min(100, Math.round((creditScore / 900) * 100)) : 80);
-  const effectiveBand = creditBand || (effectiveScore >= 85 ? 'Excellent' : effectiveScore >= 70 ? 'Good' : 'Fair');
+  const effectiveBand = isFallbackScore ? 'Provisional Baseline' : (creditBand || (effectiveScore >= 85 ? 'Excellent' : effectiveScore >= 70 ? 'Good' : 'Fair'));
 
   const savingsRate = monthlyInflowInr > 0 ? Math.round((monthlySavingsInr / monthlyInflowInr) * 100) : 0;
   const outflowRatio = monthlyInflowInr > 0 ? Math.round((monthlyOutflowInr / monthlyInflowInr) * 100) : 0;
@@ -132,9 +133,17 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
               </div>
             </div>
 
-            <span className="text-[10px] font-semibold text-[#0d5941] bg-[#ebf7f1] border border-[#a7f3d0] px-2.5 py-0.5 rounded-full">
-              {effectiveBand} Tier
-            </span>
+            {isFallbackScore ? (
+              <span className="text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-300 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <Info className="w-3 h-3 text-amber-600" />
+                <span>Provisional Baseline</span>
+              </span>
+            ) : (
+              <span className="text-[10px] font-semibold text-[#0d5941] bg-[#ebf7f1] border border-[#a7f3d0] px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3 text-[#059669]" />
+                <span>{effectiveBand} Tier</span>
+              </span>
+            )}
           </div>
 
           {/* Main Score Section: Circular Gauge & Summary */}
@@ -186,13 +195,17 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
 
             {/* Score Interpretation */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="text-xs font-bold text-[#0d5941] bg-[#dcfce7] px-2 py-0.5 rounded-md">
+              <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${isFallbackScore ? 'text-amber-800 bg-amber-100' : 'text-[#0d5941] bg-[#dcfce7]'}`}>
                   {effectiveBand}
                 </span>
                 {creditScore ? (
                   <span className="text-[11px] text-slate-500 font-medium">
                     Credit Bureau Score: {creditScore} {creditDate ? `(${creditDate.slice(0, 10)})` : ''}
+                  </span>
+                ) : isFallbackScore ? (
+                  <span className="text-[11px] text-amber-700 font-medium">
+                    (Provisional baseline pending bureau sync)
                   </span>
                 ) : (
                   <span className="text-[11px] text-slate-500 font-medium">
@@ -201,7 +214,9 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
                 )}
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Your profile indicates exceptional surplus generation, disciplined outflows, and strong liquid reserves.
+                {isFallbackScore
+                  ? 'Initial default baseline score assigned for onboarding clients pending verified credit bureau synchronization and historical ledger analysis.'
+                  : 'Your profile indicates exceptional surplus generation, disciplined outflows, and strong liquid reserves.'}
               </p>
             </div>
           </div>
@@ -336,7 +351,7 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({
               </div>
 
               <div className="text-[10px] text-slate-400 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                <strong>Methodology:</strong> Derived from isolated transaction history and balance telemetry. Prototype financial modeling demonstration for customer account Arjun Verma.
+                <strong>Methodology:</strong> Derived from isolated transaction history and balance telemetry for client portfolio {customerName || 'Verified Client'}.
               </div>
             </div>
 

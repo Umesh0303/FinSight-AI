@@ -41,8 +41,23 @@ const Router: React.FC = () => {
     );
   }
 
+  // Institutional accounts bypass email verification gate
+  const institutionalAccounts = [
+    'admindashboard5@gmail.com',
+    'businessanalyticsdashboard@gmail.com',
+    'riskassessment398@gmail.com',
+    'customerdashboard8@gmail.com'
+  ];
+  const isInstitutionalUser = currentUser.email ? institutionalAccounts.includes(currentUser.email.toLowerCase()) : false;
+  const isVerifiedUser = isInstitutionalUser || currentUser.emailVerified !== false;
+
   // Redirect unauthenticated requests to protected /app/* routes
   if (!isAuthenticated && currentPath.startsWith('/app')) {
+    return <LoginPage />;
+  }
+
+  // Fail-closed gate: unverified accounts cannot access /app/* dashboards
+  if (isAuthenticated && currentPath.startsWith('/app') && !isVerifiedUser) {
     return <LoginPage />;
   }
 
@@ -61,8 +76,8 @@ const Router: React.FC = () => {
   }
 
   if (currentPath === '/login') {
-    // If already authenticated, redirect to appropriate role dashboard
-    if (isAuthenticated) {
+    // If already authenticated and verified, redirect to appropriate role dashboard
+    if (isAuthenticated && isVerifiedUser) {
       if (!isAccountActive || currentRole === 'UNASSIGNED') return <PendingPage />;
       if (currentRole === 'ADMIN') return <AdminDashboard />;
       if (currentRole === 'CUSTOMER') return <CustomerDashboard />;
@@ -74,7 +89,9 @@ const Router: React.FC = () => {
   }
 
   if (currentPath === '/signup') {
-    if (isAuthenticated) {
+    const hasPendingVerification = typeof window !== 'undefined' && Boolean(sessionStorage.getItem('pending_verification_email'));
+    // Never redirect away from signup if there is a pending verification or user is unverified
+    if (isAuthenticated && isVerifiedUser && !hasPendingVerification) {
       if (!isAccountActive || currentRole === 'UNASSIGNED') return <PendingPage />;
       if (currentRole === 'ADMIN') return <AdminDashboard />;
       if (currentRole === 'CUSTOMER') return <CustomerDashboard />;

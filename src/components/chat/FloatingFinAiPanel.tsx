@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   Send,
-  Sparkles,
   Mic,
   MicOff,
   Radio,
@@ -44,7 +43,8 @@ export const FloatingFinAiPanel: React.FC = () => {
     speakMessage,
     stopVoicePlayback,
     transcribeAudio,
-    openTranscribeModal
+    quotaNotice,
+    setQuotaNotice
   } = useFinAi();
 
   const { currentRole } = useApp();
@@ -354,17 +354,21 @@ export const FloatingFinAiPanel: React.FC = () => {
         </div>
       )}
 
-      {/* Mic Warning or Permission Notice */}
-      {micNotice && (
-        <div className="px-3 py-1.5 bg-amber-50 border-b border-amber-200 text-amber-800 text-[11px] flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <AlertCircle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-            <span className="truncate">{micNotice}</span>
+      {/* Upstream Gemini API Quota Advisory Banner */}
+      {quotaNotice && (
+        <div className="px-3.5 py-2 bg-amber-50 border-b border-amber-200 text-amber-900 text-[11px] leading-relaxed flex items-start justify-between gap-2 animate-in fade-in">
+          <div className="flex items-start gap-1.5">
+            <AlertCircle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-amber-950">Provider Notice: Gemini Free Tier Quota</p>
+              <p className="text-[10px] text-amber-800 mt-0.5">{quotaNotice}</p>
+            </div>
           </div>
           <button
             type="button"
-            onClick={() => setMicNotice(null)}
-            className="text-amber-700 hover:text-amber-900 font-bold ml-1 cursor-pointer"
+            onClick={() => setQuotaNotice(null)}
+            className="text-amber-700 hover:text-amber-950 font-bold ml-1 cursor-pointer"
+            title="Dismiss Notice"
           >
             ✕
           </button>
@@ -551,16 +555,6 @@ export const FloatingFinAiPanel: React.FC = () => {
             title="Launch Fin AI Live Voice"
           >
             <Radio className="w-4 h-4" />
-          </button>
-
-          {/* Dedicated Audio Transcribe Studio */}
-          <button
-            type="button"
-            onClick={openTranscribeModal}
-            className="p-2 rounded-xl border border-[#ece7dc] bg-[#ebf5f0] text-[#0d5941] hover:bg-[#d9ece3] transition-colors cursor-pointer"
-            title="Open Transcribe Audio Studio (gemini-3.5-transcribe)"
-          >
-            <Sparkles className="w-4 h-4" />
           </button>
 
           {/* Send Button */}

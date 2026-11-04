@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Clock, RefreshCw } from 'lucide-react';
 import { Logo } from '../../components/brand/Logo';
 import { AuthLayout } from '../../components/layout/AuthLayout';
 import { useApp } from '../../context/AppContext';
 
 export const LoginPage: React.FC = () => {
-  const { navigate, login } = useApp();
+  const { navigate, login, resendVerificationEmail } = useApp();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +13,41 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [infoMsg, setInfoMsg] = useState('');
+
+  // Unverified account state & resend handling
+  const [isUnverified, setIsUnverified] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendNotice, setResendNotice] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [isResending, setIsResending] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (resendCooldown > 0) {
+      timer = setTimeout(() => setResendCooldown((prev) => prev - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
+
+  const handleResend = async () => {
+    const target = unverifiedEmail || email.trim().toLowerCase();
+    if (resendCooldown > 0 || isResending || !target) return;
+    setIsResending(true);
+    setResendNotice(null);
+    try {
+      const res = await resendVerificationEmail(target);
+      if (res.success) {
+        setResendCooldown(60);
+        setResendNotice({ type: 'success', message: 'A new verification link has been sent to your email address.' });
+      } else {
+        setResendNotice({ type: 'error', message: res.message || 'Failed to resend verification link.' });
+      }
+    } catch (err: any) {
+      setResendNotice({ type: 'error', message: err?.message || 'Error sending verification link.' });
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,12 +59,20 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
     setErrorMsg('');
     setInfoMsg('');
+    setIsUnverified(false);
+    setResendNotice(null);
 
     const res = await login(email, password);
     setIsLoading(false);
 
     if (!res.success) {
-      setErrorMsg(res.message || 'Invalid email address or password. Please verify your credentials.');
+      if (res.isUnverified) {
+        setIsUnverified(true);
+        setUnverifiedEmail(res.unverifiedEmail || email.trim().toLowerCase());
+        setErrorMsg(res.message || 'Your email address is not verified. Please check your inbox and verify your email before logging in.');
+      } else {
+        setErrorMsg(res.message || 'Invalid email address or password. Please verify your credentials.');
+      }
     } else if (res.message) {
       setInfoMsg(res.message);
     }
@@ -66,14 +109,70 @@ export const LoginPage: React.FC = () => {
           </div>
         )}
 
-        {/* Error Feedback */}
-        {errorMsg && (
-          <div className="mb-4 p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-xs text-red-200 flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-            <div className="flex-1 leading-relaxed">
-              <span>{errorMsg}</span>
+        {/* Unverified Account Alert with Direct Resend Action */}
+        {isUnverified ? (
+          <div className="mb-5 p-4 rounded-xl bg-amber-950/80 border border-amber-500/60 text-xs text-amber-200 space-y-3">
+            <div className="flex items-start gap-3">
+              <Mail className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <span className="font-bold text-amber-300 block">Email Verification Required</span>
+                <p className="text-amber-100 leading-relaxed">
+                  Your email address is not verified. Please check your inbox and verify your email before logging in.
+                </p>
+              </div>
             </div>
+
+            {resendNotice && (
+              <div
+                className={`p-2.5 rounded-lg text-xs flex items-center gap-2 ${
+                  resendNotice.type === 'success'
+                    ? 'bg-emerald-950/90 border border-emerald-500/40 text-emerald-200'
+                    : 'bg-red-950/90 border border-red-500/40 text-red-200'
+                }`}
+              >
+                {resendNotice.type === 'success' ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                ) : (
+                  <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                )}
+                <span>{resendNotice.message}</span>
+              </div>
+            )}
+
+            <button
+              type="button"
+              disabled={isResending || resendCooldown > 0}
+              onClick={handleResend}
+              className="w-full py-2.5 px-3 rounded-lg bg-[#031d14] hover:bg-[#063324] border border-amber-500/40 text-amber-200 text-xs font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {isResending ? (
+                <>
+                  <span className="w-3.5 h-3.5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+                  <span>Resending Verification Link...</span>
+                </>
+              ) : resendCooldown > 0 ? (
+                <>
+                  <Clock className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Resend in {resendCooldown}s</span>
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Resend Verification Email</span>
+                </>
+              )}
+            </button>
           </div>
+        ) : (
+          /* Standard Error Feedback */
+          errorMsg && (
+            <div className="mb-4 p-3.5 rounded-xl bg-red-950/80 border border-red-500/50 text-xs text-red-200 flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1 leading-relaxed">
+                <span>{errorMsg}</span>
+              </div>
+            </div>
+          )
         )}
 
         {/* Credentials Form */}
@@ -166,82 +265,17 @@ export const LoginPage: React.FC = () => {
           </button>
         </form>
 
-          {/* Quick Demo Sign-In (Acceptance Testing & Verification) */}
-          <div className="mt-5 pt-4 border-t border-[#0d4f38]/60 text-center">
-            <p className="text-[10px] font-bold text-[#8cb8a7] uppercase tracking-wider mb-2">
-              Quick Demo Credentials (One-Click)
-            </p>
-            <div className="grid grid-cols-2 gap-2 text-left">
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('risk@finsight.ai');
-                  setPassword('FinSight@Demo123');
-                }}
-                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
-              >
-                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981] flex items-center justify-between">
-                  <span>Risk Analyst</span>
-                  <span className="text-[9px] text-[#10b981] font-mono font-bold bg-[#10b981]/15 px-1 rounded">AT-06</span>
-                </div>
-                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">risk@finsight.ai</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('analyst@finsight.ai');
-                  setPassword('FinSight@Demo123');
-                }}
-                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
-              >
-                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981]">
-                  Business Analyst
-                </div>
-                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">analyst@finsight.ai</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('admin@finsight.ai');
-                  setPassword('FinSight@Demo123');
-                }}
-                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
-              >
-                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981]">
-                  Platform Admin
-                </div>
-                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">admin@finsight.ai</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('customer@finsight.ai');
-                  setPassword('FinSight@Demo123');
-                }}
-                className="p-2 rounded-xl bg-[#031d14] border border-[#0d4f38] hover:border-[#10b981] text-xs transition-colors cursor-pointer group"
-              >
-                <div className="font-semibold text-white text-[11px] group-hover:text-[#10b981]">
-                  Customer Client
-                </div>
-                <div className="text-[10px] text-[#8cb8a7] font-mono truncate">customer@finsight.ai</div>
-              </button>
-            </div>
-          </div>
-
-          {/* Footer Link to Signup */}
-          <div className="text-center mt-5 text-xs text-[#8cb8a7]">
-            <span>Don't have an account? </span>
-            <button
-              type="button"
-              onClick={() => navigate('/signup')}
-              className="font-bold text-[#e5b842] hover:text-[#f3da87] hover:underline cursor-pointer ml-1"
-            >
-              Create account
-            </button>
-          </div>
+        {/* Footer Link to Signup */}
+        <div className="text-center mt-6 pt-5 border-t border-[#0d4f38]/60 text-xs text-[#8cb8a7]">
+          <span>Don't have an account? </span>
+          <button
+            type="button"
+            onClick={() => navigate('/signup')}
+            className="font-bold text-[#e5b842] hover:text-[#f3da87] hover:underline cursor-pointer ml-1"
+          >
+            Create account
+          </button>
+        </div>
 
       </div>
     </AuthLayout>

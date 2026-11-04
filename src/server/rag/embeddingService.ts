@@ -109,14 +109,14 @@ export async function generateSingleEmbedding(
     timeoutMs?: number;
   }
 ): Promise<number[]> {
+  if (!text || text.trim().length === 0) {
+    throw new EmbeddingError('Cannot generate embedding for empty text content', 'EMPTY_CONTENT');
+  }
+
   const client = options?.client || getGenAiClient();
   const maxRetries = options?.maxRetries ?? MAX_RETRIES;
   const baseDelay = options?.baseDelayMs ?? BASE_RETRY_DELAY_MS;
   const timeoutMs = options?.timeoutMs ?? 15000;
-
-  if (!text || text.trim().length === 0) {
-    throw new EmbeddingError('Cannot generate embedding for empty text content', 'EMPTY_CONTENT');
-  }
 
   let attempt = 0;
   while (attempt <= maxRetries) {

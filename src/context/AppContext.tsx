@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { UserRole, AccountStatus, UserProfile, Transaction, SupportCase, AIRecommendation, RiskAlert, LoginEventRecord } from '../types';
 import { supabase, isSupabaseConfigured, recordAuditEvent } from '../lib/supabase';
 import {
@@ -29,13 +29,15 @@ interface AppContextType {
   isAuthenticated: boolean;
   isLoadingAuth: boolean;
   systemUsers: UserProfile[];
-  login: (email: string, pass: string) => Promise<{ success: boolean; role?: UserRole; message?: string; requiresInitialSetup?: boolean }>;
+  login: (email: string, pass: string) => Promise<{ success: boolean; role?: UserRole; message?: string; isUnverified?: boolean; unverifiedEmail?: string; requiresInitialSetup?: boolean }>;
   loginWithGoogle: (email: string, name?: string, googleId?: string) => Promise<{ success: boolean; role?: UserRole; message?: string }>;
-  signup: (fullName: string, email: string, pass: string) => Promise<{ success: boolean; message?: string }>;
+  signup: (fullName: string, email: string, pass: string) => Promise<{ success: boolean; requiresVerification?: boolean; email?: string; message?: string }>;
+  resendVerificationEmail: (email: string) => Promise<{ success: boolean; message: string }>;
   logout: () => Promise<void>;
   adminAssignRole: (userId: string, newRole: UserRole) => Promise<{ success: boolean; error?: string }>;
   adminToggleUserStatus: (userId: string) => Promise<{ success: boolean; error?: string }>;
   adminSetUserStatus: (userId: string, newStatus: AccountStatus) => Promise<{ success: boolean; error?: string }>;
+  adminDeleteUser: (userId: string) => Promise<{ success: boolean; error?: string }>;
   updateUserDisplayName: (name: string) => Promise<{ success: boolean; error?: string }>;
   setupInitialAdminPassword: (password: string) => Promise<{ success: boolean; message?: string; error?: string }>;
   refreshAdminUsers: () => Promise<void>;
@@ -56,7 +58,6 @@ interface AppContextType {
   sidebarCollapsed: boolean;
   setSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   toggleSidebarCollapse: () => void;
-  devSwitchRole?: (role: UserRole) => void;
   fetchLoginHistory: () => Promise<LoginEventRecord[]>;
 
   // Live Supabase Database State
@@ -215,7 +216,21 @@ const formatUserProfile = (u: any): UserProfile => {
   };
 };
 
+export const INSTITUTIONAL_EMAILS = [
+  'admindashboard5@gmail.com',
+  'businessanalyticsdashboard@gmail.com',
+  'riskassessment398@gmail.com',
+  'customerdashboard8@gmail.com'
+];
+
+export const isInstitutionalAccount = (email?: string | null): boolean => {
+  if (!email) return false;
+  return INSTITUTIONAL_EMAILS.includes(email.trim().toLowerCase());
+};
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const isRegistrationInProgressRef = useRef<boolean>(false);
+
   const [currentPath, setCurrentPath] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       const p = window.location.pathname;
@@ -814,10 +829,40 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       }
 
+      if (!resolvedProfile) {
+        resolvedProfile = {
+          id: sbUser.id,
+          email: sbUser.email || '',
+          display_name: sbUser.user_metadata?.full_name || sbUser.user_metadata?.name || sbUser.email?.split('@')[0] || 'User',
+          role: sbUser.email === 'admindashboard5@gmail.com' ? 'admin' : (sbUser.user_metadata?.role || 'customer'),
+          account_status: 'active',
+          customer_id: `CUST-${Math.floor(1000 + Math.random() * 9000)}`,
+          created_at: sbUser.created_at || new Date().toISOString(),
+          last_login_at: new Date().toISOString()
+        };
+      }
+
       if (resolvedProfile) {
+        const profileEmail = (sbUser.email || resolvedProfile.email || '').toLowerCase();
+        const isInst = isInstitutionalAccount(profileEmail);
+        const isPending = typeof window !== 'undefined' && sessionStorage.getItem('pending_verification_email') === profileEmail;
+        const isExplicitlyUnverified = sbUser.user_metadata?.email_verified === false || isPending;
+        const isConfirmed = isInst || (Boolean(sbUser.email_confirmed_at) && !isExplicitlyUnverified);
+
+        // Fail closed if unverified
+        if (!isConfirmed) {
+          await supabase.auth.signOut().catch(() => {});
+          localStorage.removeItem('finsight_token');
+          setAuthToken(null);
+          setIsAuthenticated(false);
+          setCurrentUser(GUEST_USER);
+          return { error: 'Your email address is not verified. Please check your inbox and verify your email before logging in.' };
+        }
+
         const formatted = formatUserProfile({
           ...resolvedProfile,
           email: sbUser.email || resolvedProfile.email,
+          emailVerified: isConfirmed
         });
 
         // Fail closed if suspended
@@ -859,7 +904,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         try {
           const { data: { session }, error } = await supabase.auth.getSession();
           if (session && session.user && !error) {
-            const result = await syncSupabaseProfile(session.user, session.access_token);
+            const userEmail = (session.user.email || '').toLowerCase();
+            const isInst = isInstitutionalAccount(userEmail);
+            const isPending = typeof window !== 'undefined' && sessionStorage.getItem('pending_verification_email') === userEmail;
+            const isExplicitlyUnverified = session.user.user_metadata?.email_verified === false || isPending;
+            const isConfirmed = isInst || (Boolean(session.user.email_confirmed_at) && !isExplicitlyUnverified);
+
+            if (!isConfirmed) {
+              await supabase.auth.signOut().catch(() => {});
+              localStorage.removeItem('finsight_token');
+              if (isMounted) {
+                setAuthToken(null);
+                setIsAuthenticated(false);
+                setCurrentUser(GUEST_USER);
+                setIsLoadingAuth(false);
+              }
+              return;
+            }
+
+            let activeToken = session.access_token;
+            const expiresAt = session.expires_at ? session.expires_at * 1000 : 0;
+            // If expired or expiring soon, proactively refresh
+            if (expiresAt && expiresAt - Date.now() < 60000) {
+              const { data: refData, error: refErr } = await supabase.auth.refreshSession();
+              if (!refErr && refData?.session?.access_token) {
+                activeToken = refData.session.access_token;
+              }
+            }
+            const result = await syncSupabaseProfile(session.user, activeToken);
             if (result && !result.error) {
               if (isMounted) setIsLoadingAuth(false);
               return;
@@ -925,9 +997,41 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     let authListener: { subscription: { unsubscribe: () => void } } | null = null;
     if (supabase) {
       const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_IN' && session?.user) {
+        // 1. Strictly ignore all auth state changes while user registration is in progress
+        if (isRegistrationInProgressRef.current) {
+          return;
+        }
+
+        // 2. SIGNED_UP event must never establish an active session or navigate to dashboard
+        if ((event as string) === 'SIGNED_UP') {
+          if (supabase) await supabase.auth.signOut().catch(() => {});
+          localStorage.removeItem('finsight_token');
+          setAuthToken(null);
+          setIsAuthenticated(false);
+          setCurrentUser(GUEST_USER);
+          return;
+        }
+
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user && session?.access_token) {
+          const userEmail = (session.user.email || '').toLowerCase();
+          const isInst = isInstitutionalAccount(userEmail);
+          const isPending = typeof window !== 'undefined' && sessionStorage.getItem('pending_verification_email') === userEmail;
+          const isExplicitlyUnverified = session.user.user_metadata?.email_verified === false || isPending;
+          const isConfirmed = isInst || (Boolean(session.user.email_confirmed_at) && !isExplicitlyUnverified);
+
+          if (!isConfirmed) {
+            if (supabase) await supabase.auth.signOut().catch(() => {});
+            localStorage.removeItem('finsight_token');
+            setAuthToken(null);
+            setIsAuthenticated(false);
+            setCurrentUser(GUEST_USER);
+            return;
+          }
+
+          localStorage.setItem('finsight_token', session.access_token);
+          setAuthToken(session.access_token);
           const res = await syncSupabaseProfile(session.user, session.access_token);
-          if (res?.profile) {
+          if (res?.profile && event === 'SIGNED_IN') {
             recordAuditEvent(
               {
                 email: session.user.email || res.profile.email,
@@ -948,19 +1052,41 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       authListener = data;
     }
 
+    // Window event listeners for app-wide token refresh and session expiration events
+    const handleTokenRefreshed = (e: any) => {
+      const newToken = e?.detail?.token;
+      if (newToken) {
+        localStorage.setItem('finsight_token', newToken);
+        setAuthToken(newToken);
+      }
+    };
+
+    const handleSessionExpired = () => {
+      localStorage.removeItem('finsight_token');
+      setAuthToken(null);
+      setIsAuthenticated(false);
+      setCurrentUser(GUEST_USER);
+      navigate('/login');
+    };
+
+    window.addEventListener('finsight:token_refreshed', handleTokenRefreshed);
+    window.addEventListener('finsight:session_expired', handleSessionExpired);
+
     return () => {
       isMounted = false;
       if (authListener?.subscription) {
         authListener.subscription.unsubscribe();
       }
+      window.removeEventListener('finsight:token_refreshed', handleTokenRefreshed);
+      window.removeEventListener('finsight:session_expired', handleSessionExpired);
     };
-  }, [syncSupabaseProfile, refreshAdminUsers, fetchAuthorizedTransactions]);
+  }, [syncSupabaseProfile, refreshAdminUsers, fetchAuthorizedTransactions, navigate]);
 
   // A. Email & Password Login
   const login = async (
     email: string,
     pass: string
-  ): Promise<{ success: boolean; role?: UserRole; message?: string; requiresInitialSetup?: boolean }> => {
+  ): Promise<{ success: boolean; role?: UserRole; message?: string; isUnverified?: boolean; unverifiedEmail?: string; requiresInitialSetup?: boolean }> => {
     const cleanEmail = email.trim().toLowerCase();
 
     // 1. Authoritative Supabase Auth login when client is configured
@@ -973,28 +1099,66 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
         if (error) {
           const errLower = error.message.toLowerCase();
-          let userMessage = error.message;
-          let errorCat = 'invalid_credentials';
+          console.warn('[AUTH] Supabase signInWithPassword returned error:', error.message);
 
-          if (errLower.includes('email not confirmed')) {
-            userMessage = 'Your email address is not yet confirmed. Please check your verification inbox.';
-            errorCat = 'unconfirmed_email';
-          } else if (errLower.includes('invalid login credentials') || errLower.includes('invalid credentials')) {
-            userMessage = 'Invalid email address or password. Please verify your credentials and try again.';
-            errorCat = 'invalid_credentials';
+          if (errLower.includes('email not confirmed') || errLower.includes('not verified') || errLower.includes('unconfirmed')) {
+            recordAuditEvent({
+              email: cleanEmail,
+              eventType: 'login_failure',
+              success: false,
+              errorCategory: 'unconfirmed_email'
+            });
+            return {
+              success: false,
+              isUnverified: true,
+              unverifiedEmail: cleanEmail,
+              message: 'Your email address is not verified. Please check your inbox and verify your email before logging in.'
+            };
           }
 
+          // Authoritative credential failure from Supabase
           recordAuditEvent({
             email: cleanEmail,
             eventType: 'login_failure',
             success: false,
-            errorCategory: errorCat
+            errorCategory: 'invalid_credentials'
           });
+          return {
+            success: false,
+            message: 'Invalid email address or password. Please verify your credentials.'
+          };
+        } else if (data.session && data.user) {
+          const userEmail = (data.user.email || cleanEmail).toLowerCase();
+          const isInst = isInstitutionalAccount(userEmail);
+          const isPending = typeof window !== 'undefined' && sessionStorage.getItem('pending_verification_email') === userEmail;
+          const isExplicitlyUnverified = data.user.user_metadata?.email_verified === false || isPending;
+          const isConfirmed = isInst || (Boolean(data.user.email_confirmed_at) && !isExplicitlyUnverified);
 
-          return { success: false, message: userMessage };
-        }
+          // Authoritative Verification Check: Must be verified to establish active session
+          if (!isConfirmed) {
+            try {
+              await supabase.auth.signOut();
+            } catch {}
+            localStorage.removeItem('finsight_token');
+            setAuthToken(null);
+            setIsAuthenticated(false);
+            setCurrentUser(GUEST_USER);
 
-        if (data.session && data.user) {
+            recordAuditEvent({
+              email: cleanEmail,
+              eventType: 'login_failure',
+              success: false,
+              errorCategory: 'unconfirmed_email',
+              userId: data.user.id
+            });
+            return {
+              success: false,
+              isUnverified: true,
+              unverifiedEmail: cleanEmail,
+              message: 'Your email address is not verified. Please check your inbox and verify your email before logging in.'
+            };
+          }
+
           const token = data.session.access_token;
           const profileSync = await syncSupabaseProfile(data.user, token);
 
@@ -1009,44 +1173,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             return { success: false, message: profileSync.error };
           }
 
-          if (profileSync?.profile) {
-            const profile = profileSync.profile;
-            recordAuditEvent({
-              email: cleanEmail,
-              eventType: 'login_success',
-              success: true,
-              userId: data.user.id
-            }, token);
+          const profile = profileSync?.profile || formatUserProfile({
+            id: data.user.id,
+            email: data.user.email || cleanEmail,
+            display_name: data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'User',
+            role: cleanEmail === 'admindashboard5@gmail.com' ? 'admin' : (data.user.user_metadata?.role || 'customer'),
+            account_status: 'active'
+          });
 
-            if (profile.accountStatus === 'PENDING_APPROVAL' || profile.role === 'UNASSIGNED') {
-              navigate('/app/pending');
-              return {
-                success: true,
-                role: profile.role,
-                message: 'Your account has been verified and is awaiting administrator approval.'
-              };
-            }
+          // Ensure authenticated state in context and localStorage
+          setCurrentUser(profile);
+          setIsAuthenticated(true);
+          setAuthToken(token);
+          localStorage.setItem('finsight_token', token);
 
-            redirectByRole(profile.role);
-            return { success: true, role: profile.role };
+          recordAuditEvent({
+            email: cleanEmail,
+            eventType: 'login_success',
+            success: true,
+            userId: data.user.id
+          }, token);
+
+          if (profile.role === 'ADMIN') {
+            refreshAdminUsers();
           }
+          fetchAuthorizedTransactions(token, profile.role);
+
+          if (profile.accountStatus === 'PENDING_APPROVAL' || profile.role === 'UNASSIGNED') {
+            navigate('/app/pending');
+            return {
+              success: true,
+              role: profile.role,
+              message: 'Your account has been verified and is awaiting administrator approval.'
+            };
+          }
+
+          redirectByRole(profile.role);
+          return { success: true, role: profile.role };
         }
       } catch (sbError: any) {
-        console.error('Supabase authentication error:', sbError);
-        recordAuditEvent({
-          email: cleanEmail,
-          eventType: 'login_failure',
-          success: false,
-          errorCategory: 'network_error'
-        });
-        return {
-          success: false,
-          message: sbError?.message || 'Authentication service error. Please try again.'
-        };
+        console.warn('Supabase authentication notice, falling back to server-side endpoint:', sbError);
       }
     }
 
-    // 2. Local fallback endpoint (when Supabase client is unconfigured)
+    // 2. Local fallback endpoint (when Supabase client is unconfigured or offline demo fallback)
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -1059,7 +1229,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (!res.ok) {
         return {
           success: false,
-          message: data.error || data.message || 'Authentication failed.',
+          isUnverified: Boolean(data.isUnverified),
+          unverifiedEmail: data.email || cleanEmail,
+          message: data.error || data.message || 'Invalid email address or password. Please verify your credentials.',
           requiresInitialSetup: data.requiresInitialSetup
         };
       }
@@ -1102,13 +1274,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   };
 
-  // C. Registration (Assigns customer role server-side, routing directly to /app/customer)
+  // C. Registration (Mandatory email confirmation, no session before verification)
   const signup = async (
     fullName: string,
     email: string,
     pass: string
-  ): Promise<{ success: boolean; message?: string }> => {
+  ): Promise<{ success: boolean; requiresVerification?: boolean; email?: string; message?: string }> => {
     const cleanEmail = email.trim().toLowerCase();
+    const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/verify-email` : 'http://localhost:3000/verify-email';
+
+    // Discard any existing session before registration starts
+    isRegistrationInProgressRef.current = true;
+    try {
+      if (supabase) await supabase.auth.signOut().catch(() => {});
+    } catch {}
+    localStorage.removeItem('finsight_token');
+    sessionStorage.removeItem('finsight_token');
+    setAuthToken(null);
+    setIsAuthenticated(false);
+    setCurrentUser(GUEST_USER);
 
     // 1. Authoritative Supabase Auth registration
     if (supabase) {
@@ -1117,14 +1301,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           email: cleanEmail,
           password: pass,
           options: {
+            emailRedirectTo: redirectUrl,
             data: {
               full_name: fullName.trim(),
               name: fullName.trim(),
+              email_verified: false,
+              verification_required: true
             }
           }
         });
 
         if (error) {
+          isRegistrationInProgressRef.current = false;
           const errLower = error.message.toLowerCase();
           if (errLower.includes('already registered') || errLower.includes('user already exists')) {
             return {
@@ -1143,35 +1331,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           userId: data.user?.id
         });
 
-        // Email confirmation flow
-        if (data.user && !data.session) {
-          return {
-            success: true,
-            message: 'Account created successfully! Please check your email inbox to verify your address. Once verified, you will have immediate customer access.'
-          };
-        }
+        // Register unverified state on server
+        fetch('/api/auth/register-unverified', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail })
+        }).catch(() => {});
 
-        if (data.session && data.user) {
-          const token = data.session.access_token;
-          try {
-            await fetch('/api/auth/ensure-profile', {
-              method: 'POST',
-              headers: { Authorization: `Bearer ${token}` }
-            });
-          } catch (ensureErr) {
-            console.warn('Notice: Profile ensure endpoint notice:', ensureErr);
-          }
-          await syncSupabaseProfile(data.user, token);
-          navigate('/app/customer');
-          return {
-            success: true,
-            message: 'Account created successfully! Welcome to FinSight AI.'
-          };
-        }
+        // Disconnect any session returned by Supabase immediately
+        try {
+          await supabase.auth.signOut();
+        } catch {}
+        localStorage.removeItem('finsight_token');
+        sessionStorage.setItem('pending_verification_email', cleanEmail);
+        setAuthToken(null);
+        setIsAuthenticated(false);
+        setCurrentUser(GUEST_USER);
+        isRegistrationInProgressRef.current = false;
 
+        // CRITICAL: NEVER navigate to dashboard upon signup! Return requiresVerification: true
+        return {
+          success: true,
+          requiresVerification: true,
+          email: cleanEmail,
+          message: "We've sent a verification link to your registered email address. Please check your inbox and click the link to activate your FinSight AI account."
+        };
       } catch (sbErr: any) {
-        console.error('Supabase registration error:', sbErr);
-        return { success: false, message: sbErr?.message || 'Registration failed.' };
+        isRegistrationInProgressRef.current = false;
+        console.warn('Supabase signup error, attempting fallback:', sbErr);
       }
     }
 
@@ -1186,6 +1373,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const data = await res.json();
       if (!res.ok) {
         return { success: false, message: data.error || 'Registration failed.' };
+      }
+
+      if (data.requiresVerification) {
+        return {
+          success: true,
+          requiresVerification: true,
+          email: cleanEmail,
+          message: data.message || "We've sent a verification link to your registered email address. Please check your inbox and click the link to activate your FinSight AI account."
+        };
       }
 
       const token = data.token;
@@ -1205,6 +1401,69 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return { success: false, message: err?.message || 'Registration failed.' };
     }
   };
+
+  // D. Resend Email Verification
+  const resendVerificationEmail = useCallback(async (targetEmail: string): Promise<{ success: boolean; message: string }> => {
+    const cleanEmail = targetEmail.trim().toLowerCase();
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      return { success: false, message: 'Please enter a valid email address.' };
+    }
+
+    const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/verify-email` : 'http://localhost:3000/verify-email';
+
+    // 1. Authoritative Supabase Auth resend
+    if (supabase) {
+      try {
+        const { error } = await supabase.auth.resend({
+          type: 'signup',
+          email: cleanEmail,
+          options: {
+            emailRedirectTo: redirectUrl
+          }
+        });
+
+        if (error) {
+          const errLower = error.message.toLowerCase();
+          if (errLower.includes('rate limit') || errLower.includes('too many') || errLower.includes('security purposes')) {
+            return {
+              success: false,
+              message: 'For security purposes, please wait a moment before requesting another verification email.'
+            };
+          }
+          if (errLower.includes('already verified') || errLower.includes('already confirmed')) {
+            return {
+              success: true,
+              message: 'This email address is already verified. You can log in directly.'
+            };
+          }
+          return { success: false, message: error.message };
+        }
+
+        return {
+          success: true,
+          message: 'Verification link resent successfully! Please check your inbox and spam folder.'
+        };
+      } catch (sbResendErr: any) {
+        console.warn('Supabase resend exception, calling backend endpoint:', sbResendErr);
+      }
+    }
+
+    // 2. Server API fallback resend
+    try {
+      const res = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Failed to resend verification email.' };
+      }
+      return { success: true, message: data.message || 'Verification link resent successfully.' };
+    } catch {
+      return { success: false, message: 'Network error while requesting verification email.' };
+    }
+  }, []);
 
   // D. Logout (Revoke session, log audit event, clear state)
   const logout = async () => {
@@ -1351,6 +1610,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  // F3. Admin Delete User Account (Server-Authorized Admin Endpoint with Supabase & Database Sync)
+  const adminDeleteUser = async (
+    userId: string
+  ): Promise<{ success: boolean; error?: string }> => {
+    let token = localStorage.getItem('finsight_token') || authToken;
+    if (supabase) {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.access_token) {
+          token = session.access_token;
+        }
+      } catch {}
+    }
+    if (!token) return { success: false, error: 'Unauthorized: Admin authentication session required.' };
+
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, error: data.error || 'Failed to delete user account' };
+      }
+
+      // Immediately update local systemUsers state so table updates in real time without page reload
+      setSystemUsers((prev) => prev.filter((u) => u.id !== userId));
+      await refreshAdminUsers();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Network error deleting user account' };
+    }
+  };
+
   // G. Update Own Display Name (Allowed for ordinary authenticated users)
   const updateUserDisplayName = async (
     name: string
@@ -1484,61 +1780,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return [];
   }, []);
 
-  const devSwitchRole = useCallback(async (role: UserRole) => {
-    const DEMO_CREDENTIALS: Record<UserRole, { email: string; pass: string }> = {
-      ADMIN: { email: 'admin@finsight.ai', pass: 'FinSight@Demo123' },
-      BUSINESS_ANALYST: { email: 'analyst@finsight.ai', pass: 'FinSight@Demo123' },
-      RISK_FRAUD_ANALYST: { email: 'risk@finsight.ai', pass: 'FinSight@Demo123' },
-      CUSTOMER: { email: 'customer@finsight.ai', pass: 'FinSight@Demo123' },
-      UNASSIGNED: { email: 'customer@finsight.ai', pass: 'FinSight@Demo123' }
-    };
-
-    const creds = DEMO_CREDENTIALS[role];
-    if (creds) {
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: creds.email, password: creds.pass })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.token && data.user) {
-            const profile = formatUserProfile(data.user);
-            localStorage.setItem('finsight_token', data.token);
-            setAuthToken(data.token);
-            setIsAuthenticated(true);
-            setCurrentUser(profile);
-            if (profile.role === 'ADMIN') {
-              refreshAdminUsers();
-            }
-            fetchAuthorizedTransactions(data.token, profile.role);
-            redirectByRole(role);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('[devSwitchRole] Server-side demo authentication switch notice:', err);
-      }
-    }
-
-    setCurrentUser((prev) => ({
-      ...prev,
-      role,
-      roleTitle:
-        role === 'ADMIN'
-          ? 'Platform Administrator'
-          : role === 'BUSINESS_ANALYST'
-          ? 'Senior Financial Analyst'
-          : role === 'RISK_FRAUD_ANALYST'
-          ? 'Risk & Fraud Specialist'
-          : role === 'CUSTOMER'
-          ? 'Personal Wealth Client'
-          : 'Pending Role Assignment'
-    }));
-    redirectByRole(role);
-  }, [redirectByRole, fetchAuthorizedTransactions, refreshAdminUsers]);
-
   const activeNotificationCount = riskAlerts.filter((a) => a.status === 'New').length + 2;
 
   return (
@@ -1554,10 +1795,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         login,
         loginWithGoogle,
         signup,
+        resendVerificationEmail,
         logout,
         adminAssignRole,
         adminToggleUserStatus,
         adminSetUserStatus,
+        adminDeleteUser,
         updateUserDisplayName,
         setupInitialAdminPassword,
         refreshAdminUsers,
@@ -1578,7 +1821,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         sidebarCollapsed,
         setSidebarCollapsed,
         toggleSidebarCollapse,
-        devSwitchRole,
         fetchLoginHistory,
 
         // Live Database States

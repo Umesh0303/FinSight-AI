@@ -61,7 +61,7 @@ function formatDate(isoString?: string | null): string {
 }
 
 export const DocumentsPage: React.FC = () => {
-  const { currentUser } = useApp();
+  const { currentUser, navigate } = useApp();
 
   const [documents, setDocuments] = useState<RagDocument[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -456,12 +456,24 @@ export const DocumentsPage: React.FC = () => {
 
         {/* Results Counter */}
         <div className="mt-3 pt-2.5 border-t border-[#f4f0e6] flex items-center justify-between text-[11px] text-slate-500">
-          <span>
-            Showing <strong className="text-slate-800">{filteredDocuments.length}</strong> of{' '}
-            <strong className="text-slate-800">{documents.length}</strong> institutional policy documents
-          </span>
+          {fetchError ? (
+            <span className="text-red-700 font-medium flex items-center gap-1.5">
+              <AlertCircle className="w-3.5 h-3.5 text-red-600 flex-shrink-0" />
+              <span>Repository connection failed — document count unavailable</span>
+            </span>
+          ) : isLoading ? (
+            <span className="text-slate-500 flex items-center gap-1.5">
+              <RefreshCw className="w-3 h-3 text-[#0d5941] animate-spin flex-shrink-0" />
+              <span>Connecting to document repository...</span>
+            </span>
+          ) : (
+            <span>
+              Showing <strong className="text-slate-800">{filteredDocuments.length}</strong> of{' '}
+              <strong className="text-slate-800">{documents.length}</strong> institutional policy documents
+            </span>
+          )}
           <span className="font-mono text-[10px] text-slate-400">
-            Active User Clearance: <strong className="text-[#0d5941]">{currentUser?.roleTitle}</strong>
+            Active User Clearance: <strong className="text-[#0d5941]">{currentUser?.roleTitle || 'Unassigned'}</strong>
           </span>
         </div>
       </div>
@@ -470,11 +482,24 @@ export const DocumentsPage: React.FC = () => {
       {isLoading ? (
         <LoadingState message="Connecting to Supabase vector repository and loading authorized institutional documents..." />
       ) : fetchError ? (
-        <ErrorState
-          title="Unable to Connect to Document Store"
-          message={`An error occurred while communicating with the RAG repository: ${fetchError}`}
-          onRetry={loadDocuments}
-        />
+        <div className="space-y-4">
+          <ErrorState
+            title="Unable to Connect to Document Store"
+            message={`An error occurred while communicating with the RAG repository: ${fetchError}`}
+            onRetry={loadDocuments}
+          />
+          {fetchError.toLowerCase().includes('sign in') && (
+            <div className="flex justify-center -mt-2">
+              <Button
+                variant="emerald"
+                size="sm"
+                onClick={() => navigate('/login')}
+              >
+                Sign In Again
+              </Button>
+            </div>
+          )}
+        </div>
       ) : documents.length === 0 ? (
         <EmptyState
           title="No Institutional Documents Found"
