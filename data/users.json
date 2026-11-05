@@ -17,8 +17,8 @@
     "display_name": "Admin Dashboard",
     "auth_provider": "google",
     "created_at": "2026-10-10T00:00:00.000Z",
-    "last_login_at": "2026-11-03T09:42:28.693Z",
-    "updated_at": "2026-11-03T09:42:28.693Z"
+    "last_login_at": "2026-11-05T07:53:58.619Z",
+    "updated_at": "2026-11-05T07:53:58.619Z"
   },
   {
     "id": "user-1791629385904-7fc8b031",
@@ -1588,8 +1588,8 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-11-03T09:09:10.573Z",
-    "updated_at": "2026-11-03T09:09:10.573Z",
+    "last_login_at": "2026-11-05T09:24:27.983Z",
+    "updated_at": "2026-11-05T09:24:27.983Z",
     "customerId": "CUST-6352"
   },
   {
@@ -1609,8 +1609,8 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-11-02T11:06:40.511Z",
-    "updated_at": "2026-11-02T11:06:40.511Z"
+    "last_login_at": "2026-11-05T09:24:27.718Z",
+    "updated_at": "2026-11-05T09:24:27.718Z"
   },
   {
     "id": "demo-user-risk",
@@ -1629,8 +1629,8 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-11-03T09:42:29.358Z",
-    "updated_at": "2026-11-03T09:42:29.358Z"
+    "last_login_at": "2026-11-05T09:24:27.488Z",
+    "updated_at": "2026-11-05T09:24:27.488Z"
   },
   {
     "id": "demo-user-customer",
@@ -1649,9 +1649,9 @@
     "createdDate": "2026-10-10",
     "created_at": "2026-10-13T09:37:48.212Z",
     "lastLogin": "Just now",
-    "last_login_at": "2026-11-03T09:42:32.338Z",
+    "last_login_at": "2026-11-05T09:24:27.216Z",
     "customerId": "CUST-1001",
-    "updated_at": "2026-11-03T09:42:32.338Z"
+    "updated_at": "2026-11-05T09:24:27.216Z"
   },
   {
     "id": "e809238a-4c89-470d-aa12-8621b6c59095",
@@ -20449,5 +20449,25 @@
     "lastLogin": "Just now",
     "last_login_at": "2026-11-03T09:42:18.192Z",
     "customerId": "CUST-9084"
+  },
+  {
+    "id": "f858e40e-c61a-45d1-9a9f-1819dee5c284",
+    "name": "Fixture Client",
+    "display_name": "Fixture Client",
+    "email": "fixture.customer.1793782345300@example.com",
+    "role": "customer",
+    "roleTitle": "Personal Wealth Client",
+    "avatarInitials": "F",
+    "accountStatus": "ACTIVE",
+    "authProviders": [
+      "email"
+    ],
+    "auth_provider": "email",
+    "emailVerified": false,
+    "createdDate": "2026-11-04",
+    "created_at": "2026-11-04T08:52:25.308Z",
+    "lastLogin": "Just now",
+    "last_login_at": "2026-11-04T08:52:25.308Z",
+    "customerId": "CUST-1801"
   }
 ]

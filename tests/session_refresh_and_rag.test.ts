@@ -38,51 +38,45 @@ async function runSessionRefreshAndRagTests() {
   console.log('FinSight AI — Session Refresh & Knowledge Docs RAG Acceptance Suite');
   console.log('==============================================================================\n');
 
-  const supabaseUrl = process.env.VITE_SUPABASE_URL!;
-  const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
+  const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+  // -------------------------------------------------------------------------
+  // ENVIRONMENT & PROJECT IDENTITY GUARD
+  // -------------------------------------------------------------------------
+  if (!supabaseUrl) {
+    console.error('[SAFETY_GUARD] BLOCKED: VITE_SUPABASE_URL is not configured.');
+    process.exit(1);
+  }
+
+  // Extract project reference from URL: https://<project_id>.supabase.co
+  const projectMatch = supabaseUrl.match(/https:\/\/([a-z0-9_-]+)\.supabase\.co/i);
+  const currentProjectId = projectMatch ? projectMatch[1].toLowerCase() : '';
+  const approvedStagingProjects = (process.env.APPROVED_STAGING_PROJECTS || 'ncfzjltffljconwihvpk')
+    .split(',')
+    .map(p => p.trim().toLowerCase());
+
+  if (process.env.NODE_ENV === 'production') {
+    console.error('[SAFETY_GUARD] BLOCKED: Test suite cannot execute in production environment (NODE_ENV=production).');
+    process.exit(1);
+  }
+
+  if (!currentProjectId || !approvedStagingProjects.includes(currentProjectId)) {
+    console.error(`[SAFETY_GUARD] BLOCKED: Supabase project "${currentProjectId}" is not an explicitly approved staging project [${approvedStagingProjects.join(', ')}].`);
+    process.exit(1);
+  }
+
+  console.log(`[SAFETY_GUARD] Staging project verified: "${currentProjectId}". Zero user creation or profile upserts permitted.`);
+
   const supabase = createClient(supabaseUrl, supabaseKey);
-
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-  const supabaseAdmin = serviceRoleKey ? createClient(supabaseUrl, serviceRoleKey) : null;
-
-  const ensureTestUser = async (email: string, role: string, fullName: string) => {
-    try {
-      const { data: listData } = await supabaseAdmin.auth.admin.listUsers();
-      let user = listData?.users?.find((u) => u.email?.toLowerCase() === email.toLowerCase());
-      if (!user) {
-        const { data: created } = await supabaseAdmin.auth.admin.createUser({
-          email,
-          password: 'FinSight@Demo123',
-          email_confirm: true,
-          user_metadata: { role, full_name: fullName }
-        });
-        user = created?.user || undefined;
-      }
-      if (user) {
-        await supabaseAdmin.from('profiles').upsert({
-          id: user.id,
-          email,
-          role,
-          full_name: fullName,
-          account_status: 'active'
-        });
-      }
-    } catch (err) {
-      // Ignore if already provisioned
-    }
-  };
-
-  await ensureTestUser('risk@finsight.ai', 'risk_analyst', 'Risk Test');
-  await ensureTestUser('analyst@finsight.ai', 'business_analyst', 'Analyst Test');
-  await ensureTestUser('customer@finsight.ai', 'customer', 'Customer Test');
 
   // -------------------------------------------------------------------------
   // TEST 1: Valid Logged-In Session Loads Knowledge / Docs
   // -------------------------------------------------------------------------
   console.log('--- TEST 1: Valid Logged-In Session Document Listing ---');
   const { data: riskAuth, error: riskAuthErr } = await supabase.auth.signInWithPassword({
-    email: 'risk@finsight.ai',
-    password: 'FinSight@Demo123',
+    email: 'riskassessment398@gmail.com',
+    password: 'Risk@123',
   });
 
   assert(!riskAuthErr && Boolean(riskAuth?.session?.access_token), '1.1: Risk Analyst Supabase sign in succeeds');
@@ -178,8 +172,8 @@ async function runSessionRefreshAndRagTests() {
   // -------------------------------------------------------------------------
   console.log('\n--- TEST 5: Business Analyst Role Isolation ---');
   const { data: analystAuth } = await supabase.auth.signInWithPassword({
-    email: 'analyst@finsight.ai',
-    password: 'FinSight@Demo123',
+    email: 'businessanalyticsdashboard@gmail.com',
+    password: 'Business@123',
   });
   assert(Boolean(analystAuth?.session?.access_token), '5.1: Business Analyst signs in successfully');
   const analystToken = analystAuth!.session!.access_token;
@@ -204,8 +198,8 @@ async function runSessionRefreshAndRagTests() {
   // -------------------------------------------------------------------------
   console.log('\n--- TEST 6: Customer Role Isolation ---');
   const { data: custAuth } = await supabase.auth.signInWithPassword({
-    email: 'customer@finsight.ai',
-    password: 'FinSight@Demo123',
+    email: 'customerdashboard8@gmail.com',
+    password: 'customer@123',
   });
   assert(Boolean(custAuth?.session?.access_token), '6.1: Customer signs in successfully');
   const custToken = custAuth!.session!.access_token;

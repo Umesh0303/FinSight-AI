@@ -88,19 +88,29 @@ export async function checkLiveTablesAvailable(): Promise<boolean> {
 // ============================================================================
 
 export async function findDocumentByHash(fileHash: string): Promise<RagDocument | null> {
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      const { data, error } = await supabaseAdmin
-        .from('rag_documents')
-        .select('*')
-        .eq('file_hash_sha256', fileHash)
-        .maybeSingle();
-
-      if (!error && data) {
-        return data as RagDocument;
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
       }
-    } catch {
-      // Fall through to memory store
+    } else {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from('rag_documents')
+          .select('*')
+          .eq('file_hash_sha256', fileHash)
+          .maybeSingle();
+
+        if (error) {
+          console.error('[RAG_DB_ERROR] findDocumentByHash query error:', error.message || error.code);
+          throw new Error(`Database query failed in findDocumentByHash: ${error.message || error.code}`);
+        }
+        return (data as RagDocument) || null;
+      } catch (err: any) {
+        if (err.message?.startsWith('Database query failed in findDocumentByHash:')) throw err;
+        console.error('[RAG_DB_ERROR] findDocumentByHash connection exception:', err instanceof Error ? err.message : 'Database error');
+        throw new Error(`Database connection failed in findDocumentByHash: ${err instanceof Error ? err.message : 'Connection error'}`);
+      }
     }
   }
 
@@ -114,19 +124,29 @@ export async function findDocumentByHash(fileHash: string): Promise<RagDocument 
 }
 
 export async function getDocumentById(id: string): Promise<RagDocument | null> {
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      const { data, error } = await supabaseAdmin
-        .from('rag_documents')
-        .select('*')
-        .eq('id', id)
-        .maybeSingle();
-
-      if (!error && data) {
-        return data as RagDocument;
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
       }
-    } catch {
-      // Fall through
+    } else {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from('rag_documents')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (error) {
+          console.error('[RAG_DB_ERROR] getDocumentById query error:', error.message || error.code);
+          throw new Error(`Database query failed in getDocumentById: ${error.message || error.code}`);
+        }
+        return (data as RagDocument) || null;
+      } catch (err: any) {
+        if (err.message?.startsWith('Database query failed in getDocumentById:')) throw err;
+        console.error('[RAG_DB_ERROR] getDocumentById connection exception:', err instanceof Error ? err.message : 'Database error');
+        throw new Error(`Database connection failed in getDocumentById: ${err instanceof Error ? err.message : 'Connection error'}`);
+      }
     }
   }
 
@@ -153,29 +173,39 @@ export async function listAuthorizedDocuments(
   const isAdmin = normalizedRole === 'admin';
   const isPrivileged = isAdmin || normalizedRole === 'business_analyst' || normalizedRole === 'risk_analyst';
 
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      let query = supabaseAdmin.from('rag_documents').select('*');
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
+      }
+    } else {
+      try {
+        let query = supabaseAdmin.from('rag_documents').select('*');
 
-      if (!isAdmin) {
-        if (normalizedRole === 'customer') {
-          // Customer can only view indexed documents where allowed_roles contains 'customer'
-          query = query
-            .eq('status', 'indexed')
-            .contains('allowed_roles', [normalizedRole]);
-        } else {
-          // Business Analyst / Risk Analyst: only view documents explicitly permitted for their role
-          query = query.contains('allowed_roles', [normalizedRole]);
+        if (!isAdmin) {
+          if (normalizedRole === 'customer') {
+            // Customer can only view indexed documents where allowed_roles contains 'customer'
+            query = query
+              .eq('status', 'indexed')
+              .contains('allowed_roles', [normalizedRole]);
+          } else {
+            // Business Analyst / Risk Analyst: only view documents explicitly permitted for their role
+            query = query.contains('allowed_roles', [normalizedRole]);
+          }
         }
-      }
 
-      const { data, error } = await query.order('created_at', { ascending: false });
+        const { data, error } = await query.order('created_at', { ascending: false });
 
-      if (!error && data) {
-        return data as RagDocument[];
+        if (error) {
+          console.error('[RAG_DB_ERROR] listAuthorizedDocuments query error:', error.message || error.code);
+          throw new Error(`Database query failed in listAuthorizedDocuments: ${error.message || error.code}`);
+        }
+        return (data as RagDocument[]) || [];
+      } catch (err: any) {
+        if (err.message?.startsWith('Database query failed in listAuthorizedDocuments:')) throw err;
+        console.error('[RAG_DB_ERROR] listAuthorizedDocuments connection exception:', err instanceof Error ? err.message : 'Database error');
+        throw new Error(`Database connection failed in listAuthorizedDocuments: ${err instanceof Error ? err.message : 'Connection error'}`);
       }
-    } catch {
-      // Fall through to in-memory store
     }
   }
 
@@ -207,38 +237,48 @@ export async function createDocumentRecord(
     updated_at: now,
   };
 
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      const { data, error } = await supabaseAdmin
-        .from('rag_documents')
-        .insert({
-          id: fullRecord.id,
-          title: fullRecord.title,
-          filename: fullRecord.filename,
-          file_extension: fullRecord.file_extension,
-          file_size_bytes: fullRecord.file_size_bytes,
-          file_hash_sha256: fullRecord.file_hash_sha256,
-          category: fullRecord.category,
-          version: fullRecord.version,
-          description: fullRecord.description,
-          total_pages: fullRecord.total_pages,
-          chunk_count: fullRecord.chunk_count,
-          status: fullRecord.status,
-          error_message: fullRecord.error_message,
-          allowed_roles: fullRecord.allowed_roles,
-          uploaded_by: fullRecord.uploaded_by,
-          created_at: fullRecord.created_at,
-          updated_at: fullRecord.updated_at,
-          indexed_at: fullRecord.indexed_at,
-        })
-        .select()
-        .single();
-
-      if (!error && data) {
-        return data as RagDocument;
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
       }
-    } catch {
-      // Fall through
+    } else {
+      try {
+        const { data, error } = await supabaseAdmin
+          .from('rag_documents')
+          .insert({
+            id: fullRecord.id,
+            title: fullRecord.title,
+            filename: fullRecord.filename,
+            file_extension: fullRecord.file_extension,
+            file_size_bytes: fullRecord.file_size_bytes,
+            file_hash_sha256: fullRecord.file_hash_sha256,
+            category: fullRecord.category,
+            version: fullRecord.version,
+            description: fullRecord.description,
+            total_pages: fullRecord.total_pages,
+            chunk_count: fullRecord.chunk_count,
+            status: fullRecord.status,
+            error_message: fullRecord.error_message,
+            allowed_roles: fullRecord.allowed_roles,
+            uploaded_by: fullRecord.uploaded_by,
+            created_at: fullRecord.created_at,
+            updated_at: fullRecord.updated_at,
+            indexed_at: fullRecord.indexed_at,
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error('[RAG_DB_ERROR] createDocumentRecord insert error:', error.message || error.code);
+          throw new Error(`Database insert failed in createDocumentRecord: ${error.message || error.code}`);
+        }
+        return (data as RagDocument) || fullRecord;
+      } catch (err: any) {
+        if (err.message?.startsWith('Database insert failed in createDocumentRecord:')) throw err;
+        console.error('[RAG_DB_ERROR] createDocumentRecord connection exception:', err instanceof Error ? err.message : 'Database error');
+        throw new Error(`Database connection failed in createDocumentRecord: ${err instanceof Error ? err.message : 'Connection error'}`);
+      }
     }
   }
 
@@ -263,18 +303,28 @@ export async function updateDocumentStatus(
     ...(updates || {}),
   };
 
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      const { error } = await supabaseAdmin
-        .from('rag_documents')
-        .update(updatePayload)
-        .eq('id', id);
-
-      if (!error) {
-        return;
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
       }
-    } catch {
-      // Fall through
+    } else {
+      try {
+        const { error } = await supabaseAdmin
+          .from('rag_documents')
+          .update(updatePayload)
+          .eq('id', id);
+
+        if (error) {
+          console.error('[RAG_DB_ERROR] updateDocumentStatus error:', error.message || error.code);
+          throw new Error(`Database update failed in updateDocumentStatus: ${error.message || error.code}`);
+        }
+        return;
+      } catch (err: any) {
+        if (err.message?.startsWith('Database update failed in updateDocumentStatus:')) throw err;
+        console.error('[RAG_DB_ERROR] updateDocumentStatus exception:', err instanceof Error ? err.message : 'Database error');
+        throw new Error(`Database connection failed in updateDocumentStatus: ${err instanceof Error ? err.message : 'Connection error'}`);
+      }
     }
   }
 
@@ -289,27 +339,35 @@ export async function updateDocumentStatus(
 }
 
 export async function deleteDocumentRecord(id: string): Promise<boolean> {
-  let deletedFromLive = false;
-
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      const { error } = await supabaseAdmin
-        .from('rag_documents')
-        .delete()
-        .eq('id', id);
-
-      if (!error) {
-        deletedFromLive = true;
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
       }
-    } catch {
-      // Fall through
+    } else {
+      try {
+        const { error } = await supabaseAdmin
+          .from('rag_documents')
+          .delete()
+          .eq('id', id);
+
+        if (error) {
+          console.error('[RAG_DB_ERROR] deleteDocumentRecord error:', error.message || error.code);
+          throw new Error(`Database delete failed in deleteDocumentRecord: ${error.message || error.code}`);
+        }
+        return true;
+      } catch (err: any) {
+        if (err.message?.startsWith('Database delete failed in deleteDocumentRecord:')) throw err;
+        console.error('[RAG_DB_ERROR] deleteDocumentRecord exception:', err instanceof Error ? err.message : 'Database error');
+        throw new Error(`Database connection failed in deleteDocumentRecord: ${err instanceof Error ? err.message : 'Connection error'}`);
+      }
     }
   }
 
   const deletedFromMemory = inMemoryStore.documents.delete(id);
   inMemoryStore.chunks.delete(id);
 
-  return deletedFromLive || deletedFromMemory;
+  return deletedFromMemory;
 }
 
 // ============================================================================
@@ -321,28 +379,38 @@ export async function insertChunks(chunks: RagChunk[]): Promise<void> {
 
   const docId = chunks[0].document_id;
 
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      const { error } = await supabaseAdmin.from('rag_chunks').insert(
-        chunks.map(c => ({
-          id: c.id,
-          document_id: c.document_id,
-          chunk_index: c.chunk_index,
-          page_number: c.page_number,
-          content: c.content,
-          char_count: c.char_count,
-          token_estimate: c.token_estimate,
-          embedding: c.embedding,
-          metadata: c.metadata,
-          created_at: c.created_at,
-        }))
-      );
-
-      if (!error) {
-        return;
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
       }
-    } catch {
-      // Fall through
+    } else {
+      try {
+        const { error } = await supabaseAdmin.from('rag_chunks').insert(
+          chunks.map(c => ({
+            id: c.id,
+            document_id: c.document_id,
+            chunk_index: c.chunk_index,
+            page_number: c.page_number,
+            content: c.content,
+            char_count: c.char_count,
+            token_estimate: c.token_estimate,
+            embedding: c.embedding,
+            metadata: c.metadata,
+            created_at: c.created_at,
+          }))
+        );
+
+        if (error) {
+          console.error('[RAG_DB_ERROR] insertChunks error:', error.message || error.code);
+          throw new Error(`Database insert failed in insertChunks: ${error.message || error.code}`);
+        }
+        return;
+      } catch (err: any) {
+        if (err.message?.startsWith('Database insert failed in insertChunks:')) throw err;
+        console.error('[RAG_DB_ERROR] insertChunks exception:', err instanceof Error ? err.message : 'Database error');
+        throw new Error(`Database connection failed in insertChunks: ${err instanceof Error ? err.message : 'Connection error'}`);
+      }
     }
   }
 
@@ -511,24 +579,40 @@ export async function matchRagChunks(
   matchCount: number,
   callerRole: string
 ): Promise<RagRetrievedChunk[]> {
-  if (!forceInMemoryMode && supabaseAdmin) {
-    try {
-      const { data, error } = await supabaseAdmin.rpc('match_rag_chunks', {
-        query_embedding: queryEmbedding,
-        match_threshold: matchThreshold,
-        match_count: matchCount,
-        caller_role: callerRole,
-      });
-
-      if (!error && Array.isArray(data)) {
-        return data as RagRetrievedChunk[];
+  if (!forceInMemoryMode) {
+    if (!supabaseAdmin) {
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error('Supabase client is not configured in production environment.');
       }
-    } catch {
-      // Fall through to memory
+    } else {
+      try {
+        const { data, error } = await supabaseAdmin.rpc('match_rag_chunks', {
+          query_embedding: queryEmbedding,
+          match_threshold: matchThreshold,
+          match_count: matchCount,
+          caller_role: callerRole,
+        });
+
+        if (error) {
+          console.error('[RAG_DB_ERROR] match_rag_chunks RPC error:', error.message || error.code);
+          throw new Error(`Database vector search failed: ${error.message || error.code || 'Internal database error'}`);
+        }
+
+        if (Array.isArray(data)) {
+          return data as RagRetrievedChunk[];
+        }
+        return [];
+      } catch (err: any) {
+        if (err.message?.startsWith('Database vector search failed:')) {
+          throw err;
+        }
+        console.error('[RAG_DB_ERROR] match_rag_chunks network exception:', err instanceof Error ? err.message : 'Connection error');
+        throw new Error(`Database vector search connection failed: ${err instanceof Error ? err.message : 'Database connection error'}`);
+      }
     }
   }
 
-  // In-memory fallback for testing and offline execution
+  // In-memory fallback ONLY when explicitly enabled via forceInMemoryMode for isolated unit tests
   const results: RagRetrievedChunk[] = [];
   for (const doc of inMemoryStore.documents.values()) {
     if (doc.status !== 'indexed') continue;

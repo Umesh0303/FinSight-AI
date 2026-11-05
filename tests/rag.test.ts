@@ -69,6 +69,7 @@ import {
   getChunksForDocument,
   sanitizeFilename,
   matchRagChunks,
+  STORAGE_BUCKET_NAME,
 } from '../src/server/rag/ragRepository.ts';
 import {
   retrieveGroundedDocuments,
@@ -985,11 +986,11 @@ async function runRagTests() {
   // 8.1: Live Google GenAI API verification
   assert(VECTOR_DIMENSIONS === 768, '8.1: Embedding model configured with exactly 768 output dimensions');
 
-  // 8.2: Live Supabase Storage bucket verification contract
+  // 8.2: Supabase Storage bucket verification contract
   assert(MAX_FILE_SIZE_BYTES === 10485760, '8.2: Maximum file size matches Supabase storage bucket limit (10 MB)');
 
-  // 8.3: Verification contract: distinguishes live remote storage from database migration status
-  assert(true, '8.3: Clear architectural distinction: Supabase Storage live vs PostgreSQL schema migration pending in Dashboard');
+  // 8.3: Storage configuration sanity check
+  assert(typeof STORAGE_BUCKET_NAME === 'string' && STORAGE_BUCKET_NAME === 'rag-documents', '8.3: Target storage bucket identified as "rag-documents"');
 
   // ==========================================================================
   // TEST GROUP 9: Semantic Retrieval Engine & Similarity Matching
@@ -1304,9 +1305,9 @@ async function runRagTests() {
 
 
   // ==========================================================================
-  // TEST GROUP 12: Live Supabase pgvector RPC Integration
+  // TEST GROUP 12: Live Supabase pgvector RPC Remote Integration
   // ==========================================================================
-  console.log('\n--- TEST GROUP 12: Live Supabase pgvector RPC Integration ---');
+  console.log('\n--- TEST GROUP 12: Live Supabase pgvector RPC Remote Integration ---');
 
   const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -1321,17 +1322,20 @@ async function runRagTests() {
         caller_role: 'admin',
       });
 
-      assert(liveRpcErr === null, '12.1: Live Supabase pgvector match_rag_chunks RPC executes without database error');
-      assert(Array.isArray(liveRpcData), '12.2: Live Supabase RPC returns array structure adhering to schema definition');
-      console.log(`[LIVE_DB_VERIFIED] Supabase match_rag_chunks RPC live call succeeded (returned ${liveRpcData?.length} rows).`);
+      if (liveRpcErr) {
+        assert(false, '12.1: Live Supabase pgvector match_rag_chunks RPC executes without database error', liveRpcErr.message);
+      } else {
+        assert(true, '12.1: Live Supabase pgvector match_rag_chunks RPC executes without database error');
+        assert(Array.isArray(liveRpcData), '12.2: Live Supabase RPC returns array structure adhering to schema definition');
+        assert(true, '12.3: Live Supabase pgvector RPC verified against remote database, distinguished from mock tests');
+        console.log(`[LIVE_DB_VERIFIED] Supabase match_rag_chunks RPC live call succeeded (returned ${liveRpcData?.length} rows).`);
+      }
     } catch (liveErr: any) {
       assert(false, '12.1: Live Supabase match_rag_chunks RPC failed', liveErr.message);
     }
   } else {
-    console.log('[SKIP] Live Supabase credentials not found in environment.');
+    console.log('[BLOCKED/SKIPPED] Live Supabase credentials not found in environment — skipping remote database integration assertions.');
   }
-
-  assert(true, '12.3: Live Supabase pgvector RPC verified against remote database, distinguished from mock tests');
 
   // ==========================================================================
   // TEST GROUP 13: Phase 4 Knowledge Base Management & Inspection Lifecycle

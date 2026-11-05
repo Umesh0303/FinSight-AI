@@ -48,117 +48,160 @@ async function loginUser(email: string, pass = 'FinSight@Demo123'): Promise<{ to
   return res.json();
 }
 
-async function callChat(token: string | null, messages: { role: string; content: string }[], extraBody?: Record<string, any>) {
+async function callChat(token: string | null, messages: { role: string; content: string }[], extraBody?: Record<string, any>, retries = 2) {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(`${API_BASE}/api/chat`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({
-      messages,
-      ...(extraBody || {}),
-    }),
-  });
-  const data = await res.json().catch(() => ({}));
-  return { status: res.status, data };
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const res = await fetch(`${API_BASE}/api/chat`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        messages,
+        ...(extraBody || {}),
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if ((res.status === 429 || res.status === 503) && attempt < retries) {
+      console.log(`[TEST_RETRY] Chat rate limited (${res.status}), waiting 3s before retry...`);
+      await new Promise(r => setTimeout(r, 3000));
+      continue;
+    }
+    return { status: res.status, data };
+  }
+  return { status: 500, data: { error: 'Exhausted retries' } };
 }
 
 async function runAt06Tests() {
   console.log('==============================================================================');
-  console.log('FinSight AI — AT-06 RAG Role-Isolation & Grounding Regression Suite');
+  console.log('FinSight AI — Complete 8-Combination RAG Role-Isolation & Grounding Suite');
   console.log('==============================================================================\n');
 
-  // 1. Authenticate as Risk & Fraud Specialist (risk@finsight.ai)
-  console.log('--- TEST SCENARIO 1: Risk Analyst Authorized Retrieval of AT-06 ---');
+  // Authenticate all 4 pre-provisioned role accounts
+  console.log('--- PRE-FLIGHT: Authenticating Pre-provisioned Role Accounts ---');
+  const adminSession = await loginUser('admin@finsight.ai');
+  assert(adminSession.user.role === 'admin', '0.1: Admin account authenticated (admin@finsight.ai)');
+
   const riskSession = await loginUser('risk@finsight.ai');
-  assert(riskSession.user.role === 'risk_analyst', '1.1: Server verifies risk@finsight.ai as role risk_analyst');
-  assert(typeof riskSession.token === 'string' && riskSession.token.length > 20, '1.1: Valid server session token issued');
+  assert(riskSession.user.role === 'risk_analyst', '0.2: Risk Analyst account authenticated (risk@finsight.ai)');
 
-  const riskChat = await callChat(riskSession.token, [
-    { role: 'user', content: AT06_TEST_QUERY },
-  ]);
-
-  assert(riskChat.status === 200, '1.2: Chat API returns 200 OK for authenticated risk_analyst');
-  assert(riskChat.data.grounded === true, '1.3: Risk analyst response is grounded in institutional documents');
-  assert(Array.isArray(riskChat.data.citations) && riskChat.data.citations.length > 0, '1.4: Citations array is populated');
-
-  const riskHasAt06Citation = riskChat.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
-  assert(riskHasAt06Citation, '1.5: AT-06 document is cited in risk analyst response');
-
-  const answerText = riskChat.data.text || '';
-  const contains23Days = /23\s*days/i.test(answerText);
-  assert(contains23Days, '1.6: Fin AI answers with the expected 23 days window for AT-06');
-  console.log(`[EVIDENCE] Risk Analyst Answer: "${answerText.replace(/\n+/g, ' ').slice(0, 160)}..."`);
-
-  // 2. Authenticate as Business Analyst (analyst@finsight.ai)
-  console.log('\n--- TEST SCENARIO 2: Business Analyst Blocked from AT-06 ---');
   const analystSession = await loginUser('analyst@finsight.ai');
-  assert(analystSession.user.role === 'business_analyst', '2.1: Server verifies analyst@finsight.ai as role business_analyst');
+  assert(analystSession.user.role === 'business_analyst', '0.3: Business Analyst account authenticated (analyst@finsight.ai)');
 
-  const analystChat = await callChat(analystSession.token, [
-    { role: 'user', content: AT06_TEST_QUERY },
-  ]);
-
-  assert(analystChat.status === 200, '2.2: Chat API returns 200 OK');
-  const analystHasAt06 = analystChat.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
-  assert(!analystHasAt06, '2.3: AT-06 document is strictly EXCLUDED from business analyst citations');
-  const analystText = analystChat.data.text || '';
-  const analystDoesNotState23 = !/the fictional review window.*?is 23 days/i.test(analystText);
-  assert(analystDoesNotState23, '2.4: Business analyst does not receive confidential AT-06 answer');
-
-  // 3. Authenticate as Customer Client (customer@finsight.ai)
-  console.log('\n--- TEST SCENARIO 3: Customer Account Blocked from AT-06 ---');
   const customerSession = await loginUser('customer@finsight.ai');
-  assert(customerSession.user.role === 'customer', '3.1: Server verifies customer@finsight.ai as role customer');
+  assert(customerSession.user.role === 'customer', '0.4: Customer account authenticated (customer@finsight.ai)');
 
-  const customerChat = await callChat(customerSession.token, [
-    { role: 'user', content: AT06_TEST_QUERY },
-  ]);
+  // =========================================================================
+  // COMBINATION 1: Admin -> Universal Document AT-01 (ALLOWED, 17 days)
+  // =========================================================================
+  console.log('\n--- COMBINATION 1: Admin Access to AT-01 (Universal Policy) ---');
+  const adminAt01 = await callChat(adminSession.token, [{ role: 'user', content: AT01_TEST_QUERY }]);
+  assert(adminAt01.status === 200, '1.1: Admin Chat API returns 200 OK for AT-01');
+  const adminHasAt01 = adminAt01.data.citations?.some((c: any) => c.documentId === AT01_DOC_ID);
+  assert(adminHasAt01, '1.2: Admin receives valid AT-01 citation');
+  assert(/17\s*days/i.test(adminAt01.data.text || ''), '1.3: Admin correctly answers 17 days for AT-01');
 
-  assert(customerChat.status === 200, '3.2: Chat API returns 200 OK');
-  const customerHasAt06 = customerChat.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
-  assert(!customerHasAt06, '3.3: AT-06 document is strictly EXCLUDED from customer citations');
-  const customerText = customerChat.data.text || '';
-  const customerLacksEvidence = customerText.includes('authorized institutional policy documents do not provide sufficient information');
-  assert(customerLacksEvidence, '3.4: Customer receives truthful lack-of-evidence message instead of confidential data');
+  // =========================================================================
+  // COMBINATION 2: Admin -> Restricted Document AT-06 (ALLOWED, 23 days)
+  // =========================================================================
+  console.log('\n--- COMBINATION 2: Admin Access to AT-06 (Restricted Risk Policy) ---');
+  const adminAt06 = await callChat(adminSession.token, [{ role: 'user', content: AT06_TEST_QUERY }]);
+  assert(adminAt06.status === 200, '2.1: Admin Chat API returns 200 OK for AT-06');
+  const adminHasAt06 = adminAt06.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
+  assert(adminHasAt06, '2.2: Admin receives valid AT-06 citation');
+  assert(/23\s*days/i.test(adminAt06.data.text || ''), '2.3: Admin correctly answers 23 days for AT-06');
 
-  // 4. Role Spoofing Prevention
-  console.log('\n--- TEST SCENARIO 4: Client-Side Role Spoofing Prevention ---');
+  // =========================================================================
+  // COMBINATION 3: Risk Analyst -> Universal Document AT-01 (ALLOWED, 17 days)
+  // =========================================================================
+  console.log('\n--- COMBINATION 3: Risk Analyst Access to AT-01 (Universal Policy) ---');
+  const riskAt01 = await callChat(riskSession.token, [{ role: 'user', content: AT01_TEST_QUERY }]);
+  assert(riskAt01.status === 200, '3.1: Risk Analyst Chat API returns 200 OK for AT-01');
+  const riskHasAt01 = riskAt01.data.citations?.some((c: any) => c.documentId === AT01_DOC_ID);
+  assert(riskHasAt01, '3.2: Risk Analyst receives valid AT-01 citation');
+  assert(/17\s*days/i.test(riskAt01.data.text || ''), '3.3: Risk Analyst correctly answers 17 days for AT-01');
+
+  // =========================================================================
+  // COMBINATION 4: Risk Analyst -> Restricted Document AT-06 (ALLOWED, 23 days)
+  // =========================================================================
+  console.log('\n--- COMBINATION 4: Risk Analyst Access to AT-06 (Restricted Risk Policy) ---');
+  const riskAt06 = await callChat(riskSession.token, [{ role: 'user', content: AT06_TEST_QUERY }]);
+  assert(riskAt06.status === 200, '4.1: Risk Analyst Chat API returns 200 OK for AT-06');
+  const riskHasAt06 = riskAt06.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
+  assert(riskHasAt06, '4.2: Risk Analyst receives valid AT-06 citation');
+  assert(/23\s*days/i.test(riskAt06.data.text || ''), '4.3: Risk Analyst correctly answers 23 days for AT-06');
+
+  // =========================================================================
+  // COMBINATION 5: Business Analyst -> Universal Document AT-01 (ALLOWED, 17 days)
+  // =========================================================================
+  console.log('\n--- COMBINATION 5: Business Analyst Access to AT-01 (Universal Policy) ---');
+  const analystAt01 = await callChat(analystSession.token, [{ role: 'user', content: AT01_TEST_QUERY }]);
+  assert(analystAt01.status === 200, '5.1: Business Analyst Chat API returns 200 OK for AT-01');
+  const analystHasAt01 = analystAt01.data.citations?.some((c: any) => c.documentId === AT01_DOC_ID);
+  assert(analystHasAt01, '5.2: Business Analyst receives valid AT-01 citation');
+  assert(/17\s*days/i.test(analystAt01.data.text || ''), '5.3: Business Analyst correctly answers 17 days for AT-01');
+
+  // =========================================================================
+  // COMBINATION 6: Business Analyst -> Restricted Document AT-06 (BLOCKED)
+  // =========================================================================
+  console.log('\n--- COMBINATION 6: Business Analyst Access to AT-06 (BLOCKED) ---');
+  const analystAt06 = await callChat(analystSession.token, [{ role: 'user', content: AT06_TEST_QUERY }]);
+  assert(analystAt06.status === 200, '6.1: Business Analyst Chat API returns 200 OK');
+  const analystHasAt06 = analystAt06.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
+  assert(!analystHasAt06, '6.2: AT-06 citation strictly EXCLUDED for Business Analyst');
+  assert(!/23\s*days/i.test(analystAt06.data.text || ''), '6.3: Business Analyst does not receive 23-day secret answer');
+  const analystLacksEvidence = (analystAt06.data.text || '').includes('authorized institutional policy documents do not provide sufficient information');
+  assert(analystLacksEvidence, '6.4: Business Analyst receives standardized lack-of-evidence response');
+
+  // =========================================================================
+  // COMBINATION 7: Customer -> Universal Document AT-01 (ALLOWED, 17 days)
+  // =========================================================================
+  console.log('\n--- COMBINATION 7: Customer Access to AT-01 (Universal Policy) ---');
+  const customerAt01 = await callChat(customerSession.token, [{ role: 'user', content: AT01_TEST_QUERY }]);
+  assert(customerAt01.status === 200, '7.1: Customer Chat API returns 200 OK for AT-01');
+  const customerHasAt01 = customerAt01.data.citations?.some((c: any) => c.documentId === AT01_DOC_ID);
+  assert(customerHasAt01, '7.2: Customer receives valid AT-01 citation');
+  assert(/17\s*days/i.test(customerAt01.data.text || ''), '7.3: Customer correctly answers 17 days for AT-01');
+
+  // =========================================================================
+  // COMBINATION 8: Customer -> Restricted Document AT-06 (BLOCKED)
+  // =========================================================================
+  console.log('\n--- COMBINATION 8: Customer Access to AT-06 (BLOCKED) ---');
+  const customerAt06 = await callChat(customerSession.token, [{ role: 'user', content: AT06_TEST_QUERY }]);
+  assert(customerAt06.status === 200, '8.1: Customer Chat API returns 200 OK');
+  const customerHasAt06 = customerAt06.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
+  assert(!customerHasAt06, '8.2: AT-06 citation strictly EXCLUDED for Customer');
+  assert(!/23\s*days/i.test(customerAt06.data.text || ''), '8.3: Customer does not receive 23-day secret answer');
+  const customerLacksEvidence = (customerAt06.data.text || '').includes('authorized institutional policy documents do not provide sufficient information');
+  assert(customerLacksEvidence, '8.4: Customer receives standardized lack-of-evidence response');
+
+  // =========================================================================
+  // SECURITY GUARDS: Spoofing & Authentication Gate
+  // =========================================================================
+  console.log('\n--- SECURITY GUARD 1: Client-Side Role Spoofing Prevention ---');
   const spoofAttempt = await callChat(
     customerSession.token,
     [{ role: 'user', content: AT06_TEST_QUERY }],
-    { role: 'risk_analyst' } // Malicious client attempts to claim risk_analyst role
+    { role: 'admin' }
   );
-
   const spoofHasAt06 = spoofAttempt.data.citations?.some((c: any) => c.documentId === AT06_DOC_ID);
-  assert(!spoofHasAt06, '4.1: Client-supplied role parameter CANNOT bypass server-side session role verification');
-  assert(!/fictional review window.*?is 23 days/i.test(spoofAttempt.data.text || ''), '4.2: Spoofed request does not receive 23-day answer');
+  assert(!spoofHasAt06, '9.1: Role spoofing payload cannot bypass server session role');
+  assert(!/23\s*days/i.test(spoofAttempt.data.text || ''), '9.2: Spoofed request does not leak AT-06 answer');
 
-  // 5. Existing Authorized Roles Retrieve AT-01
-  console.log('\n--- TEST SCENARIO 5: Authorized Retrieval of Universal Policy AT-01 ---');
-  const customerAt01 = await callChat(customerSession.token, [
-    { role: 'user', content: AT01_TEST_QUERY },
-  ]);
-  const customerHasAt01 = customerAt01.data.citations?.some((c: any) => c.documentId === AT01_DOC_ID);
-  assert(customerHasAt01, '5.1: Customer account can retrieve universally authorized AT-01 document');
-  assert(/17\s*days/i.test(customerAt01.data.text || ''), '5.2: Customer answers 17 days for AT-01 test code FIN-RAG-TEST-4827');
+  console.log('\n--- SECURITY GUARD 2: Unauthenticated Request Gate ---');
+  const unauthChat = await callChat(null, [{ role: 'user', content: AT06_TEST_QUERY }]);
+  assert(unauthChat.status === 401, '10.1: Unauthenticated request is rejected with 401 Unauthorized');
 
-  // 6. Unauthenticated Protection
-  console.log('\n--- TEST SCENARIO 6: Unauthenticated Request Gate ---');
-  const unauthChat = await callChat(null, [
-    { role: 'user', content: AT06_TEST_QUERY },
-  ]);
-  assert(unauthChat.status === 401, '6.1: Unauthenticated request is rejected with 401 Unauthorized');
-
-  // 7. Citation Integrity & Page Number Precision
-  console.log('\n--- TEST SCENARIO 7: Citation Integrity & Verification ---');
-  const riskAt06Citations = riskChat.data.citations || [];
+  // =========================================================================
+  // CITATION PRECISION VERIFICATION
+  // =========================================================================
+  console.log('\n--- CITATION PRECISION: Verification of Citations ---');
+  const riskAt06Citations = riskAt06.data.citations || [];
   for (const c of riskAt06Citations) {
-    assert(typeof c.documentId === 'string' && c.documentId.length > 0, '7.1: Citation has valid documentId');
-    assert(typeof c.title === 'string' && c.title.length > 0, '7.2: Citation has valid title');
-    assert(typeof c.similarity === 'number' && c.similarity > 0.60, '7.3: Citation similarity exceeds threshold (0.60)');
-    assert(c.pageNumber === 1, '7.4: Citation accurately identifies Page 1');
+    assert(typeof c.documentId === 'string' && c.documentId.length > 0, '11.1: Citation has valid documentId');
+    assert(typeof c.title === 'string' && c.title.length > 0, '11.2: Citation has valid title');
+    assert(typeof c.similarity === 'number' && c.similarity > 0.60, '11.3: Citation similarity exceeds threshold (0.60)');
+    assert(c.pageNumber === 1, '11.4: Citation accurately identifies Page 1');
   }
 
   // Summary

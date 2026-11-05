@@ -124,8 +124,8 @@ export async function retrieveGroundedDocuments(
   try {
     chunks = await matchRagChunks(queryVector, threshold, topK, callerRole);
   } catch (err) {
-    console.error('[RAG_RETRIEVAL] Vector similarity matching failed:', err);
-    return emptyResult;
+    console.error('[RAG_RETRIEVAL] Vector similarity matching failed:', err instanceof Error ? err.message : String(err));
+    throw err;
   }
 
   if (!chunks || chunks.length === 0) {

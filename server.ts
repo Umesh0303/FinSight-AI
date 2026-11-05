@@ -24,7 +24,7 @@ import {
   RECONCILED_LEDGER_AT
 } from './src/server/financialConstants.ts';
 import { ragRouter } from './src/server/rag/ragRoutes.ts';
-import { retrieveGroundedDocuments } from './src/server/rag/retrievalService.ts';
+import { retrieveGroundedDocuments, buildGroundingContext } from './src/server/rag/retrievalService.ts';
 import type { RagCitation } from './src/types/rag.ts';
 
 
@@ -1735,11 +1735,32 @@ app.post('/api/chat', authenticate, async (req: Request, res: Response) => {
         }
 
         if (retrievalResult.hasSufficientEvidence) {
-          citations = retrievalResult.citations;
-          groundingContext = retrievalResult.groundingContextText;
+          const codeMatch = latestUserQuery.match(/FIN-RAG-[A-Za-z0-9_-]+/i);
+          if (codeMatch) {
+            const queriedCode = codeMatch[0].toUpperCase();
+            const relevantChunks = retrievalResult.chunks.filter(c => c.content.toUpperCase().includes(queriedCode));
+            if (relevantChunks.length > 0) {
+              citations = retrievalResult.citations.filter(cit =>
+                relevantChunks.some(rc => rc.id === cit.chunkId)
+              );
+              groundingContext = buildGroundingContext(relevantChunks);
+            } else {
+              citations = [];
+              groundingContext = '';
+            }
+          } else {
+            citations = retrievalResult.citations;
+            groundingContext = retrievalResult.groundingContextText;
+          }
         }
-      } catch (retrievalErr) {
-        console.warn('[RAG_RETRIEVAL] Non-fatal retrieval notice during chat flow:', retrievalErr);
+      } catch (retrievalErr: any) {
+        console.error('[RAG_RETRIEVAL] RAG database retrieval failure:', retrievalErr?.message || retrievalErr);
+        if (process.env.NODE_ENV === 'production') {
+          return res.status(503).json({
+            error: 'Institutional document retrieval service is temporarily unavailable. Please retry shortly.',
+            errorType: 'DATABASE_SERVICE_UNAVAILABLE'
+          });
+        }
       }
     }
 

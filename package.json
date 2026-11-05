@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
-    "test": "tsx tests/security.test.ts && tsx tests/demo_api.test.ts && tsx tests/rag.test.ts && tsx tests/at06_role_isolation.test.ts && tsx tests/document_clearance_verification.test.ts && tsx tests/session_refresh_and_rag.test.ts && tsx tests/auth_login_verification.test.ts && tsx tests/account_deletion_and_demo_removal.test.ts && tsx tests/dashboard_reconciliation_audit.test.ts && tsx tests/final_data_integrity_audit.test.ts && tsx tests/email_verification.test.ts"
+    "test": "tsx tests/security.test.ts && tsx tests/demo_api.test.ts && tsx tests/rag.test.ts && tsx tests/at06_role_isolation.test.ts && tsx tests/document_clearance_verification.test.ts && tsx tests/session_refresh_and_rag.test.ts && tsx tests/auth_login_verification.test.ts && tsx tests/account_deletion_and_demo_removal.test.ts && tsx tests/dashboard_reconciliation_audit.test.ts && tsx tests/final_data_integrity_audit.test.ts && tsx tests/email_verification.test.ts",
+    "test:rag:adversarial": "tsx tests/phase7_adversarial_suite.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
